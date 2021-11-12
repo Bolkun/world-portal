@@ -32,3 +32,6 @@ npm - 8.1.0
 node - v16.13.0
 ng - 13.0.1
 firebase - 9.22.0
+
+npm i flash-messages-angular
+npm install angularfire2 firebase --save
