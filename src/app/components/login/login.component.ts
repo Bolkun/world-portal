@@ -3,11 +3,11 @@ import { UserService } from 'src/app/services/user.service';
 import { Router } from "@angular/router";
 
 @Component({
-  selector: 'app-dashboard',
-  templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.css']
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.css']
 })
-export class DashboardComponent implements OnInit {
+export class LoginComponent implements OnInit {
 
   constructor(
     public userService: UserService,
@@ -15,7 +15,10 @@ export class DashboardComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    //this.userService.SendVerificationMail();
+    // redirect if user logged in
+    if (this.userService.isLoggedIn()) {
+      this.router.navigate(['dashboard']);
+    }
   }
 
 }

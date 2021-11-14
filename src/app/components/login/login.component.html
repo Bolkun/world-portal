@@ -1,0 +1,26 @@
+<div class="container add-form">
+  <h1 class="form-header">Authentication</h1>
+  <flash-messages></flash-messages>
+  <div class="form-control">
+    <label>Email</label>
+    <input type="email" placeholder="Email Address" #userEmail required>
+  </div>
+  <div class="form-control">
+    <label>Password</label>
+    <input type="password" placeholder="Password" #userPassword required>
+  </div>
+  <div class="form-footer">
+    <!-- Calling SignIn Api from userService -->
+    <button class="btn btnSuccess" (click)="userService.SignIn(userEmail.value, userPassword.value)">Sign in</button>
+    <!-- Calling GoogleAuth Api from userService -->
+    <button class="btn btnGoogle" (click)="userService.GoogleLog()"></button>
+  </div>
+  <div class="form-control">
+    <div>
+      <a routerLink="/reset-password">Forgot Password?</a>
+    </div>
+    <div>
+      <span>Don't have an account? <a routerLink="/registration">Register</a></span>
+    </div>
+  </div> 
+</div>

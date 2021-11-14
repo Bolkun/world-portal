@@ -1,0 +1,26 @@
+<div class="container add-form">
+  <h1 class="form-header">Registration</h1>
+  <flash-messages></flash-messages>
+  <div class="form-control">
+    <label>Nickname</label>
+    <input type="text" placeholder="Nickname" #userNickname required>
+  </div>
+  <div class="form-control">
+    <label>Email</label>
+    <input type="email" placeholder="Email Address" #userEmail required>
+  </div>
+  <div class="form-control">
+    <label for="text">Password</label>
+    <input type="password" placeholder="Password" #userPwd required>
+  </div>
+  <div class="form-footer">
+    <input type="button" class="btn btnSuccess" value="Registrate" (click)="userService.SignUp(userNickname.value, userEmail.value, userPwd.value)">
+    <!-- Continue with Google -->
+    <button type="button" class="btn btnGoogle" (click)="userService.GoogleReg()"></button>
+    <!-- Continue with Facebook -->
+    <!-- <button type="button" class="btn btnFacebook" (click)="userService.FacebookAuth()"></button> -->
+  </div>
+  <div>
+    <span>Already have an account? <a routerLink="/login">Login</a></span>
+  </div>
+</div>

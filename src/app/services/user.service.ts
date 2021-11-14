@@ -1,11 +1,11 @@
 import { Injectable, NgZone } from '@angular/core';
 import { User } from '../services/user';
-//import { auth } from 'firebase/app';
-import { AngularFireAuth } from "angularfire2/auth";
-import { AngularFirestore, AngularFirestoreDocument } from 'angularfire2/firestore';
 import { Router } from "@angular/router";
 import { BehaviorSubject } from 'rxjs';
 import { FlashMessagesService } from 'flash-messages-angular';
+import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/compat/firestore';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
+import firebase from 'firebase/compat/app'; // firebase.auth
 
 @Injectable({
   providedIn: 'root'
@@ -18,13 +18,13 @@ export class UserService {
 
   constructor(
     public afs: AngularFirestore,   // Inject Firestore service
-    public afAuth: AngularFireAuth, // Inject Firebase auth service
+    public auth: AngularFireAuth,   // Inject Firebase auth service
     public ngZone: NgZone,          // NgZone service to remove outside scope warning
     public router: Router,
     public flashMessage: FlashMessagesService,
   ) {
     /* Login if user email verified */
-    this.afAuth.auth.onAuthStateChanged((user) => {
+    this.auth.onAuthStateChanged((user) => {
       if (user && user.emailVerified) {
         this.GetUserData(user.uid);
         this.loggedIn.next(true);
@@ -38,7 +38,7 @@ export class UserService {
   }
 
   SignUp(nickname: string, email: string, password: string) {
-    return this.afAuth.auth.createUserWithEmailAndPassword(email, password).then((result) => {
+    return this.auth.createUserWithEmailAndPassword(email, password).then((result) => {
       /* Call the SendVerificaitonMail() function when new user sign up and returns promise */
       this.SendVerificationMail();
       this.SetUserData(result.user!, nickname);
@@ -48,7 +48,7 @@ export class UserService {
   }
 
   SignIn(email: string, password: string) {
-    return this.afAuth.auth.signInWithEmailAndPassword(email, password).then((result) => {
+    return this.auth.signInWithEmailAndPassword(email, password).then((result) => {
       /* Login if user email verified */
       if (!(result.user?.emailVerified)) {
         this.flashMessage.show('Please verify Email Address!', { cssClass: 'alert-danger', timeout: this.flashMessageTimeout });
@@ -65,12 +65,13 @@ export class UserService {
   }
 
   SendVerificationMail() {
-    if (this.afAuth.auth.currentUser !== null) {
-      if (this.afAuth.auth.currentUser.emailVerified) {
+    const user = firebase.auth().currentUser;
+    if (user !== null) {
+      if (user.emailVerified) {
         this.flashMessage.show('Email already verified!', { cssClass: 'alert-danger', timeout: this.flashMessageTimeout });
       } else {
         // SignUp
-        return this.afAuth.auth.currentUser.sendEmailVerification().then(() => {
+        return user.sendEmailVerification().then(() => {
           // Function createUserWithEmailAndPassword() in SignIn method promise that emailVarified will be true
           this.router.navigate(['verify-email']);
         });
@@ -81,7 +82,7 @@ export class UserService {
   }
 
   ResetPassword(passwordResetEmail: string) {
-    return this.afAuth.auth.sendPasswordResetEmail(passwordResetEmail).then(() => {
+    return this.auth.sendPasswordResetEmail(passwordResetEmail).then(() => {
       this.flashMessage.show('Password reset email sent, check your inbox!', { cssClass: 'alert-success', timeout: this.flashMessageTimeout });
     }).catch((error) => {
       this.flashMessage.show(error.message, { cssClass: 'alert-danger', timeout: this.flashMessageTimeout });
@@ -108,39 +109,39 @@ export class UserService {
 
   // Sign up with Google
   GoogleReg() {
-    //return this.RegLogin(new auth.GoogleAuthProvider());
+    return this.RegLogin(new firebase.auth.GoogleAuthProvider());
   }
 
   // Sign up with Google
   GoogleLog() {
-    //return this.AuthLogin(new auth.GoogleAuthProvider());
+    return this.AuthLogin(new firebase.auth.GoogleAuthProvider());
   }
 
   // Reg logic to run auth providers
-  // RegLogin(provider: auth.AuthProvider) {
-  //   return this.afAuth.auth.signInWithPopup(provider).then((result) => {
-  //     this.ngZone.run(() => {
-  //       this.router.navigate(['dashboard']);
-  //     });
-  //     this.SetUserData(result.user!);
-  //     localStorage.setItem('userEmail', JSON.stringify(result.user?.email));
-  //   }).catch((error) => {
-  //     this.flashMessage.show(error.message, { cssClass: 'alert-danger', timeout: this.flashMessageTimeout });
-  //   });
-  // }
+  RegLogin(provider: firebase.auth.AuthProvider) {
+    return this.auth.signInWithPopup(provider).then((result) => {
+      this.ngZone.run(() => {
+        this.router.navigate(['dashboard']);
+      });
+      this.SetUserData(result.user!);
+      localStorage.setItem('userEmail', JSON.stringify(result.user?.email));
+    }).catch((error) => {
+      this.flashMessage.show(error.message, { cssClass: 'alert-danger', timeout: this.flashMessageTimeout });
+    });
+  }
 
   // Auth logic to run auth providers
-  // AuthLogin(provider: auth.AuthProvider) {
-  //   return this.afAuth.auth.signInWithPopup(provider).then((result) => {
-  //     this.ngZone.run(() => {
-  //       this.router.navigate(['dashboard']);
-  //     });
-  //     this.GetUserData(result.user!.uid);
-  //     localStorage.setItem('userEmail', JSON.stringify(result.user?.email));
-  //   }).catch((error) => {
-  //     this.flashMessage.show(error.message, { cssClass: 'alert-danger', timeout: this.flashMessageTimeout });
-  //   });
-  // }
+  AuthLogin(provider: firebase.auth.AuthProvider) {
+    return this.auth.signInWithPopup(provider).then((result) => {
+      this.ngZone.run(() => {
+        this.router.navigate(['dashboard']);
+      });
+      this.GetUserData(result.user!.uid);
+      localStorage.setItem('userEmail', JSON.stringify(result.user?.email));
+    }).catch((error) => {
+      this.flashMessage.show(error.message, { cssClass: 'alert-danger', timeout: this.flashMessageTimeout });
+    });
+  }
 
   GetUserData(uid: string) {
     if (uid) {
@@ -191,7 +192,7 @@ export class UserService {
 
   // Logout
   SignOut() {
-    return this.afAuth.auth.signOut().then(() => {
+    return this.auth.signOut().then(() => {
       localStorage.removeItem('userEmail');
       this.router.navigate(['login']);
     });

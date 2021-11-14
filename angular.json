@@ -98,6 +98,16 @@
             ],
             "scripts": []
           }
+        },
+        "deploy": {
+          "builder": "@angular/fire:deploy",
+          "options": {
+            "prerender": false,
+            "ssr": false,
+            "browserTarget": "weltportale:build:production",
+            "firebaseProject": "weltportale-7b2cd",
+            "firebaseHostingSite": "weltportale-7b2cd"
+          }
         }
       }
     }
