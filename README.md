@@ -28,7 +28,15 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 
 ## Packages
 
-npm - 8.1.0
+npm - 8.1.3
 node - v16.13.0
-ng - 13.0.1
-firebase - 9.22.0
+angular - 13.0.1
+firebase - 9.4.1
+@angular/fire - 7.2.0
+
+npm i flash-messages-angular
+ng add @angular/fire 
+  deploy hosting, authentication, firestore
+npm install 
+npm install firebase
+

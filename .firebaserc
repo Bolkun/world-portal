@@ -1,5 +1,14 @@
 {
   "projects": {
     "default": "weltportale-7b2cd"
+  },
+  "targets": {
+    "weltportale-7b2cd": {
+      "hosting": {
+        "weltportale": [
+          "weltportale-7b2cd"
+        ]
+      }
+    }
   }
 }
