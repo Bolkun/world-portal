@@ -17,6 +17,7 @@ import { VerifyEmailComponent } from './components/verify-email/verify-email.com
 
 import { UserService } from './services/user.service';
 import { ApiReliefwebService } from './services/api-reliefweb.service';
+import { AboutComponent } from './components/about/about.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { ApiReliefwebService } from './services/api-reliefweb.service';
     LoginComponent,
     RegistrationComponent,
     ResetPasswordComponent,
-    VerifyEmailComponent
+    VerifyEmailComponent,
+    AboutComponent
   ],
   imports: [
     BrowserModule,
