@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { FlashMessagesModule, FlashMessagesService } from 'flash-messages-angular';
+import { HttpClientModule } from '@angular/common/http';
 // firebase
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
@@ -18,6 +19,7 @@ import { ResetPasswordComponent } from './components/reset-password/reset-passwo
 import { VerifyEmailComponent } from './components/verify-email/verify-email.component';
 
 import { UserService } from './services/user.service';
+import { ApiReliefwebService } from './services/api-reliefweb.service';
 
 @NgModule({
   declarations: [
@@ -32,6 +34,7 @@ import { UserService } from './services/user.service';
     BrowserModule,
     AppRoutingModule,
     FlashMessagesModule,
+    HttpClientModule,
     // firebase
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule
@@ -41,6 +44,7 @@ import { UserService } from './services/user.service';
   ],
   providers: [
     UserService,
+    ApiReliefwebService,
     FlashMessagesService
   ],
   bootstrap: [AppComponent]
