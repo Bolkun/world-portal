@@ -14,6 +14,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   // Canvas
   @ViewChild('canvas') private canvasRef!: ElementRef;
   // Sphere
+  @Input() public rotationSpeedX: number = 0.0025;
   @Input() public rotationSpeedY: number = 0.0025;
   @Input() public size: number = 200;
   @Input() public texture: string = "/assets/img/earth.jpg";  // world-pointed.svg
@@ -51,7 +52,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     this.mouseDown = false;
   }
   @HostListener('mousemove', ['$event']) onMousemove(event: MouseEvent) {
-    if(this.mouseDown) {
+    if (this.mouseDown) {
       // Stop earth rotation
       this.bRotateEarth = false;
       // Rotate earth on mousedown + mousemove
@@ -59,6 +60,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       this.earth.rotation.x += (event.clientY - this.last.clientY) / 400;
       // Save last position
       this.last = event;
+      this.animateEarth2(2, 2);
     }
   }
   @HostListener('mousedown', ['$event']) onMousedown(event) {
@@ -107,6 +109,13 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     if (this.bRotateEarth == true) {
       this.earth.rotation.y += this.rotationSpeedY;
     }
+  }
+
+  private animateEarth2(x, y) {
+    setTimeout(() => {
+      this.earth.rotation.x += this.rotationSpeedX * 10;
+      this.earth.rotation.y += this.rotationSpeedY * 10;
+    }, 100);
   }
 
   private startRenderingLoop() {
