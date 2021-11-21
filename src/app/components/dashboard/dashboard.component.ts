@@ -14,6 +14,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   // Canvas
   @ViewChild('canvas') private canvasRef!: ElementRef;
   // Sphere
+  @Input() public rotationSpeedX: number = 0.0025;
   @Input() public rotationSpeedY: number = 0.0025;
   @Input() public size: number = 200;
   @Input() public texture: string = "/assets/img/earth.jpg";  // world-pointed.svg
@@ -47,10 +48,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   // Rotate earth
   private last!: MouseEvent;
   private mouseDown: boolean = false;
-  @HostListener('mouseup', ['$event']) onMouseup(event: MouseEvent) {
-    // this.earth.rotation.y += (event.clientX - this.last.clientX) / 400;
-    // this.earth.rotation.x += (event.clientY  - this.last.clientY) / 400;
-    // this.last = event;
+  @HostListener('mouseup') onMouseup() {
     this.mouseDown = false;
   }
   @HostListener('mousemove', ['$event']) onMousemove(event: MouseEvent) {
@@ -59,15 +57,10 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       this.bRotateEarth = false;
       // Rotate earth on mousedown + mousemove
       this.earth.rotation.y += (event.clientX - this.last.clientX) / 400;
-        this.earth.rotation.x += (event.clientY - this.last.clientY) / 400;
-        // Save last position
-        this.last = event;
-        this.animateEarth2(2,2);
-      // setTimeout(() => {
-        
-        
-      // }, 100);
-      // this.onMouseup(this.last);
+      this.earth.rotation.x += (event.clientY - this.last.clientY) / 400;
+      // Save last position
+      this.last = event;
+      this.animateEarth2(2, 2);
     }
   }
   @HostListener('mousedown', ['$event']) onMousedown(event) {
@@ -120,11 +113,9 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
   private animateEarth2(x, y) {
     setTimeout(() => {
-      
-      this.earth.rotation.y += this.rotationSpeedY*10;
+      this.earth.rotation.x += this.rotationSpeedX * 10;
+      this.earth.rotation.y += this.rotationSpeedY * 10;
     }, 100);
-    this.bRotateEarth == false;
-    // this.earth.rotation.x += this.rotationSpeedY;
   }
 
   private startRenderingLoop() {
