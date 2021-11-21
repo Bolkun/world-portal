@@ -58,13 +58,15 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       // Stop earth rotation
       this.bRotateEarth = false;
       // Rotate earth on mousedown + mousemove
-      setTimeout(() => {
-        
-        this.earth.rotation.y += (event.clientX - this.last.clientX) / 400;
+      this.earth.rotation.y += (event.clientX - this.last.clientX) / 400;
         this.earth.rotation.x += (event.clientY - this.last.clientY) / 400;
         // Save last position
         this.last = event;
-      }, 100);
+        this.animateEarth2(2,2);
+      // setTimeout(() => {
+        
+        
+      // }, 100);
       // this.onMouseup(this.last);
     }
   }
@@ -114,6 +116,15 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     if (this.bRotateEarth == true) {
       this.earth.rotation.y += this.rotationSpeedY;
     }
+  }
+
+  private animateEarth2(x, y) {
+    setTimeout(() => {
+      
+      this.earth.rotation.y += this.rotationSpeedY*10;
+    }, 100);
+    this.bRotateEarth == false;
+    // this.earth.rotation.x += this.rotationSpeedY;
   }
 
   private startRenderingLoop() {
