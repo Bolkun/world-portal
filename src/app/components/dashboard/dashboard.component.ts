@@ -17,6 +17,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   @Input() public rotationSpeedY: number = 0.0025;
   @Input() public size: number = 200;
   @Input() public texture: string = "/assets/img/earth.jpg";  // world-pointed.svg
+  private bRotateEarth = true;
   // Stage
   @Input() public cameraZ: number = 400;
   @Input() public fieldOfView: number = 1;
@@ -37,24 +38,42 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   currentDate = this.getCurrentDate();
   apiData: any;
   // Event
+  // Resize canvas
   @HostListener('window:resize', ['$event']) onResize(event) {
-    event.target.innerWidth;
-     // Camera frustum aspect ratio
-     this.camera.aspect = window.innerWidth / window.innerHeight;;
-     // After making changes to aspect
-     this.camera.updateProjectionMatrix();
-     // Reset size
-     this.renderer.setSize(window.innerWidth, window.innerHeight);
+    this.camera.aspect = window.innerWidth / window.innerHeight;
+    this.camera.updateProjectionMatrix();
+    this.renderer.setSize(window.innerWidth, window.innerHeight);
+  }
+  // Rotate earth
+  private last!: MouseEvent;
+  private mouseDown: boolean = false;
+  @HostListener('mouseup') onMouseup() {
+    this.mouseDown = false;
+  }
+  @HostListener('mousemove', ['$event']) onMousemove(event: MouseEvent) {
+    if(this.mouseDown) {
+      // Stop earth rotation
+      this.bRotateEarth = false;
+      // Rotate earth on mousedown + mousemove
+      this.earth.rotation.y += (event.clientX - this.last.clientX) / 400;
+      this.earth.rotation.x += (event.clientY - this.last.clientY) / 400;
+      // Save last position
+      this.last = event;
+    }
+  }
+  @HostListener('mousedown', ['$event']) onMousedown(event) {
+    this.mouseDown = true;
+    this.last = event;
   }
 
   constructor(
     public userService: UserService,
     public apiReliefwebService: ApiReliefwebService,
     public router: Router
-  ) {}
+  ) { }
 
   ngOnInit(): void {
-    this.apiReliefwebService.getDisastersByDate(this.currentDate).subscribe((data)=>{
+    this.apiReliefwebService.getDisastersByDate(this.currentDate).subscribe((data) => {
       this.apiData = data;  // Object
     });
   }
@@ -84,8 +103,10 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     return this.canvas.clientWidth / this.canvas.clientHeight;
   }
 
-  private animateCube() {
-    this.earth.rotation.y += this.rotationSpeedY;
+  private animateEarth() {
+    if (this.bRotateEarth == true) {
+      this.earth.rotation.y += this.rotationSpeedY;
+    }
   }
 
   private startRenderingLoop() {
@@ -98,7 +119,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     let component: DashboardComponent = this;
     (function render() {
       requestAnimationFrame(render);
-      component.animateCube();
+      component.animateEarth();
       component.renderer.render(component.scene, component.camera);
     }());
   }

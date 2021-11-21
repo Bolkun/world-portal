@@ -3,3 +3,7 @@ canvas {
   top: 0;
   left: 0;
 }
+
+#canvas:hover {
+  cursor: all-scroll;
+}
