@@ -39,4 +39,5 @@ ng add @angular/fire
   deploy hosting, authentication, firestore
 npm install 
 npm install firebase
+npm install --save three
 
