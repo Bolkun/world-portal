@@ -60,7 +60,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       this.earth.rotation.x += (event.clientY - this.last.clientY) / 400;
       // Save last position
       this.last = event;
-      this.animateEarth2(2, 2);
+      this.animateSmoothEarth(this.last.clientX, this.last.clientY);
     }
   }
   @HostListener('mousedown', ['$event']) onMousedown(event) {
@@ -111,10 +111,10 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     }
   }
 
-  private animateEarth2(x, y) {
+  private animateSmoothEarth(x, y) {
     setTimeout(() => {
-      this.earth.rotation.x += this.rotationSpeedX * 10;
-      this.earth.rotation.y += this.rotationSpeedY * 10;
+      this.earth.rotation.x += x / 1000000;
+      this.earth.rotation.y += y / 1000000;
     }, 100);
   }
 
