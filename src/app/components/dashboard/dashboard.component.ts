@@ -47,18 +47,25 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   // Rotate earth
   private last!: MouseEvent;
   private mouseDown: boolean = false;
-  @HostListener('mouseup') onMouseup() {
+  @HostListener('mouseup', ['$event']) onMouseup(event: MouseEvent) {
+    // this.earth.rotation.y += (event.clientX - this.last.clientX) / 400;
+    // this.earth.rotation.x += (event.clientY  - this.last.clientY) / 400;
+    // this.last = event;
     this.mouseDown = false;
   }
   @HostListener('mousemove', ['$event']) onMousemove(event: MouseEvent) {
-    if(this.mouseDown) {
+    if (this.mouseDown) {
       // Stop earth rotation
       this.bRotateEarth = false;
       // Rotate earth on mousedown + mousemove
-      this.earth.rotation.y += (event.clientX - this.last.clientX) / 400;
-      this.earth.rotation.x += (event.clientY - this.last.clientY) / 400;
-      // Save last position
-      this.last = event;
+      setTimeout(() => {
+        
+        this.earth.rotation.y += (event.clientX - this.last.clientX) / 400;
+        this.earth.rotation.x += (event.clientY - this.last.clientY) / 400;
+        // Save last position
+        this.last = event;
+      }, 100);
+      // this.onMouseup(this.last);
     }
   }
   @HostListener('mousedown', ['$event']) onMousedown(event) {
