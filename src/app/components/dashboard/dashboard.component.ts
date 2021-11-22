@@ -51,6 +51,10 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   @HostListener('mouseup') onMouseup() {
     this.mouseDown = false;
   }
+  @HostListener('mouseout') onMouseout() {
+    // Cursour leaves the window
+    this.mouseDown = false;
+  }
   @HostListener('mousemove', ['$event']) onMousemove(event: MouseEvent) {
     if (this.mouseDown) {
       // Stop earth rotation
