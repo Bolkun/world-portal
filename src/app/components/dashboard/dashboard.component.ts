@@ -13,38 +13,36 @@ import * as THREE from 'three';
 export class DashboardComponent implements OnInit, AfterViewInit {
   // Canvas
   @ViewChild('canvas') private canvasRef!: ElementRef;
-  // Sphere
-  @Input() public rotationSpeedX: number = 0.0025;
-  @Input() public rotationSpeedY: number = 0.0025;
-  @Input() public size: number = 200;
-  @Input() public texture: string = "/assets/img/earth.jpg";  // world-pointed.svg
-  private bRotateEarth = true;
-  // Stage
-  @Input() public cameraZ: number = 400;
-  @Input() public fieldOfView: number = 1;
-  @Input('nearClipping') public nearClippingPlane: number = 1;
-  @Input('farClipping') public farClippingPlane: number = 1000;
-  // Helper
-  private camera: THREE.PerspectiveCamera;
   private get canvas(): HTMLCanvasElement {
     return this.canvasRef.nativeElement;
   }
-  private loader = new THREE.TextureLoader();
-  private geometry = new THREE.SphereGeometry(2, 32, 32);
-  private material = new THREE.MeshBasicMaterial({ map: this.loader.load(this.texture) });
-  private earth: THREE.Mesh = new THREE.Mesh(this.geometry, this.material);
+  @Input() public rotationSpeedX: number = 0.0025;
+  @Input() public rotationSpeedY: number = 0.0025;
+  private bRotateEarth: boolean = true;
+  private map: string = "/assets/img/earth.jpg"; // world-pointed-white.png
+  private radius = 1;
+  private geometry = new THREE.SphereBufferGeometry(this.radius, 30, 30); // radius, widthSegments, heightSegments
+  private material = new THREE.MeshBasicMaterial({ 
+    map: new THREE.TextureLoader().load(this.map),
+    // transparent: true
+  });
+  private earth = new THREE.Mesh(this.geometry, this.material);
+  private mesh = new THREE.Mesh(
+    new THREE.SphereBufferGeometry(0.01, 20, 20),
+    new THREE.MeshBasicMaterial({ color: 0xff0000 })
+  );
+  private mesh1 = new THREE.Mesh(
+    new THREE.SphereBufferGeometry(0.01, 20, 20),
+    new THREE.MeshBasicMaterial({ color: 0x00ff00 })
+  );
   private renderer: THREE.WebGLRenderer;
   private scene: THREE.Scene;
+  private camera: THREE.PerspectiveCamera;
+  private cameraZPosition = 4.0;
+  private zoom = 1.0;
   // API
   currentDate = this.getCurrentDate();
   apiData: any;
-  // Event
-  // Resize canvas
-  @HostListener('window:resize', ['$event']) onResize(event) {
-    this.camera.aspect = window.innerWidth / window.innerHeight;
-    this.camera.updateProjectionMatrix();
-    this.renderer.setSize(window.innerWidth, window.innerHeight);
-  }
   // Rotate earth
   private last!: MouseEvent;
   private mouseDown: boolean = false;
@@ -71,12 +69,29 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     this.mouseDown = true;
     this.last = event;
   }
+  @HostListener('window:resize', ['$event']) onResize(event) {
+    // Resize canvas
+    this.camera.aspect = window.innerWidth / window.innerHeight;
+    this.camera.updateProjectionMatrix();
+    this.renderer.setSize(window.innerWidth, window.innerHeight);
+  }
+  @HostListener("wheel", ["$event"]) onScroll(event: WheelEvent) {
+    if (event.deltaY == -100 && this.camera.zoom < 7) {
+      // +
+      this.camera.zoom += this.zoom;
+      this.camera.updateProjectionMatrix();
+    } else if (event.deltaY == 100 && this.camera.zoom > 1) {
+      // -
+      this.camera.zoom -= this.zoom;
+      this.camera.updateProjectionMatrix();
+    }
+  }
 
   constructor(
     public userService: UserService,
     public apiReliefwebService: ApiReliefwebService,
     public router: Router
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.apiReliefwebService.getDisastersByDate(this.currentDate).subscribe((data) => {
@@ -89,20 +104,75 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     this.startRenderingLoop();
   }
 
+  private convertLatLngToCartesian(p) {
+    let phi = (90-p.lat) * (Math.PI/180);  // convert to radians (between 0 and 1)
+    let theta = (p.lng+180) * (Math.PI/180);  // convert to radians
+    
+    let x = -(Math.sin(phi)*Math.cos(theta));
+    let y = (Math.cos(phi));
+    let z = (Math.sin(phi)*Math.sin(theta));
+
+    return { x, y, z };
+  }
+
+  private getCurve(p1, p2) {
+    let v1 = new THREE.Vector3(p1.x, p1.y, p1.z);
+    let v2 = new THREE.Vector3(p2.x, p2.y, p2.z);
+    let points: string[] = [];
+
+    for (let i=0; i<=20; i++) {
+      let p = new THREE.Vector3().lerpVectors(v1, v2, i/20);
+      p.normalize();
+      p.multiplyScalar(1 + 0.1*Math.sin(Math.PI*i/20));
+      points.push(p);
+    }
+
+    let path = new THREE.CatmullRomCurve3(points);
+
+    const geometry = new THREE.TubeGeometry(path, 20, 0.001, 8, false); // curve, tubularSegments, radius, radialSegments, closed
+    const material = new THREE.MeshBasicMaterial({color: 0x0000ff});
+    const curve = new THREE.Mesh(geometry, material);
+    this.earth.add(curve);
+  }
+
   private createScene() {
-    // Scene
     this.scene = new THREE.Scene();
-    this.scene.background = new THREE.Color(0x000000);
     this.scene.add(this.earth);
-    // Camera
-    let aspectRatio = this.getAspectRatio();
+
+    // spherical coordinates
+    let point1 = {  // Los Angeles
+      lat: 34.0522,  // N
+      lng: -118.2437 // W -
+    }
+
+    // let point2 = {  // Kyiv
+    //   lat: 50.4501, // N
+    //   lng: 30.5234  // E
+    // }
+
+    let point2 = {  // Windhoek (Namibia)
+      lat: -22.5609, // N (if E, than -N)
+      lng: 17.0658   // E 
+    }
+
+    let pos = this.convertLatLngToCartesian(point1);
+    let pos1 = this.convertLatLngToCartesian(point2);
+    this.getCurve(pos, pos1);
+   
+    // add pin
+    this.mesh.position.set(pos.x, pos.y, pos.z);  // cartesian coordinates
+    this.mesh1.position.set(pos1.x, pos1.y, pos1.z);
+
+    this.earth.add(this.mesh);
+    this.earth.add(this.mesh1);
+
     this.camera = new THREE.PerspectiveCamera(
-      this.fieldOfView,
-      aspectRatio,
-      this.nearClippingPlane,
-      this.farClippingPlane
-    )
-    this.camera.position.z = this.cameraZ;
+      70,
+      window.innerWidth / window.innerHeight,
+      0.001,
+      1000
+    );
+    this.camera.position.z = this.cameraZPosition;
   }
 
   private getAspectRatio() {
