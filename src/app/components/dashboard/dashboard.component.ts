@@ -84,11 +84,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     public router: Router
   ) { }
 
-  ngOnInit(): void {
-    this.apiReliefwebService.getDisastersByDate(this.currentDate).subscribe((data) => {
-      this.apiData = data;  // Object
-    });
-  }
+  ngOnInit(): void { }
 
   ngAfterViewInit(): void {
     this.createScene();
@@ -99,27 +95,47 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     this.scene = new THREE.Scene();
     this.scene.add(this.earth);
 
-    let points = [
+    this.apiReliefwebService.getDisastersByDate(this.currentDate).subscribe((data) => {
+      this.apiData = data;
+      
+      let points: any[] = [];
+
       // lat, lon
-      [34.0522, -118.2437], // Los Angeles N, W -
-      [50.4501, 30.5234],   // Kyiv N, E
-    ];
+      // [34.0522, -118.2437], // Los Angeles N, W -
+      // [50.4501, 30.5234],   // Kyiv N, E
 
-    for (let i = 0; i < points.length; i++) {
-      let pos = this.convertLatLonToCartesian(points[i][0], points[i][1]);
+      setTimeout(() => {
+        for (let i = 0; i < this.apiData.totalCount; i++) {
+          if (this.apiData.data[i].fields.primary_country.location) {
+            let lat = this.apiData.data[i].fields.primary_country.location.lat;
+            let lon = this.apiData.data[i].fields.primary_country.location.lon;
+            let pointObject: any = { 
+              lat: lat,
+              lon: lon
+            };
+            points.push(pointObject);
+          }
+        }
 
-      let location = new THREE.Mesh(
-        new THREE.SphereBufferGeometry(0.003, 20, 20),
-        new THREE.MeshBasicMaterial({ color: 0xff0000 })
-      );
-      location.position.set(pos.x, pos.y, pos.z);
-      this.earth.add(location);
-
-      if (i < points.length - 1) {
-        let posNext = this.convertLatLonToCartesian(points[i + 1][0], points[i + 1][1]);
-        this.getCurve(pos, posNext);
-      }
-    }
+        for (let i = 0; i < points.length; i++) {
+          let pos = this.convertLatLonToCartesian(points[i].lat, points[i].lon);
+  
+          let location = new THREE.Mesh(
+            new THREE.SphereBufferGeometry(0.003, 20, 20),
+            new THREE.MeshBasicMaterial({ color: 0xff0000 })
+          );
+          location.position.set(pos.x, pos.y, pos.z);
+          this.earth.add(location);
+  
+          if (i < points.length - 1) {
+            let posNext = this.convertLatLonToCartesian(points[i + 1].lat, points[i + 1].lon);
+            this.getCurve(pos, posNext);
+          }
+        }
+  
+      }, 1000);
+     
+    });
 
     this.camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.001, 1000);
     this.camera.position.z = this.cameraZPosition;
