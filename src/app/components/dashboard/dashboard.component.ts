@@ -164,8 +164,8 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
   private animateSmoothEarth(x, y) {
     setTimeout(() => {
-      this.earth.rotation.x += x / 100000;
-      this.earth.rotation.y += y / 100000;
+      this.earth.rotation.x += x / 1000000;
+      this.earth.rotation.y += y / 1000000;
     }, 100);
   }
 
