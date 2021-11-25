@@ -13,7 +13,7 @@ export class ApiReliefwebService {
   ) {}
 
   getDisastersByDate(date: string) {
-    const filter = '&filter[field]=date.created&filter[value][from]='+date+'T00:00:00%2B00:00&filter[value][to]='+date+'T23:59:59%2B00:00&limit=1';
+    const filter = '&filter[field]=date.created&filter[value][from]='+date+'T00:00:00%2B00:00&filter[value][to]='+date+'T23:59:59%2B00:00&limit=1000';
     this.url = this.url + filter;
     return this.http.get(this.url, {responseType: "json"});
   }
