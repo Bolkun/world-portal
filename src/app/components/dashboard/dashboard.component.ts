@@ -35,7 +35,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   private scene: THREE.Scene;
   private camera: THREE.PerspectiveCamera;
   private cameraZPosition = 3.0;
-  private zoom = 1.0;
+  private zoom = 0.2;
   // API
   currentDate = this.getCurrentDate();
   apiData: any;

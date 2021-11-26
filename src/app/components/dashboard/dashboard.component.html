@@ -1,8 +1,9 @@
 <app-login *ngIf="slideLoginActive" class="app-login-component"></app-login>
 <app-about *ngIf="slideAboutActive" class="app-about-component"></app-about>
 <div id="custom-container" class="container custom-container">
+  <canvas #canvas id="canvas" style="width: 100%; height: 100%;"></canvas>
   <div class="row">
-    <div class="col">
+    <div class="col position-absolute">
       <h1 class="text-align-center">26.11.2021</h1>
     </div>
   </div>
@@ -12,7 +13,6 @@
     </div>
     <div class="col-6 col-lg-8">
       <div class="position-relative h-80vh">
-        <canvas #canvas id="canvas"></canvas>
       </div>
 
     </div>
@@ -21,7 +21,7 @@
     </div>
   </div>
   <div class="row">
-    <div class="col">
+    <div class="col position-absolute">
       <div class="filter-content">
         <div class="container">
           <div class="row">
