@@ -18,7 +18,9 @@ import { VerifyEmailComponent } from './components/verify-email/verify-email.com
 import { UserService } from './services/user.service';
 import { ApiReliefwebService } from './services/api-reliefweb.service';
 import { AboutComponent } from './components/about/about.component';
-
+import { MatDialogModule } from '@angular/material/dialog';
+import { FilterPopUpComponent } from './components/filter-pop-up/filter-pop-up.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 @NgModule({
   declarations: [
     AppComponent,
@@ -27,13 +29,16 @@ import { AboutComponent } from './components/about/about.component';
     RegistrationComponent,
     ResetPasswordComponent,
     VerifyEmailComponent,
-    AboutComponent
+    AboutComponent,
+    FilterPopUpComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FlashMessagesModule,
     HttpClientModule,
+    MatDialogModule,
+    BrowserAnimationsModule,
     // firebase
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule

@@ -1,9 +1,90 @@
 canvas {
-  position: fixed;
-  top: 0;
+  position: absolute;
+  top: 20%;
   left: 0;
+  width: 100% !important;
+  max-height: 80vh !important;
 }
 
 #canvas:hover {
   cursor: all-scroll;
+}
+
+/* Typography */
+.custom-container {
+  max-width: 100% !important;
+  width: 100% !important;
+  height: 100vh;
+  margin-left: 0;
+  margin-right: 0;
+  padding-right: 20px;
+  padding-left: 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-image: url('./../../../assets/img/galaxy.jpg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  transition: 1s ease-in-out;
+}
+
+.app-login-component {
+  position: absolute;
+  top: 20%;
+  left: 0;
+}
+
+.app-about-component {
+  position: absolute;
+  top: 20%;
+  right: 0;
+}
+
+.filter-content {
+  max-width: 300px;
+  width: 100%;
+  margin: auto;
+}
+
+.vertical-align-center {
+  top: 45%;
+}
+
+.text-align-center {
+  text-align: center;
+}
+
+.text-align-left {
+  text-align: left;
+}
+
+.text-align-right {
+  text-align: right;
+}
+
+p,
+h1,
+h2,
+h3 {
+  color: white;
+}
+
+.position-absolute {
+  position: absolute !important;
+}
+
+.position-relative {
+  position: relative !important;
+}
+
+.z-index-1 {
+  z-index: 1;
+}
+
+.right-10x {
+  right: 10px;
+}
+
+.h-80vh {
+  height: 80vh;
 }
