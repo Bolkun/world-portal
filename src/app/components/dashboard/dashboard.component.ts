@@ -3,6 +3,8 @@ import { UserService } from 'src/app/services/user.service';
 import { ApiReliefwebService } from 'src/app/services/api-reliefweb.service';
 import { Router } from "@angular/router";
 import * as THREE from 'three';
+import { MatDialog } from '@angular/material/dialog';
+import { FilterPopUpComponent } from '../filter-pop-up/filter-pop-up.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -11,6 +13,10 @@ import * as THREE from 'three';
 })
 
 export class DashboardComponent implements OnInit, AfterViewInit {
+  slideLoginActive: boolean = false;
+  slideAboutActive: boolean = false;
+  filterOptionsActive: boolean = false;
+
   // Canvas
   @ViewChild('canvas') private canvasRef!: ElementRef;
   private get canvas(): HTMLCanvasElement {
@@ -30,7 +36,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   private scene: THREE.Scene;
   private camera: THREE.PerspectiveCamera;
   private cameraZPosition = 3.0;
-  private zoom = 1.0;
+  private zoom = 0.2;
   // API
   currentDate = this.getCurrentDate();
   apiData: any;
@@ -81,7 +87,8 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   constructor(
     public userService: UserService,
     public apiReliefwebService: ApiReliefwebService,
-    public router: Router
+    public router: Router,
+    private modalCtl: MatDialog
   ) { }
 
   ngOnInit(): void { }
@@ -97,7 +104,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
     this.apiReliefwebService.getDisastersByDate(this.currentDate).subscribe((data) => {
       this.apiData = data;
-      
+
       let points: any[] = [];
 
       // lat, lon
@@ -109,7 +116,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
           if (this.apiData.data[i].fields.primary_country.location) {
             let lat = this.apiData.data[i].fields.primary_country.location.lat;
             let lon = this.apiData.data[i].fields.primary_country.location.lon;
-            let pointObject: any = { 
+            let pointObject: any = {
               lat: lat,
               lon: lon
             };
@@ -119,22 +126,22 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
         for (let i = 0; i < points.length; i++) {
           let pos = this.convertLatLonToCartesian(points[i].lat, points[i].lon);
-  
+
           let location = new THREE.Mesh(
             new THREE.SphereBufferGeometry(0.003, 20, 20),
             new THREE.MeshBasicMaterial({ color: 0xff0000 })
           );
           location.position.set(pos.x, pos.y, pos.z);
           this.earth.add(location);
-  
+
           if (i < points.length - 1) {
             let posNext = this.convertLatLonToCartesian(points[i + 1].lat, points[i + 1].lon);
             this.getCurve(pos, posNext);
           }
         }
-  
+
       }, 1000);
-     
+
     });
 
     this.camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.001, 1000);
@@ -207,4 +214,42 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     return yyyy + '-' + mm + '-' + dd;
   }
 
+  openFilterModal() {
+    // this.modalCtl.open(FilterPopUpComponent);
+    this.filterOptionsActive = true;
+  }
+
+  closeFilter() {
+    this.filterOptionsActive = false;
+  }
+
+  login() {
+    const doc = document.getElementById('custom-container');
+    if (doc) {
+
+      doc.style.transform = 'translateX(50%)';
+      this.slideLoginActive = true;
+    }
+  }
+
+  about() {
+    const doc = document.getElementById('custom-container');
+    if (doc) {
+
+      doc.style.transform = 'translateX(-50%)';
+      this.slideAboutActive = true;
+    }
+  }
+
+
+
+  resetSlide() {
+    const doc = document.getElementById('custom-container');
+    if (doc) {
+
+      doc.style.transform = 'translateX(0%)';
+      this.slideLoginActive = false;
+      this.slideAboutActive = false;
+    }
+  }
 }
