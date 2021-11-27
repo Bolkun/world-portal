@@ -36,8 +36,25 @@ firebase - 9.4.1
 
 npm i flash-messages-angular
 ng add @angular/fire 
-  deploy hosting, authentication, firestore
+deploy hosting, authentication, firestore
 npm install 
 npm install firebase
 npm install --save three
 
+Installing Bootstrap 5 for Angular 13
+
+npm i bootstrap
+npm i @popperjs/core
+
+styles
+"node_modules/bootstrap/dist/css/bootstrap.min.css"
+
+scripts
+"node_modules/bootstrap/dist/js/bootstrap.min.js"
+
+Modal Material
+ng add @angular/material
+npm install @angular/animations
+
+Angular Icons
+https://fonts.google.com/icons
