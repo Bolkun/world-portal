@@ -15,14 +15,6 @@ canvas {
   height: 100vh;
   margin-left: 0;
   margin-right: 0;
-  /* padding-right: 20px;
-  padding-left: 20px;
-  padding-top: 10px;
-  padding-bottom: 10px; */
-  background-image: url('./../../../assets/img/galaxy.jpg');
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
   transition: 1s ease-in-out;
 }
 
@@ -81,6 +73,18 @@ h3 {
 
 .right-10x {
   right: 10px;
+}
+
+.left-50procent {
+  left: 50%;
+}
+
+.top-45x {
+  top: -45px;
+}
+
+.bottom-10x {
+  bottom: 10px;
 }
 
 .h-80vh {

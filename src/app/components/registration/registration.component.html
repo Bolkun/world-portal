@@ -14,11 +14,11 @@
     <input type="password" placeholder="Password" #userPwd required>
   </div>
   <div class="form-footer">
-    <input type="button" class="btn btnSuccess" value="Sign up" (click)="userService.SignUp(userNickname.value, userEmail.value, userPwd.value)">
+    <input type="button" class="btn btnSuccess" value="Sign up" (click)="signUp(userNickname.value, userEmail.value, userPwd.value)">
     <!-- Continue with Google -->
     <button type="button" class="btn btnGoogle" (click)="userService.GoogleReg()"></button>
   </div>
   <div>
-    <span>Already have an account? <a routerLink="/login">Login</a></span>
+    <span>Already have an account? <a (click)="backLogin()">Login</a></span>
   </div>
 </div>

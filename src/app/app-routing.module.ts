@@ -10,13 +10,10 @@ import { FilterPopUpComponent } from './components/filter-pop-up/filter-pop-up.c
 
 const routes: Routes = [
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
-  { path: 'login', component: LoginComponent },
   { path: 'registration', component: RegistrationComponent },
   { path: 'reset-password', component: ResetPasswordComponent },
   { path: 'verify-email', component: VerifyEmailComponent },
   { path: 'dashboard', component: DashboardComponent },
-  { path: 'about', component: AboutComponent },
-  { path: 'testing', component: FilterPopUpComponent }
 ];
 
 @NgModule({

@@ -15,6 +15,7 @@ import { FilterPopUpComponent } from '../filter-pop-up/filter-pop-up.component';
 export class DashboardComponent implements OnInit, AfterViewInit {
   slideLoginActive: boolean = false;
   slideAboutActive: boolean = false;
+  filterOptionsActive: boolean = false;
 
   // Canvas
   @ViewChild('canvas') private canvasRef!: ElementRef;
@@ -214,7 +215,12 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   }
 
   openFilterModal() {
-    this.modalCtl.open(FilterPopUpComponent);
+    // this.modalCtl.open(FilterPopUpComponent);
+    this.filterOptionsActive = true;
+  }
+
+  closeFilter() {
+    this.filterOptionsActive = false;
   }
 
   login() {
@@ -232,6 +238,18 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
       doc.style.transform = 'translateX(-50%)';
       this.slideAboutActive = true;
+    }
+  }
+
+
+
+  resetSlide() {
+    const doc = document.getElementById('custom-container');
+    if (doc) {
+
+      doc.style.transform = 'translateX(0%)';
+      this.slideLoginActive = false;
+      this.slideAboutActive = false;
     }
   }
 }

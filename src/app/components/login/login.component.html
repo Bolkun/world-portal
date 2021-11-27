@@ -1,4 +1,5 @@
-<div class="container add-form">
+<!-- login -->
+<div *ngIf="routingsComponent.login" class="container add-form">
   <h1 class="form-header">LOGIN</h1>
   <flash-messages></flash-messages>
   <div class="form-control">
@@ -17,10 +18,15 @@
   </div>
   <div class="form-control">
     <div>
-      <a routerLink="/reset-password">Forgot Password?</a>
+      <a (click)="openPage('forgotPassword')">Forgot Password?</a>
     </div>
     <div>
-      <span>Don't have an account? <a routerLink="/registration">Register</a></span>
+      <span>Don't have an account? <a (click)="openRegistration()">Register</a></span>
     </div>
   </div> 
 </div>
+
+<!-- registration -->
+<app-registration *ngIf="routingsComponent.registration" (goBackToLogin)="openPage('login')"></app-registration>
+<!-- forgot Password -->
+<app-reset-password *ngIf="routingsComponent.forgotPassword" (goBackToLogin)="openPage('login')"></app-reset-password>

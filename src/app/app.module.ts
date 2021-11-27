@@ -21,6 +21,7 @@ import { AboutComponent } from './components/about/about.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { FilterPopUpComponent } from './components/filter-pop-up/filter-pop-up.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {MatIconModule} from '@angular/material/icon';
 @NgModule({
   declarations: [
     AppComponent,
@@ -39,6 +40,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     HttpClientModule,
     MatDialogModule,
     BrowserAnimationsModule,
+    MatIconModule,
     // firebase
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule
