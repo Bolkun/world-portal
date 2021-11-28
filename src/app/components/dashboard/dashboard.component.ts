@@ -3,14 +3,6 @@ import { UserService } from 'src/app/services/user.service';
 import { ApiReliefwebService } from 'src/app/services/api-reliefweb.service';
 import { Router } from "@angular/router";
 import * as THREE from 'three';
-// @ts-ignore
-import vertexShader from 'src/assets/shaders/vertex.glsl';  // Do not delete!
-// @ts-ignore
-import fragmentShader from 'src/assets/shaders/fragment.glsl';  // Do not delete!
-// @ts-ignore
-import atmosphereVertexShader from 'src/assets/shaders/atmosphereVertex.glsl';  // Do not delete!
-// @ts-ignore
-import atmosphereFragmentShader from 'src/assets/shaders/atmosphereFragment.glsl';  // Do not delete!
 import { MatDialog } from '@angular/material/dialog';
 import { FilterPopUpComponent } from '../filter-pop-up/filter-pop-up.component';
 
@@ -33,28 +25,13 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   @Input() public rotationSpeedX: number = 0.0025;
   @Input() public rotationSpeedY: number = 0.0025;
   private bRotateEarth: boolean = true;
+  private map: string = "/assets/img/earth2.jpg";
   private radius = 1;
-  private earth = new THREE.Mesh(
-    new THREE.SphereGeometry(this.radius, 32, 32), // radius, widthSegments, heightSegments
-    new THREE.ShaderMaterial({
-      vertexShader,
-      fragmentShader,
-      uniforms: {
-        globeTexture: {
-          value: new THREE.TextureLoader().load('/assets/img/earth2.jpg')
-        }
-      }
-    })
-  );
-  private atmosphere = new THREE.Mesh(
-    new THREE.SphereGeometry(this.radius, 32, 32),
-    new THREE.ShaderMaterial({
-      vertexShader: atmosphereVertexShader,
-      fragmentShader: atmosphereFragmentShader,
-      blending: THREE.AdditiveBlending,
-      side: THREE.BackSide
-    })
-  );
+  private geometry = new THREE.SphereBufferGeometry(this.radius, 32, 32); // radius, widthSegments, heightSegments
+  private material = new THREE.MeshBasicMaterial({
+    map: new THREE.TextureLoader().load(this.map)
+  });
+  private earth = new THREE.Mesh(this.geometry, this.material);
   private renderer: THREE.WebGLRenderer;
   private scene: THREE.Scene;
   private camera: THREE.PerspectiveCamera;
@@ -124,8 +101,6 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   private createScene() {
     this.scene = new THREE.Scene();
     this.scene.add(this.earth);
-    this.atmosphere.scale.set(1.1, 1.1, 1.1);
-    this.scene.add(this.atmosphere);
 
     this.apiReliefwebService.getDisastersByDate(this.currentDate).subscribe((data) => {
       this.apiData = data;
