@@ -58,12 +58,24 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   private renderer: THREE.WebGLRenderer;
   private scene: THREE.Scene;
   private camera: THREE.PerspectiveCamera;
+  private cameraAnngle = 70;
   private cameraZPosition = 3.0;
   private zoom = 0.2;
+  // Bg
+  private ang_rad = this.cameraAnngle * Math.PI / 180; 
+  private fov_y = this.cameraZPosition * Math.tan(this.ang_rad / 2) * 2;
+  private bgGalaxy = new THREE.Mesh(
+    new THREE.PlaneGeometry(this.fov_y * window.innerWidth / window.innerHeight, this.fov_y),
+    new THREE.MeshBasicMaterial( { 
+      map: new THREE.ImageUtils.loadTexture('/assets/img/background.jpg'),
+      transparent: true,
+      opacity: 0.25
+    } )
+  );
   // API
   currentDate = this.getCurrentDate();
   apiData: any;
-  // Rotate earth
+  // Rotate eart
   private last!: MouseEvent;
   private mouseDown: boolean = false;
   @HostListener('mouseup') onMouseup() {
@@ -123,6 +135,8 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
   private createScene() {
     this.scene = new THREE.Scene();
+    //this.bgGalaxy.position.z = -2;
+    this.scene.add(this.bgGalaxy);
     this.scene.add(this.earth);
     this.atmosphere.scale.set(1.1, 1.1, 1.1);
     this.scene.add(this.atmosphere);
@@ -169,7 +183,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
     });
 
-    this.camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.001, 1000);
+    this.camera = new THREE.PerspectiveCamera(this.cameraAnngle, window.innerWidth / window.innerHeight, 0.001, 1000);
     this.camera.position.z = this.cameraZPosition;
   }
 
