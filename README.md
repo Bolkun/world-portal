@@ -42,6 +42,7 @@ npm install firebase
 npm install --save three
 
 import glsl https://robert-leitl.medium.com/how-to-add-a-glsl-loader-to-an-angular-project-c6b775273f08
+npm install gsap --save
 
 Installing Bootstrap 5 for Angular 13
 

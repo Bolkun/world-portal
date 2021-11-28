@@ -2,6 +2,7 @@ import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild, HostLis
 import { UserService } from 'src/app/services/user.service';
 import { ApiReliefwebService } from 'src/app/services/api-reliefweb.service';
 import { Router } from "@angular/router";
+import gsap from 'gsap';
 import * as THREE from 'three';
 // @ts-ignore
 import vertexShader from 'src/assets/shaders/vertex.glsl';  // Do not delete!
@@ -30,9 +31,9 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   private get canvas(): HTMLCanvasElement {
     return this.canvasRef.nativeElement;
   }
-  @Input() public rotationSpeedX: number = 0.0025;
   @Input() public rotationSpeedY: number = 0.0025;
   private bRotateEarth: boolean = true;
+  private group = new THREE.Group();
   private radius = 1;
   private earth = new THREE.Mesh(
     new THREE.SphereGeometry(this.radius, 32, 32), // radius, widthSegments, heightSegments
@@ -77,9 +78,17 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   apiData: any;
   // Rotate eart
   private last!: MouseEvent;
+  // Rotate earth
+  private mouse = {
+    x: 0,
+    y: 0
+  }
   private mouseDown: boolean = false;
-  @HostListener('mouseup') onMouseup() {
+  @HostListener('mouseup', ['$event']) onMouseup(event) {
     this.mouseDown = false;
+    // Rotate earth
+    this.mouse.x = (event.clientX / innerWidth) * 4 - 1;
+    this.mouse.y = -(event.clientY / innerHeight) * 4 + 1;
   }
   @HostListener('mouseout') onMouseout() {
     // Cursour leaves the window
@@ -137,7 +146,8 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     this.scene = new THREE.Scene();
     //this.bgGalaxy.position.z = -2;
     this.scene.add(this.bgGalaxy);
-    this.scene.add(this.earth);
+    this.group.add(this.earth);
+    this.scene.add(this.group);
     this.atmosphere.scale.set(1.1, 1.1, 1.1);
     this.scene.add(this.atmosphere);
 
@@ -218,12 +228,6 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     this.earth.add(curve);
   }
 
-  private animateEarth() {
-    if (this.bRotateEarth == true) {
-      this.earth.rotation.y += this.rotationSpeedY;
-    }
-  }
-
   private animateSmoothEarth(x, y) {
     setTimeout(() => {
       this.earth.rotation.x += x / 1000000;
@@ -239,7 +243,15 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     let component: DashboardComponent = this;
     (function render() {
       requestAnimationFrame(render);
-      component.animateEarth();
+      if (component.bRotateEarth == true) {
+        component.earth.rotation.y += component.rotationSpeedY;
+      } else {
+        gsap.to(component.group.rotation, {
+          x: -component.mouse.y * 0.3,
+          y: component.mouse.x * 0.5,
+          duration: 2
+        });
+      }
       component.renderer.render(component.scene, component.camera);
     }());
   }
@@ -281,7 +293,6 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   }
 
 
-
   resetSlide() {
     const doc = document.getElementById('custom-container');
     if (doc) {
@@ -291,4 +302,5 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       this.slideAboutActive = false;
     }
   }
+
 }
