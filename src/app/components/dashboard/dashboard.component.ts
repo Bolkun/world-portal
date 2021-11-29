@@ -148,44 +148,41 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
     this.apiReliefwebService.getDisastersByDate(this.currentDate).subscribe((data) => {
       this.apiData = data;
-
       let points: any[] = [];
-
-      // lat, lon
-      // [34.0522, -118.2437], // Los Angeles N, W -
-      // [50.4501, 30.5234],   // Kyiv N, E
-
+      
       setTimeout(() => {
+        // Save lot, lan to object of arrays
         for (let i = 0; i < this.apiData.totalCount; i++) {
           if (this.apiData.data[i].fields.primary_country.location) {
-            let lat = this.apiData.data[i].fields.primary_country.location.lat;
-            let lon = this.apiData.data[i].fields.primary_country.location.lon;
             let pointObject: any = {
-              lat: lat,
-              lon: lon
+              lat: this.apiData.data[i].fields.primary_country.location.lat,
+              lon: this.apiData.data[i].fields.primary_country.location.lon
             };
             points.push(pointObject);
           }
         }
-
-        for (let i = 0; i < points.length; i++) {
-          let pos = this.convertLatLonToCartesian(points[i].lat, points[i].lon);
-
+        for (let j = 0; j < points.length; j++) {
+          let pos = this.convertLatLonToCartesian(points[j].lat, points[j].lon);
           let location = new THREE.Mesh(
-            new THREE.SphereBufferGeometry(0.003, 20, 20),
-            new THREE.MeshBasicMaterial({ color: 0xff0000 })
+            new THREE.SphereBufferGeometry(0.005, 20, 20),
+            new THREE.MeshBasicMaterial({ color: 0xf92435 })
           );
           location.position.set(pos.x, pos.y, pos.z);
           this.earth.add(location);
+          // Lines
+          let v = new THREE.Vector3(pos.x, pos.y, pos.z);
+          let v2 = new THREE.Vector3(pos.x*1.1, pos.y*1.1, pos.z*1.1);
 
-          if (i < points.length - 1) {
-            let posNext = this.convertLatLonToCartesian(points[i + 1].lat, points[i + 1].lon);
-            this.getCurve(pos, posNext);
-          }
+          const geometry = new THREE.BufferGeometry().setFromPoints([v, v2 ]);
+          const material = new THREE.LineBasicMaterial({ color: 0xf92435 });
+          const line = new THREE.Line(geometry, material);
+          this.earth.add(line);
+          // if (j < points.length - 1) {
+          //   let posNext = this.convertLatLonToCartesian(points[j + 1].lat, points[j + 1].lon);
+          //   this.getCurve(pos, posNext);
+          // }
         }
-
       }, 1000);
-
     });
 
     this.camera = new THREE.PerspectiveCamera(this.cameraAnngle, window.innerWidth / window.innerHeight, 0.001, 1000);
@@ -203,25 +200,25 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     return { x, y, z };
   }
 
-  private getCurve(p1, p2) {
-    let v1 = new THREE.Vector3(p1.x, p1.y, p1.z);
-    let v2 = new THREE.Vector3(p2.x, p2.y, p2.z);
-    let points: string[] = [];
+  // private getCurve(p1, p2) {
+  //   let v1 = new THREE.Vector3(p1.x, p1.y, p1.z);
+  //   let v2 = new THREE.Vector3(p2.x, p2.y, p2.z);
+  //   let points: string[] = [];
 
-    for (let i = 0; i <= 20; i++) {
-      let p = new THREE.Vector3().lerpVectors(v1, v2, i / 20);
-      p.normalize();
-      p.multiplyScalar(1 + 0.1 * Math.sin(Math.PI * i / 20));
-      points.push(p);
-    }
+  //   for (let i = 0; i <= 20; i++) {
+  //     let p = new THREE.Vector3().lerpVectors(v1, v2, i / 20);
+  //     p.normalize();
+  //     //p.multiplyScalar(1 + 0.1 * Math.sin(Math.PI * i / 20));
+  //     points.push(p);
+  //   }
 
-    let path = new THREE.CatmullRomCurve3(points);
+  //   let path = new THREE.CatmullRomCurve3(points);
 
-    const geometry = new THREE.TubeGeometry(path, 20, 0.001, 8, false); // curve, tubularSegments, radius, radialSegments, closed
-    const material = new THREE.MeshBasicMaterial({ color: 0xff0000 });
-    const curve = new THREE.Mesh(geometry, material);
-    this.earth.add(curve);
-  }
+  //   const geometry = new THREE.TubeGeometry(path, 20, 0.001, 8, false); // curve, tubularSegments, radius, radialSegments, closed
+  //   const material = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+  //   const curve = new THREE.Mesh(geometry, material);
+  //   this.earth.add(curve);
+  // }
 
   private rotateEarth(x, y) {
     this.earth.rotation.x += x / 1000000;
@@ -249,7 +246,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     }());
   }
 
-  getCurrentDate() {
+  public getCurrentDate() {
     var today = new Date();
     var dd = String(today.getDate()).padStart(2, '0');
     var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
