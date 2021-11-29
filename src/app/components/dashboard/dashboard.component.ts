@@ -5,13 +5,13 @@ import { Router } from "@angular/router";
 import gsap from 'gsap';
 import * as THREE from 'three';
 // @ts-ignore
-import vertexShader from 'src/assets/shaders/vertex.glsl';  // Do not delete!
+import vertexShader from 'src/assets/shaders/vertex.glsl';
 // @ts-ignore
-import fragmentShader from 'src/assets/shaders/fragment.glsl';  // Do not delete!
+import fragmentShader from 'src/assets/shaders/fragment.glsl';
 // @ts-ignore
-import atmosphereVertexShader from 'src/assets/shaders/atmosphereVertex.glsl';  // Do not delete!
+import atmosphereVertexShader from 'src/assets/shaders/atmosphereVertex.glsl';
 // @ts-ignore
-import atmosphereFragmentShader from 'src/assets/shaders/atmosphereFragment.glsl';  // Do not delete!
+import atmosphereFragmentShader from 'src/assets/shaders/atmosphereFragment.glsl';
 import { MatDialog } from '@angular/material/dialog';
 import { FilterPopUpComponent } from '../filter-pop-up/filter-pop-up.component';
 
@@ -26,6 +26,9 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   slideAboutActive: boolean = false;
   filterOptionsActive: boolean = false;
 
+  // API
+  currentDate = this.getCurrentDate();
+  apiData: any;
   // Canvas
   @ViewChild('canvas') private canvasRef!: ElementRef;
   private get canvas(): HTMLCanvasElement {
@@ -70,23 +73,16 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     new THREE.MeshBasicMaterial( { 
       map: new THREE.ImageUtils.loadTexture('/assets/img/background.jpg'),
       transparent: true,
-      opacity: 0.25
+      opacity: 0.2
     } )
   );
-  // API
-  currentDate = this.getCurrentDate();
-  apiData: any;
-  // Rotate eart
-  private last!: MouseEvent;
   // Rotate earth
-  private mouse = {
-    x: 0,
-    y: 0
-  }
+  private mouse = { x: 0, y: 0 };
+  private last!: MouseEvent;
   private mouseDown: boolean = false;
   @HostListener('mouseup', ['$event']) onMouseup(event) {
     this.mouseDown = false;
-    // Rotate earth
+    // animate earth rotation
     this.mouse.x = (event.clientX / innerWidth) * 4 - 1;
     this.mouse.y = -(event.clientY / innerHeight) * 4 + 1;
   }
@@ -103,7 +99,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       this.earth.rotation.x += (event.clientY - this.last.clientY) / 400;
       // Save last position
       this.last = event;
-      this.animateSmoothEarth(this.last.clientX, this.last.clientY);
+      this.rotateEarth(this.last.clientX, this.last.clientY);
     }
   }
   @HostListener('mousedown', ['$event']) onMousedown(event) {
@@ -144,7 +140,6 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
   private createScene() {
     this.scene = new THREE.Scene();
-    //this.bgGalaxy.position.z = -2;
     this.scene.add(this.bgGalaxy);
     this.group.add(this.earth);
     this.scene.add(this.group);
@@ -228,11 +223,9 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     this.earth.add(curve);
   }
 
-  private animateSmoothEarth(x, y) {
-    setTimeout(() => {
-      this.earth.rotation.x += x / 1000000;
-      this.earth.rotation.y += y / 1000000;
-    }, 100);
+  private rotateEarth(x, y) {
+    this.earth.rotation.x += x / 1000000;
+    this.earth.rotation.y += y / 1000000;
   }
 
   private startRenderingLoop() {
