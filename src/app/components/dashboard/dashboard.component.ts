@@ -12,6 +12,10 @@ import fragmentShader from 'src/assets/shaders/fragment.glsl';
 import atmosphereVertexShader from 'src/assets/shaders/atmosphereVertex.glsl';
 // @ts-ignore
 import atmosphereFragmentShader from 'src/assets/shaders/atmosphereFragment.glsl';
+// @ts-ignore
+import locationVertexShader from 'src/assets/shaders/locationVertex.glsl';
+// @ts-ignore
+import locationFragmentShader from 'src/assets/shaders/locationFragment.glsl';
 import { MatDialog } from '@angular/material/dialog';
 import { FilterPopUpComponent } from '../filter-pop-up/filter-pop-up.component';
 
@@ -55,7 +59,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     new THREE.ShaderMaterial({
       vertexShader: atmosphereVertexShader,
       fragmentShader: atmosphereFragmentShader,
-      blending: THREE.AdditiveBlending,
+      //blending: THREE.AdditiveBlending,
       side: THREE.BackSide
     })
   );
@@ -164,8 +168,11 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         for (let j = 0; j < points.length; j++) {
           let pos = this.convertLatLonToCartesian(points[j].lat, points[j].lon);
           let location = new THREE.Mesh(
-            new THREE.SphereBufferGeometry(0.005, 20, 20),
-            new THREE.MeshBasicMaterial({ color: 0xf92435 })
+            new THREE.SphereGeometry(0.005, 20, 20),
+            new THREE.ShaderMaterial({
+              vertexShader: locationVertexShader,
+              fragmentShader: locationFragmentShader
+            })
           );
           location.position.set(pos.x, pos.y, pos.z);
           this.earth.add(location);
