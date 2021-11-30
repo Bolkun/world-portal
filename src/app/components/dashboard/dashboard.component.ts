@@ -83,6 +83,9 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       opacity: 0.2
     } )
   );
+  private starGeometry = new THREE.BufferGeometry();
+  private starMaterial = new THREE.PointsMaterial({color: 0xffffff});
+  private stars: THREE.Points;
   // Rotate earth
   private mouse = { x: 0, y: 0 };
   private last!: MouseEvent;
@@ -160,6 +163,16 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   private createScene() {
     this.scene = new THREE.Scene();
     this.scene.add(this.bgGalaxy);
+    const starVertices: any[] = [];
+    for (let i = 0; i<5000; i++) {
+      const x = (Math.random() - 0.5) * 2000;
+      const y = (Math.random() - 0.5) * 2000;
+      const z = -Math.random() * 2000;
+      starVertices.push(x, y, z);
+    }
+    this.starGeometry.addAttribute('position', new THREE.Float32BufferAttribute(starVertices, 3));
+    this.stars = new THREE.Points(this.starGeometry, this.starMaterial);
+    this.scene.add(this.stars);
     this.groupRotate.add(this.earth);
     this.scene.add(this.groupRotate);
     this.atmosphere.scale.set(1.1, 1.1, 1.1);
