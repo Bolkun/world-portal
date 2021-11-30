@@ -33,14 +33,15 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   // API
   currentDate = this.getCurrentDate();
   apiData: any;
-  // Canvas
+  // THREE
   @ViewChild('canvas') private canvasRef!: ElementRef;
   private get canvas(): HTMLCanvasElement {
     return this.canvasRef.nativeElement;
   }
   @Input() public rotationSpeedY: number = 0.0025;
   private bRotateEarth: boolean = true;
-  private group = new THREE.Group();
+  private groupRotate = new THREE.Group();
+  private groupLocations = new THREE.Group();
   private radius = 1;
   private earth = new THREE.Mesh(
     new THREE.SphereGeometry(this.radius, 32, 32), // radius, widthSegments, heightSegments
@@ -66,6 +67,8 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   private renderer: THREE.WebGLRenderer;
   private scene: THREE.Scene;
   private camera: THREE.PerspectiveCamera;
+  private raycaster = new THREE.Raycaster();
+  private rMouse = new THREE.Vector2();
   private cameraAnngle = 70;
   private cameraZPosition = 3.0;
   private zoom = 0.2;
@@ -84,23 +87,35 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   private mouse = { x: 0, y: 0 };
   private last!: MouseEvent;
   private mouseDown: boolean = false;
+  @HostListener('click', ['$event.target']) onClick(event) {
+    this.raycaster.setFromCamera(this.rMouse, this.camera);
+    let intersects = this.raycaster.intersectObjects(this.groupLocations.children);
+    // Hit
+    if (intersects.length > 0) {
+      console.log(intersects[0].object.userData);
+      // Open Modal
+    }
+  }
   @HostListener('mouseup', ['$event']) onMouseup(event) {
     this.mouseDown = false;
-    // animate earth rotation
-    this.mouse.x = (event.clientX / innerWidth) * 4 - 1;
-    this.mouse.y = -(event.clientY / innerHeight) * 4 + 1;
   }
   @HostListener('mouseout') onMouseout() {
     // Cursour leaves the window
     this.mouseDown = false;
   }
   @HostListener('mousemove', ['$event']) onMousemove(event: MouseEvent) {
+    // Tooltip
+    this.rMouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+    this.rMouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
     if (this.mouseDown) {
       // Stop earth rotation
       this.bRotateEarth = false;
       // Rotate earth on mousedown + mousemove
       this.earth.rotation.y += (event.clientX - this.last.clientX) / 400;
       this.earth.rotation.x += (event.clientY - this.last.clientY) / 400;
+      // Added smooth rotation
+      this.mouse.x = (event.clientX / innerWidth) * 4 - 1;
+      this.mouse.y = -(event.clientY / innerHeight) * 4 + 1;
       // Save last position
       this.last = event;
       this.rotateEarth(this.last.clientX, this.last.clientY);
@@ -145,10 +160,17 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   private createScene() {
     this.scene = new THREE.Scene();
     this.scene.add(this.bgGalaxy);
-    this.group.add(this.earth);
-    this.scene.add(this.group);
+    this.groupRotate.add(this.earth);
+    this.scene.add(this.groupRotate);
     this.atmosphere.scale.set(1.1, 1.1, 1.1);
     this.scene.add(this.atmosphere);
+
+    this.camera = new THREE.PerspectiveCamera(this.cameraAnngle, window.innerWidth / window.innerHeight, 0.001, 1000);
+    this.camera.position.z = this.cameraZPosition;
+
+    this.renderer = new THREE.WebGLRenderer({ canvas: this.canvas, antialias: true });
+    this.renderer.setPixelRatio(devicePixelRatio);
+    this.renderer.setSize(this.canvas.clientWidth, this.canvas.clientHeight);
 
     this.apiReliefwebService.getDisastersByDate(this.currentDate).subscribe((data) => {
       this.apiData = data;
@@ -175,7 +197,10 @@ export class DashboardComponent implements OnInit, AfterViewInit {
             })
           );
           location.position.set(pos.x, pos.y, pos.z);
-          this.earth.add(location);
+          this.groupLocations.add(location);
+          this.earth.add(this.groupLocations);
+          // Adding api data to three.js objects
+          location.userData.lat = points[j].lat;
           // Lines
           let v = new THREE.Vector3(pos.x, pos.y, pos.z);
           let v2 = new THREE.Vector3(pos.x*1.1, pos.y*1.1, pos.z*1.1);
@@ -184,16 +209,15 @@ export class DashboardComponent implements OnInit, AfterViewInit {
           const material = new THREE.LineBasicMaterial({ color: 0xf92435 });
           const line = new THREE.Line(geometry, material);
           this.earth.add(line);
+          // Draw Curves
           // if (j < points.length - 1) {
           //   let posNext = this.convertLatLonToCartesian(points[j + 1].lat, points[j + 1].lon);
           //   this.getCurve(pos, posNext);
           // }
         }
-      }, 1000);
+      }, 3000);
     });
 
-    this.camera = new THREE.PerspectiveCamera(this.cameraAnngle, window.innerWidth / window.innerHeight, 0.001, 1000);
-    this.camera.position.z = this.cameraZPosition;
   }
 
   private convertLatLonToCartesian(lat, lon) {
@@ -232,23 +256,39 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     this.earth.rotation.y += y / 1000000;
   }
 
-  private startRenderingLoop() {
-    this.renderer = new THREE.WebGLRenderer({ canvas: this.canvas, antialias: true });
-    this.renderer.setPixelRatio(devicePixelRatio);
-    this.renderer.setSize(this.canvas.clientWidth, this.canvas.clientHeight);
+  private resetTooltip() {
+    for (let i = 0; i < this.earth.children.length; i++) {
+      if (this.earth.children[i].material){
+        this.earth.children[i].material.opacity = 1.0;
+      }
+    }
+  }
 
+  private hoverTooltip() {
+    this.raycaster.setFromCamera(this.rMouse, this.camera);
+    let intersects = this.raycaster.intersectObjects(this.earth.children);
+    
+    for (let i = 0; i < intersects.length; i++) {
+      intersects[i].object.material.transparent = true;
+      intersects[i].object.material.opacity = 0.5;
+    }
+  }
+
+  private startRenderingLoop() {
     let component: DashboardComponent = this;
     (function render() {
       requestAnimationFrame(render);
       if (component.bRotateEarth == true) {
         component.earth.rotation.y += component.rotationSpeedY;
       } else {
-        gsap.to(component.group.rotation, {
+        gsap.to(component.groupRotate.rotation, {
           x: -component.mouse.y * 0.3,
           y: component.mouse.x * 0.5,
           duration: 2
         });
       }
+      component.resetTooltip();
+      component.hoverTooltip();
       component.renderer.render(component.scene, component.camera);
     }());
   }
