@@ -22,6 +22,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { FilterPopUpComponent } from './components/filter-pop-up/filter-pop-up.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatIconModule} from '@angular/material/icon';
+import { ArticleComponent } from './components/article/article.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -31,7 +32,8 @@ import {MatIconModule} from '@angular/material/icon';
     ResetPasswordComponent,
     VerifyEmailComponent,
     AboutComponent,
-    FilterPopUpComponent
+    FilterPopUpComponent,
+    ArticleComponent
   ],
   imports: [
     BrowserModule,

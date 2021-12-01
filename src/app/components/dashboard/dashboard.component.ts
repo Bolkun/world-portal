@@ -18,6 +18,7 @@ import locationVertexShader from 'src/assets/shaders/locationVertex.glsl';
 import locationFragmentShader from 'src/assets/shaders/locationFragment.glsl';
 import { MatDialog } from '@angular/material/dialog';
 import { FilterPopUpComponent } from '../filter-pop-up/filter-pop-up.component';
+import { ArticleComponent } from '../article/article.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -73,18 +74,18 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   private cameraZPosition = 3.0;
   private zoom = 0.2;
   // Bg
-  private ang_rad = this.cameraAnngle * Math.PI / 180; 
+  private ang_rad = this.cameraAnngle * Math.PI / 180;
   private fov_y = this.cameraZPosition * Math.tan(this.ang_rad / 2) * 2;
   private bgGalaxy = new THREE.Mesh(
     new THREE.PlaneGeometry(this.fov_y * window.innerWidth / window.innerHeight, this.fov_y),
-    new THREE.MeshBasicMaterial( { 
+    new THREE.MeshBasicMaterial({
       map: new THREE.ImageUtils.loadTexture('/assets/img/background.jpg'),
       transparent: true,
       opacity: 0.2
-    } )
+    })
   );
   private starGeometry = new THREE.BufferGeometry();
-  private starMaterial = new THREE.PointsMaterial({color: 0xffffff});
+  private starMaterial = new THREE.PointsMaterial({ color: 0xffffff });
   private stars: THREE.Points;
   // Rotate earth
   private mouse = { x: 0, y: 0 };
@@ -97,6 +98,9 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     if (intersects.length > 0) {
       console.log(intersects[0].object.userData);
       // Open Modal
+      this.modalCtl.open(ArticleComponent, {
+        data: intersects
+      });
     }
   }
   @HostListener('mouseup', ['$event']) onMouseup(event) {
@@ -108,8 +112,8 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   }
   @HostListener('mousemove', ['$event']) onMousemove(event: MouseEvent) {
     // Tooltip
-    this.rMouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
-    this.rMouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+    this.rMouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+    this.rMouse.y = - (event.clientY / window.innerHeight) * 2 + 1;
     if (this.mouseDown) {
       // Stop earth rotation
       this.bRotateEarth = false;
@@ -164,7 +168,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     this.scene = new THREE.Scene();
     this.scene.add(this.bgGalaxy);
     const starVertices: any[] = [];
-    for (let i = 0; i<5000; i++) {
+    for (let i = 0; i < 5000; i++) {
       const x = (Math.random() - 0.5) * 2000;
       const y = (Math.random() - 0.5) * 2000;
       const z = -Math.random() * 2000;
@@ -188,7 +192,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     this.apiReliefwebService.getDisastersByDate(this.currentDate).subscribe((data) => {
       this.apiData = data;
       let points: any[] = [];
-      
+
       setTimeout(() => {
         // Save lot, lan to object of arrays
         for (let i = 0; i < this.apiData.totalCount; i++) {
@@ -225,9 +229,9 @@ export class DashboardComponent implements OnInit, AfterViewInit {
           location.userData.link = this.apiData.data[j].fields.origin;
           // Lines
           let v = new THREE.Vector3(pos.x, pos.y, pos.z);
-          let v2 = new THREE.Vector3(pos.x*1.1, pos.y*1.1, pos.z*1.1);
+          let v2 = new THREE.Vector3(pos.x * 1.1, pos.y * 1.1, pos.z * 1.1);
 
-          const geometry = new THREE.BufferGeometry().setFromPoints([v, v2 ]);
+          const geometry = new THREE.BufferGeometry().setFromPoints([v, v2]);
           const material = new THREE.LineBasicMaterial({ color: 0xf92435 });
           const line = new THREE.Line(geometry, material);
           this.earth.add(line);
@@ -280,7 +284,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
   private resetTooltip() {
     for (let i = 0; i < this.earth.children.length; i++) {
-      if (this.earth.children[i].material){
+      if (this.earth.children[i].material) {
         this.earth.children[i].material.opacity = 1.0;
       }
     }
@@ -289,7 +293,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   private hoverTooltip() {
     this.raycaster.setFromCamera(this.rMouse, this.camera);
     let intersects = this.raycaster.intersectObjects(this.earth.children);
-    
+
     for (let i = 0; i < intersects.length; i++) {
       intersects[i].object.material.transparent = true;
       intersects[i].object.material.opacity = 0.5;
@@ -334,7 +338,9 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   }
 
   login() {
-    const doc = document.getElementById('custom-container');
+    console.log("hamedkabir");
+
+    const doc = document.getElementById('loginSlide');
     if (doc) {
 
       doc.style.transform = 'translateX(50%)';
