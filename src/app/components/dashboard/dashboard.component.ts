@@ -192,12 +192,14 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       setTimeout(() => {
         // Save lot, lan to object of arrays
         for (let i = 0; i < this.apiData.totalCount; i++) {
-          if (this.apiData.data[i].fields.primary_country.location) {
-            let pointObject: any = {
-              lat: this.apiData.data[i].fields.primary_country.location.lat,
-              lon: this.apiData.data[i].fields.primary_country.location.lon
-            };
-            points.push(pointObject);
+          if (this.apiData.data[i].fields.disaster_type) {
+            if (this.apiData.data[i].fields.primary_country.location) {
+              let pointObject: any = {
+                lat: this.apiData.data[i].fields.primary_country.location.lat,
+                lon: this.apiData.data[i].fields.primary_country.location.lon
+              };
+              points.push(pointObject);
+            }
           }
         }
         for (let j = 0; j < points.length; j++) {
@@ -214,6 +216,13 @@ export class DashboardComponent implements OnInit, AfterViewInit {
           this.earth.add(this.groupLocations);
           // Adding api data to three.js objects
           location.userData.lat = points[j].lat;
+          location.userData.lon = points[j].lon;
+          location.userData.id = this.apiData.data[j].id;
+          location.userData.country = this.apiData.data[j].fields.primary_country.name;
+          location.userData.disaster_type = this.apiData.data[j].fields.disaster_type;
+          location.userData.title = this.apiData.data[j].fields.title;
+          location.userData.body = this.apiData.data[j].fields["body-html"];
+          location.userData.link = this.apiData.data[j].fields.origin;
           // Lines
           let v = new THREE.Vector3(pos.x, pos.y, pos.z);
           let v2 = new THREE.Vector3(pos.x*1.1, pos.y*1.1, pos.z*1.1);
