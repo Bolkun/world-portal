@@ -338,13 +338,6 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   }
 
   login() {
-    // console.log("hamedkabir");
-
-    // const doc = document.getElementById('loginSlide');
-    // if (doc) {
-
-    //   doc.style.transform = 'translateX(50%)';
-    // }
     this.groupRotate.translateX(0.5);
     this.slideLoginActive = true;
   }
