@@ -345,6 +345,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
     //   doc.style.transform = 'translateX(50%)';
     // }
+    this.groupRotate.translateX(0.5);
     this.slideLoginActive = true;
   }
 
