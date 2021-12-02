@@ -135,6 +135,10 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   @HostListener('window:resize', ['$event']) onResize(event) {
     // Resize canvas
     this.camera.aspect = window.innerWidth / window.innerHeight;
+    // BG
+    let new_geometry = new THREE.PlaneGeometry(this.fov_y * window.innerWidth / window.innerHeight, this.fov_y);
+    this.bgGalaxy.geometry.dispose();
+    this.bgGalaxy.geometry = new_geometry;
     this.camera.updateProjectionMatrix();
     this.renderer.setSize(window.innerWidth, window.innerHeight);
   }
@@ -169,8 +173,8 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     this.scene.add(this.bgGalaxy);
     const starVertices: any[] = [];
     for (let i = 0; i < 5000; i++) {
-      const x = (Math.random() - 0.5) * 2000;
-      const y = (Math.random() - 0.5) * 2000;
+      const x = (Math.random() - 0.3) * 2000;
+      const y = (Math.random() - 0.3) * 2000;
       const z = -Math.random() * 2000;
       starVertices.push(x, y, z);
     }
