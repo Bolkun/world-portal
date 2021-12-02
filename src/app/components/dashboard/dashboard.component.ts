@@ -328,6 +328,11 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     return yyyy + '-' + mm + '-' + dd;
   }
 
+  public displayDate() {
+    const format_date = this.currentDate.split("-");
+    return format_date[2] + '.' + format_date[1] + '.' + format_date[0];
+  }
+
   openFilterModal() {
     // this.modalCtl.open(FilterPopUpComponent);
     this.filterOptionsActive = true;
@@ -345,7 +350,6 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   about() {
     const doc = document.getElementById('custom-container');
     if (doc) {
-
       doc.style.transform = 'translateX(-50%)';
       this.slideAboutActive = true;
     }

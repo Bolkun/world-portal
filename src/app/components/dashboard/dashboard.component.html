@@ -2,9 +2,10 @@
 <app-about *ngIf="slideAboutActive" class="app-about-component"></app-about>
 <div id="custom-container" class="container custom-container">
   <canvas #canvas id="canvas" style="width: 100%; height: 100%;"></canvas>
+  <!-- Date --> 
   <div class="row">
     <div class="col position-absolute">
-      <h1 class="text-align-center">26.11.2021</h1>
+      <h1 class="text-align-center date">{{ displayDate() }}</h1>
     </div>
   </div>
   <div class="row h-80vh">
@@ -12,33 +13,34 @@
       <button *ngIf="slideLoginActive" mat-icon-button color="warn" (click)="resetSlide()" class="position-absolute text-align-left vertical-align-center">
         <mat-icon>cancel</mat-icon>
       </button>
-      <h3 *ngIf="!slideLoginActive" class="position-absolute text-align-left vertical-align-center" (click)="login()">Login</h3>
+      <h1 *ngIf="!slideLoginActive" class="position-absolute text-align-left vertical-align-center login" (click)="login()">Login</h1>
     </div>
     <div class="col-10">
       <div class="position-relative h-80vh"></div>
     </div>
     <div class="col-1 position-relative">
-      <button *ngIf="slideAboutActive" mat-icon-button color="warn" (click)="resetSlide()" class="position-absolute right-10x vertical-align-center">
+      <button *ngIf="slideAboutActive" mat-icon-button color="warn" (click)="resetSlide()" class="position-absolute right-20x vertical-align-center">
         <mat-icon>cancel</mat-icon>
       </button>
-      <h3 *ngIf="!slideAboutActive" class="position-absolute right-10x vertical-align-center" (click)="about()">About</h3>
+      <h1 *ngIf="!slideAboutActive" class="position-absolute right-20x vertical-align-center" (click)="about()">About</h1>
     </div>
   </div>
+  <!-- Filter -->
   <div *ngIf="!filterOptionsActive" class="row">
     <div class="col position-absolute">
       <div class="filter-content">
         <div class="container">
           <div class="row">
             <div class="col text-align-center">
-              <h2 (click)="openFilterModal()">Date</h2>
+              <h1 (click)="openFilterModal()">Date</h1>
             </div>
           </div>
           <div class="row">
             <div class="col-6 text-align-center">
-              <h2>Country</h2>
+              <h1>Country</h1>
             </div>
             <div class="col-6 text-align-center">
-              <h2>Disaster</h2>
+              <h1>Disaster</h1>
             </div>
           </div>
         </div>

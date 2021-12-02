@@ -32,17 +32,25 @@ canvas {
 }
 
 .filter-content {
-  max-width: 300px;
-  width: 100%;
-  margin: auto;
+  position: relative;
+  margin: 0;
+  bottom: -70px;
 }
 
 .vertical-align-center {
-  top: 45%;
+  top: 55%;
 }
 
 .text-align-center {
   text-align: center;
+}
+
+.date {
+  margin-top: 20px;
+}
+
+.login {
+  left: 20px;
 }
 
 .text-align-left {
@@ -72,8 +80,8 @@ h3 {
   z-index: 1;
 }
 
-.right-10x {
-  right: 10px;
+.right-20x {
+  right: 20px;
 }
 
 .left-50procent {
