@@ -23,6 +23,7 @@ import { FilterPopUpComponent } from './components/filter-pop-up/filter-pop-up.c
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatIconModule} from '@angular/material/icon';
 import { ArticleComponent } from './components/article/article.component';
+import { SafeHtmlPipe } from './pipes/safe-html.pipe';
 @NgModule({
   declarations: [
     AppComponent,
@@ -33,7 +34,8 @@ import { ArticleComponent } from './components/article/article.component';
     VerifyEmailComponent,
     AboutComponent,
     FilterPopUpComponent,
-    ArticleComponent
+    ArticleComponent,
+    SafeHtmlPipe
   ],
   imports: [
     BrowserModule,

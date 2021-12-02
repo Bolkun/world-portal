@@ -96,7 +96,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     let intersects = this.raycaster.intersectObjects(this.groupLocations.children);
     // Hit
     if (intersects.length > 0) {
-      console.log(intersects[0].object.userData);
+      console.log();
       // Open Modal
       this.modalCtl.open(ArticleComponent, {
         data: intersects

@@ -1,1 +1,17 @@
-<p>article works!</p>
+<div *ngFor="let article of data" class="row h-80vh" style="border-bottom: 1px solid grey;">
+  <div class="col-1">
+    <span style="font-size: 10px; color: grey;">#{{ article.object.userData.id }}</span>
+    {{ article.object.userData.country }}
+  </div>
+  <div class="col-9">
+    <p>{{ article.object.userData.title }}</p>
+    <!-- <div [innerHTML]="article.object.userData.body | safeHtml"></div> -->
+    <a href="{{ article.object.userData.link }}" target="_blank">[Read more...]</a>
+  </div>
+  <div class="col-2">
+    <span style="font-size: 10px; color: grey;">{{ article.object.userData.lat }} {{ article.object.userData.lon }}</span>
+    <div *ngFor="let disaster_type of article.object.userData.disaster_type">
+        <p>{{ disaster_type.name }}</p>
+    </div>
+  </div>
+</div>
