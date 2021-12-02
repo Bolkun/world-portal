@@ -180,7 +180,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     this.groupRotate.add(this.earth);
     this.scene.add(this.groupRotate);
     this.atmosphere.scale.set(1.1, 1.1, 1.1);
-    this.scene.add(this.atmosphere);
+    this.groupRotate.add(this.atmosphere);
 
     this.camera = new THREE.PerspectiveCamera(this.cameraAnngle, window.innerWidth / window.innerHeight, 0.001, 1000);
     this.camera.position.z = this.cameraZPosition;
@@ -355,8 +355,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   resetSlide() {
     const doc = document.getElementById('custom-container');
     if (doc) {
-
-      doc.style.transform = 'translateX(0%)';
+      doc.style.transform = 'translateX(-15%)';
       this.slideLoginActive = false;
       this.slideAboutActive = false;
     }
