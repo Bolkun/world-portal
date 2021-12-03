@@ -363,25 +363,47 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   }
 
   login() {
-    this.groupRotate.translateX(0.5);
+    // this.groupRotate.translateX(0.5);
     this.slideLoginActive = true;
+    setTimeout(() => {
+      const doc = document.getElementById('loginSlide');
+      if (doc) {
+        doc.style.transform = 'translateX(0%)';
+      }
+    }, 100);
+  }
+
+  closeLogin() {
+    const doc = document.getElementById('loginSlide');
+    if (doc) {
+      doc.style.transform = 'translateX(-150%)';
+    }
+    setTimeout(() => {
+
+      this.slideLoginActive = false;
+    }, 1000);
   }
 
   about() {
-    const doc = document.getElementById('custom-container');
-    if (doc) {
-      doc.style.transform = 'translateX(-50%)';
-      this.slideAboutActive = true;
-    }
+    this.slideAboutActive = true;
+    setTimeout(() => {
+
+      const doc = document.getElementById('aboutSlide');
+      if (doc) {
+        doc.style.transform = 'translateX(0%)';
+      }
+    }, 100);
   }
 
-  resetSlide() {
-    const doc = document.getElementById('custom-container');
+  closeAbout() {
+    const doc = document.getElementById('aboutSlide');
     if (doc) {
-      doc.style.transform = 'translateX(-15%)';
-      this.slideLoginActive = false;
-      this.slideAboutActive = false;
+      doc.style.transform = 'translateX(150%)';
     }
+    setTimeout(() => {
+
+      this.slideAboutActive = false;
+    }, 1000);
   }
 
 }

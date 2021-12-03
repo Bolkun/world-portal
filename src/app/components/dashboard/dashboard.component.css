@@ -20,15 +20,20 @@ canvas {
 
 .app-login-component {
   position: absolute;
-  top: 20%;
-  left: 0;
+  top: 35%;
+  left: 15%;
   z-index: 1;
+  transition: 1s ease-in-out;
+  transform: translateX(-150%);
 }
 
 .app-about-component {
   position: absolute;
-  top: 20%;
-  right: 0;
+  top: 35%;
+  right: 15%;
+  z-index: 1;
+  transition: 1s ease-in-out;
+  transform: translateX(150%);
 }
 
 .filter-content {

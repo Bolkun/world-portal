@@ -1,8 +1,14 @@
-<app-login id="loginSlide" *ngIf="slideLoginActive" class="app-login-component"></app-login>
-<app-about *ngIf="slideAboutActive" class="app-about-component"></app-about>
+<!-- Login Component -->
+<div *ngIf="slideLoginActive">
+  <app-login id="loginSlide" class="app-login-component"></app-login>
+</div>
+<!-- About Component -->
+<div *ngIf="slideAboutActive">
+  <app-about id="aboutSlide" class="app-about-component"></app-about>
+</div>
 <div id="custom-container" class="container custom-container">
   <canvas #canvas id="canvas" style="width: 100%; height: 100%;"></canvas>
-  <!-- Date --> 
+  <!-- Date -->
   <div class="row">
     <div class="col position-absolute">
       <h1 class="text-align-center date">{{ displayDate() }}</h1>
@@ -10,19 +16,26 @@
   </div>
   <div class="row h-80vh">
     <div class="col-1 position-relative">
-      <button *ngIf="slideLoginActive" mat-icon-button color="warn" (click)="resetSlide()" class="position-absolute text-align-left vertical-align-center">
+      <!-- <button *ngIf="slideLoginActive" mat-icon-button color="warn" (click)="resetSlide()" class="position-absolute text-align-left vertical-align-center">
         <mat-icon>cancel</mat-icon>
-      </button>
-      <h1 *ngIf="!slideLoginActive" class="position-absolute text-align-left vertical-align-center login" (click)="login()">Login</h1>
+      </button> -->
+      <h1 *ngIf="slideLoginActive" class="position-absolute text-align-left vertical-align-center login"
+        (click)="closeLogin()">Close</h1>
+      <h1 *ngIf="!slideLoginActive" class="position-absolute text-align-left vertical-align-center login"
+        (click)="login()">Login</h1>
     </div>
     <div class="col-10">
       <div class="position-relative h-80vh"></div>
     </div>
     <div class="col-1 position-relative">
-      <button *ngIf="slideAboutActive" mat-icon-button color="warn" (click)="resetSlide()" class="position-absolute right-20x vertical-align-center">
+      <!-- <button *ngIf="slideAboutActive" mat-icon-button color="warn" (click)="resetSlide()" class="position-absolute right-20x vertical-align-center">
         <mat-icon>cancel</mat-icon>
-      </button>
-      <h1 *ngIf="!slideAboutActive" class="position-absolute right-20x vertical-align-center" (click)="about()">About</h1>
+      </button> -->
+      <h1 *ngIf="slideAboutActive" class="position-absolute right-20x vertical-align-center" (click)="closeAbout()">
+        Close
+      </h1>
+      <h1 *ngIf="!slideAboutActive" class="position-absolute right-20x vertical-align-center" (click)="about()">About
+      </h1>
     </div>
   </div>
   <!-- Filter -->
