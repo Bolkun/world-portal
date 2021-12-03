@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-article',
@@ -25,9 +25,12 @@ export class ArticleComponent implements OnInit {
       createdAt: '03.12.2021'
     }
   ]
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private modalCtl: MatDialog) { }
 
   ngOnInit(): void { }
 
+  closeArticle() {
+    this.modalCtl.closeAll();
+  }
 }
 
