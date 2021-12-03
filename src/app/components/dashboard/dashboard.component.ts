@@ -390,7 +390,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
       const doc = document.getElementById('aboutSlide');
       if (doc) {
-        doc.style.transform = 'translateX(0%)';
+        doc.style.transform = 'translateX(30%)';
       }
     }, 100);
   }

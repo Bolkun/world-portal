@@ -34,6 +34,8 @@ canvas {
   z-index: 1;
   transition: 1s ease-in-out;
   transform: translateX(150%);
+  max-width: 50%;
+  color: white;
 }
 
 .filter-content {
@@ -83,6 +85,10 @@ h3 {
 
 .z-index-1 {
   z-index: 1;
+}
+
+.z-index-3 {
+  z-index: 3 !important;
 }
 
 .right-20x {
