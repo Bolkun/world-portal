@@ -1,17 +1,63 @@
-<div *ngFor="let article of data" class="row h-80vh" style="border-bottom: 1px solid grey; position: relative;">
-  <div class="col-1">
-    <span style="font-size: 10px; color: grey;">#{{ article.object.userData.id }}</span>
-    {{ article.object.userData.country }}
-  </div>
-  <div class="col-9">
-    <p>{{ article.object.userData.title }}</p>
-    <div [innerHTML]="article.object.userData.body | safeHtml"></div>
-    <a href="{{ article.object.userData.link }}" target="_blank">[Read more...]</a>
-  </div>
-  <div class="col-2">
-    <span style="font-size: 10px; color: grey;">{{ article.object.userData.lat }} {{ article.object.userData.lon }}</span>
-    <div *ngFor="let disaster_type of article.object.userData.disaster_type">
+<div class="container overflow-auto max-h-720x">
+  <div *ngFor="let article of data" class="row h-80vh" style="border-bottom: 1px solid grey; position: relative;">
+    <div class="col-1">
+      <span style="font-size: 10px; color: grey;">#{{ article.object.userData.id }}</span>
+      {{ article.object.userData.country }}
+    </div>
+    <div class="col-9">
+      <h1 class="text-align-center">
+        <a href="{{ article.object.userData.link }}" target="_blank">{{ article.object.userData.title }}</a>
+      </h1>
+      <div class="text-align-justify" [innerHTML]="article.object.userData.body | safeHtml"></div>
+      <div class="container">
+        <div class="row border-b">
+          <div class="col">
+            <div class="container">
+              <div class="row max-w-240x m-auto">
+                <div class="col">
+                  <mat-icon>thumb_up</mat-icon>
+                </div>
+                <div class="col">
+                  <mat-icon>thumb_down</mat-icon>
+                </div>
+                <div class="col">
+                  <mat-icon>share</mat-icon>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row m-t-10x m-b-20x" *ngFor="let item of commentMockUps">
+          <div class="col">
+            <div class="container">
+              <div class="row">
+                <div class="col-10">
+                  <h3 class="m-b-0">{{item.name}}</h3>
+                </div>
+                <div class="col-2">
+                  <p class="m-b-0">{{item.createdAt}}</p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-1 p-0">
+                  <div class="user-avatar"></div>
+                </div>
+                <div class="col-11">
+                  {{item.comment}}
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <div class="col-2">
+      <span style="font-size: 10px; color: grey;">{{ article.object.userData.lat }}
+        {{ article.object.userData.lon }}</span>
+      <div *ngFor="let disaster_type of article.object.userData.disaster_type">
         <p>{{ disaster_type.name }}</p>
+      </div>
     </div>
   </div>
 </div>
