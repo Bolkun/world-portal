@@ -194,37 +194,50 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
     this.apiReliefwebService.getDisastersByDate(this.date).subscribe((data) => {
       this.apiData = data;
-      let points: any[] = [];
+      let filteredAPIData: any[] = [];
 
       setTimeout(() => {
-        // Save lot, lan to object of arrays
+        // filter api data based on current date and past dates
         if (this.date == this.apiReliefwebService.getCurrentDate()) {
           for (let i = 0; i < this.apiData.count; i++) {
             if (this.apiData.data[i].fields.status === "current") {
-              let pointObject: any = {
+              let oArticleData: any = {
                 lat: this.apiData.data[i].fields.primary_country.location.lat,
-                lon: this.apiData.data[i].fields.primary_country.location.lon
+                lon: this.apiData.data[i].fields.primary_country.location.lon,
+                id: this.apiData.data[i].id,
+                country: this.apiData.data[i].fields.primary_country.shortname,
+                disaster_type: this.apiData.data[i].fields.type,
+                title: this.apiData.data[i].fields.name,
+                body: this.apiData.data[i].fields["description-html"],
+                link: this.apiData.data[i].fields.url
               };
-              points.push(pointObject);
+              filteredAPIData.push(oArticleData);
             }
           }
-          console.log(points);
+          //console.log(filteredAPIData);
         } else {
           for (let i = 0; i < this.apiData.totalCount; i++) {
             if (this.apiData.data[i].fields.disaster_type) {
               if (this.apiData.data[i].fields.primary_country.location) {
-                let pointObject: any = {
+                let oArticleData: any = {
                   lat: this.apiData.data[i].fields.primary_country.location.lat,
-                  lon: this.apiData.data[i].fields.primary_country.location.lon
+                  lon: this.apiData.data[i].fields.primary_country.location.lon,
+                  id: this.apiData.data[i].id,
+                  country: this.apiData.data[i].fields.primary_country.name,
+                  disaster_type: this.apiData.data[i].fields.disaster_type,
+                  title: this.apiData.data[i].fields.title,
+                  body: this.apiData.data[i].fields["body-html"],
+                  link: this.apiData.data[i].fields.origin
                 };
-                points.push(pointObject);
+                filteredAPIData.push(oArticleData);
               }
             }
           }
         }
-        
-        for (let j = 0; j < points.length; j++) {
-          let pos = this.convertLatLonToCartesian(points[j].lat, points[j].lon);
+
+        // Build objects with api data
+        for (let j = 0; j < filteredAPIData.length; j++) {
+          let pos = this.convertLatLonToCartesian(filteredAPIData[j].lat, filteredAPIData[j].lon);
           let location = new THREE.Mesh(
             new THREE.SphereGeometry(0.005, 20, 20),
             new THREE.ShaderMaterial({
@@ -236,26 +249,17 @@ export class DashboardComponent implements OnInit, AfterViewInit {
           this.groupLocations.add(location);
           this.earth.add(this.groupLocations);
           // Adding api data to three.js objects
-          location.userData.lat = points[j].lat;
-          location.userData.lon = points[j].lon;
-          location.userData.id = this.apiData.data[j].id;
-          if (this.date == this.apiReliefwebService.getCurrentDate()) {
-            location.userData.country = this.apiData.data[j].fields.primary_country.shortname;
-            location.userData.disaster_type = this.apiData.data[j].fields.type;
-            location.userData.title = this.apiData.data[j].fields.name;
-            location.userData.body = this.apiData.data[j].fields["description-html"];
-            location.userData.link = this.apiData.data[j].fields.url;
-          } else {
-            location.userData.country = this.apiData.data[j].fields.primary_country.name;
-            location.userData.disaster_type = this.apiData.data[j].fields.disaster_type;
-            location.userData.title = this.apiData.data[j].fields.title;
-            location.userData.body = this.apiData.data[j].fields["body-html"];
-            location.userData.link = this.apiData.data[j].fields.origin;
-          }
-          // Lines
+          location.userData.lat = filteredAPIData[j].lat;
+          location.userData.lon = filteredAPIData[j].lon;
+          location.userData.id = filteredAPIData[j].id;
+          location.userData.country = filteredAPIData[j].country;
+          location.userData.disaster_type = filteredAPIData[j].disaster_type;
+          location.userData.title = filteredAPIData[j].title;
+          location.userData.body = filteredAPIData[j].body;
+          location.userData.link = filteredAPIData[j].link;
+          // Generate lines
           let v = new THREE.Vector3(pos.x, pos.y, pos.z);
           let v2 = new THREE.Vector3(pos.x * 1.1, pos.y * 1.1, pos.z * 1.1);
-
           const geometry = new THREE.BufferGeometry().setFromPoints([v, v2]);
           const material = new THREE.LineBasicMaterial({ color: 0xf92435 });
           const line = new THREE.Line(geometry, material);
@@ -370,7 +374,6 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       this.slideAboutActive = true;
     }
   }
-
 
   resetSlide() {
     const doc = document.getElementById('custom-container');
