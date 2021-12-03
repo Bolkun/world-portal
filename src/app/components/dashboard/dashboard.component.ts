@@ -41,6 +41,10 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   }
   @Input() public rotationSpeedY: number = 0.0025;
   private bRotateEarth: boolean = true;
+  private bLoginOpen: boolean = false;
+  private bLoginClose: boolean = false;
+  private bAboutOpen: boolean = false;
+  private bAboutClose: boolean = false;
   private groupRotate = new THREE.Group();
   private groupLocations = new THREE.Group();
   private radius = 1;
@@ -110,21 +114,23 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     this.mouseDown = false;
   }
   @HostListener('mousemove', ['$event']) onMousemove(event: MouseEvent) {
-    // Tooltip
-    this.rMouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-    this.rMouse.y = - (event.clientY / window.innerHeight) * 2 + 1;
-    if (this.mouseDown) {
-      // Stop earth rotation
-      this.bRotateEarth = false;
-      // Rotate earth on mousedown + mousemove
-      this.earth.rotation.y += (event.clientX - this.last.clientX) / 400;
-      this.earth.rotation.x += (event.clientY - this.last.clientY) / 400;
-      // Added smooth rotation
-      this.mouse.x = (event.clientX / innerWidth) * 4 - 1;
-      this.mouse.y = -(event.clientY / innerHeight) * 4 + 1;
-      // Save last position
-      this.last = event;
-      this.rotateEarth(this.last.clientX, this.last.clientY);
+    if (this.slideLoginActive == false && this.slideAboutActive == false) {
+      // Tooltip
+      this.rMouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+      this.rMouse.y = - (event.clientY / window.innerHeight) * 2 + 1;
+      if (this.mouseDown) {
+        // Stop earth rotation
+        this.bRotateEarth = false;
+        // Rotate earth on mousedown + mousemove
+        this.earth.rotation.y += (event.clientX - this.last.clientX) / 400;
+        this.earth.rotation.x += (event.clientY - this.last.clientY) / 400;
+        // Added smooth rotation
+        this.mouse.x = (event.clientX / innerWidth) * 4 - 1;
+        this.mouse.y = -(event.clientY / innerHeight) * 4 + 1;
+        // Save last position
+        this.last = event;
+        this.rotateEarth(this.last.clientX, this.last.clientY);
+      }
     }
   }
   @HostListener('mousedown', ['$event']) onMousedown(event) {
@@ -142,14 +148,16 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     this.renderer.setSize(window.innerWidth, window.innerHeight);
   }
   @HostListener("wheel", ["$event"]) onScroll(event: WheelEvent) {
-    if (event.deltaY == -100 && this.camera.zoom < 7) {
-      // +
-      this.camera.zoom += this.zoom;
-      this.camera.updateProjectionMatrix();
-    } else if (event.deltaY == 100 && this.camera.zoom > 1) {
-      // -
-      this.camera.zoom -= this.zoom;
-      this.camera.updateProjectionMatrix();
+    if (this.slideLoginActive == false && this.slideAboutActive == false) {
+      if (event.deltaY == -100 && this.camera.zoom < 7) {
+        // +
+        this.camera.zoom += this.zoom;
+        this.camera.updateProjectionMatrix();
+      } else if (event.deltaY == 100 && this.camera.zoom > 1) {
+        // -
+        this.camera.zoom -= this.zoom;
+        this.camera.updateProjectionMatrix();
+      }
     }
   }
 
@@ -181,6 +189,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     this.stars = new THREE.Points(this.starGeometry, this.starMaterial);
     this.scene.add(this.stars);
     this.groupRotate.add(this.earth);
+    this.earth.rotation.y = 4;  // Default start from Africa
     this.scene.add(this.groupRotate);
     this.atmosphere.scale.set(1.1, 1.1, 1.1);
     this.groupRotate.add(this.atmosphere);
@@ -342,6 +351,70 @@ export class DashboardComponent implements OnInit, AfterViewInit {
           duration: 2
         });
       }
+      // Login
+      if (component.bLoginOpen) {
+        component.bRotateEarth = true;
+        if(component.camera.zoom < 2.5) { // 1 bis 2.5
+          component.camera.zoom += 0.1;
+          component.camera.updateProjectionMatrix();
+          if(component.camera.rotation.y <= 0.4) {
+            component.camera.rotation.y += 0.025;
+          }
+        }
+        if(component.camera.zoom > 2.5) {
+          component.camera.zoom = 2.5;
+          component.camera.rotation.y = 0.375;
+          component.camera.updateProjectionMatrix();
+          component.bLoginOpen = false;
+        }
+      }
+      if (component.bLoginClose) {
+        if(component.camera.zoom > 1) {
+          component.camera.zoom -= 0.1;
+          component.camera.updateProjectionMatrix();
+        }
+        if(component.camera.rotation.y > 0) {
+          component.camera.rotation.y -= 0.025;
+        }
+        if(component.camera.zoom < 1) {
+          component.camera.zoom = 1;
+          component.camera.rotation.y = 0;
+          component.camera.updateProjectionMatrix();
+          component.bLoginClose = false;
+        }
+      }
+      // About
+      if (component.bAboutOpen) {
+        component.bRotateEarth = true;
+        if(component.camera.zoom < 2.5) { // 1 bis 2.5
+          component.camera.zoom += 0.1;
+          component.camera.updateProjectionMatrix();
+          if(component.camera.rotation.y <= 0.4) {
+            component.camera.rotation.y -= 0.025;
+          }
+        }
+        if(component.camera.zoom > 2.5) {
+          component.camera.zoom = 2.5;
+          component.camera.rotation.y = -0.375;
+          component.camera.updateProjectionMatrix();
+          component.bAboutOpen = false;
+        }
+      }
+      if (component.bAboutClose) {
+        if(component.camera.zoom > 1) {
+          component.camera.zoom -= 0.1;
+          component.camera.updateProjectionMatrix();
+        }
+        if(component.camera.rotation.y < 0) {
+          component.camera.rotation.y += 0.025;
+        }
+        if(component.camera.zoom < 1) {
+          component.camera.zoom = 1;
+          component.camera.rotation.y = 0;
+          component.camera.updateProjectionMatrix();
+          component.bAboutClose = false;
+        }
+      }
       component.resetTooltip();
       component.hoverTooltip();
       component.renderer.render(component.scene, component.camera);
@@ -363,7 +436,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   }
 
   login() {
-    // this.groupRotate.translateX(0.5);
+    this.bLoginOpen = true;    // animate earth
     this.slideLoginActive = true;
     setTimeout(() => {
       const doc = document.getElementById('loginSlide');
@@ -374,6 +447,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   }
 
   closeLogin() {
+    this.bLoginClose = true; // animate earth
     const doc = document.getElementById('loginSlide');
     if (doc) {
       doc.style.transform = 'translateX(-150%)';
@@ -385,6 +459,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   }
 
   about() {
+    this.bAboutOpen = true; // animate earth
     this.slideAboutActive = true;
     setTimeout(() => {
 
@@ -396,6 +471,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   }
 
   closeAbout() {
+    this.bAboutClose = true; // animate earth
     const doc = document.getElementById('aboutSlide');
     if (doc) {
       doc.style.transform = 'translateX(150%)';
