@@ -248,7 +248,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         for (let j = 0; j < filteredAPIData.length; j++) {
           let pos = this.convertLatLonToCartesian(filteredAPIData[j].lat, filteredAPIData[j].lon);
           let location = new THREE.Mesh(
-            new THREE.SphereGeometry(0.005, 20, 20),
+            new THREE.SphereGeometry(0.01, 20, 20),
             new THREE.ShaderMaterial({
               vertexShader: locationVertexShader,
               fragmentShader: locationFragmentShader
@@ -330,11 +330,15 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
   private hoverTooltip() {
     this.raycaster.setFromCamera(this.rMouse, this.camera);
-    let intersects = this.raycaster.intersectObjects(this.earth.children);
+    let intersects = this.raycaster.intersectObjects(this.groupLocations.children);
 
-    for (let i = 0; i < intersects.length; i++) {
-      intersects[i].object.material.transparent = true;
-      intersects[i].object.material.opacity = 0.5;
+    if (intersects.length > 0) {
+      this.bRotateEarth = false;
+      this.mouseDown = false;
+      for (let i = 0; i < intersects.length; i++) {
+        intersects[i].object.material.transparent = true;
+        intersects[i].object.material.opacity = 0.5;
+      }
     }
   }
 
