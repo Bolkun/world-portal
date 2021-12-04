@@ -32,7 +32,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   filterOptionsActive: boolean = false;
 
   // API
-  date = this.apiReliefwebService.getCurrentDate();
+  date = this.apiReliefwebService.getCurrentDate(); // form: 2021-12-03
   apiData: any;
   // THREE
   @ViewChild('canvas') private canvasRef!: ElementRef;
@@ -214,7 +214,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
                 lat: this.apiData.data[i].fields.primary_country.location.lat,
                 lon: this.apiData.data[i].fields.primary_country.location.lon,
                 id: this.apiData.data[i].id,
-                country: this.apiData.data[i].fields.primary_country.shortname,
+                country: this.apiData.data[i].fields.primary_country.name,
                 disaster_type: this.apiData.data[i].fields.type,
                 title: this.apiData.data[i].fields.name,
                 body: this.apiData.data[i].fields["description-html"],

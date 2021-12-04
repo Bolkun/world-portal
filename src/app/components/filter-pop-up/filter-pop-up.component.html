@@ -3,19 +3,19 @@
     <div class="col">
       <label class="form-label">Country</label>
       <select class="form-select">
-        <option selected>Choose...</option>
-        <option>...</option>
+        <option selected>World</option>
+        <option *ngFor="let country of countries">{{ country }}</option>
       </select>
     </div>
     <div class="col">
       <label class="form-label">Date</label>
-      <input class="form-control" type="date" id="date" name="date">
+      <input class="form-control" type="date" id="date" name="date" value="{{ apiReliefwebService.getCurrentDate() }}">
     </div>
     <div class="col">
       <label class="form-label">Disaster</label>
       <select class="form-select">
-        <option selected>Choose...</option>
-        <option>...</option>
+        <option selected>All</option>
+        <option *ngFor="let disaster_type of disaster_types">{{ disaster_type }}</option>
       </select>
     </div>
   </div>
