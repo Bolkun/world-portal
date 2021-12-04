@@ -86,15 +86,17 @@ a:link{
 }
 
 .close-button {
-  position: absolute;
-  top: 5%;
-  right: 10%;
+  position: relative;
+  top: -12px;
+  right: -7px;
   background-color: white;
   border-radius: 100px;
   transition: 0.2s ease-in-out;
-  width: 30px;
+  /* width: 30px; */
   height: 30px;
   cursor: pointer;
+  float: right;
+  color: #FF1D00;
 }
 
 .close-button:hover {
