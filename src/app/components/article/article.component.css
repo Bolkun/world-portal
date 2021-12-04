@@ -1,5 +1,4 @@
 a, a:focus{
-  color: inherit;
   border: none;
   outline: none;
 } 
@@ -15,6 +14,24 @@ a:link{
 
 .overflow-auto {
   overflow: auto;
+}
+
+.overflow-auto::-webkit-scrollbar {
+  height: 3px;
+  width: 3px;
+}
+
+.overflow-auto::-webkit-scrollbar-thumb {
+  background-color: #FF1D00; /*scroll line color*/
+  border-radius: 20px;
+}
+
+.overflow-auto::-webkit-scrollbar-track{
+  background: #0000004a; /*scroll bg*/
+}
+
+.overflow-auto::-webkit-scrollbar-corner {
+  background: #0000004a; /*scroll bg*/
 }
 
 .max-h-720x {
