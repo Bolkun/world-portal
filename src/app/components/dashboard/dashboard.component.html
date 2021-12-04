@@ -15,7 +15,7 @@
     </div>
   </div>
   <div class="row h-80vh">
-    <div class="col-1 position-relative z-index-3">
+    <div class="col-1 position-relative z-index-2">
       <!-- <button *ngIf="slideLoginActive" mat-icon-button color="warn" (click)="resetSlide()" class="position-absolute text-align-left vertical-align-center">
         <mat-icon>cancel</mat-icon>
       </button> -->
@@ -31,7 +31,7 @@
       <!-- <button *ngIf="slideAboutActive" mat-icon-button color="warn" (click)="resetSlide()" class="position-absolute right-20x vertical-align-center">
         <mat-icon>cancel</mat-icon>
       </button> -->
-      <h1 *ngIf="slideAboutActive" class="position-absolute right-20x vertical-align-center" (click)="closeAbout()">
+      <h1 *ngIf="slideAboutActive" class="position-absolute right-20x vertical-align-center z-index-2" (click)="closeAbout()">
         Close
       </h1>
       <h1 *ngIf="!slideAboutActive" class="position-absolute right-20x vertical-align-center" (click)="about()">About
