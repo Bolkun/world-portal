@@ -110,3 +110,16 @@ h3 {
 .h-80vh {
   height: 80vh;
 }
+
+.btnMusic {
+  height: 50px;
+  width: 50px;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  background-color: #007bff;
+}
+
+.musicIcon {
+  margin-top: 5px;
+}

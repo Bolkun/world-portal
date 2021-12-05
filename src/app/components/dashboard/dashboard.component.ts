@@ -92,6 +92,9 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   private starImg = new THREE.TextureLoader().load('/assets/img/circle-16.png');
   private starMaterial = new THREE.PointsMaterial({ color: 0xffffff, size: 1, map: this.starImg});
   private stars: THREE.Points;
+  // Music
+  private audio = new Audio("/assets/music/main.mp3");
+  public notPlaying: boolean = true;
   // Rotate earth
   private mouse = { x: 0, y: 0 };
   private last!: MouseEvent;
@@ -135,8 +138,12 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     }
   }
   @HostListener('mousedown', ['$event']) onMousedown(event) {
-    this.mouseDown = true;
-    this.last = event;
+    this.raycaster.setFromCamera(this.rMouse, this.camera);
+    let intersects = this.raycaster.intersectObjects(this.groupRotate.children);
+    if (intersects.length > 0) {
+      this.mouseDown = true;
+      this.last = event;
+    }
   }
   @HostListener('window:resize', ['$event']) onResize(event) {
     // Resize canvas
@@ -499,6 +506,25 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
       this.slideAboutActive = false;
     }, 1000);
+  }
+
+  musicOn() { 
+    this.notPlaying = false; 
+    if (this.audio.paused) {
+      this.audio.play();
+    } else {
+      this.audio.load();
+      this.audio.addEventListener('ended', function() {
+        this.currentTime = 0;
+        this.play();
+      }, false);
+      this.audio.play();
+    }
+  }
+
+  musicOff() {
+    this.notPlaying = true;
+    this.audio.pause();
   }
 
 }
