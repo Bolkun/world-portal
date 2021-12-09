@@ -88,10 +88,12 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   //     opacity: 0.2
   //   })
   // );
-  private starGeometry = new THREE.Geometry();
+  private starGeometry = new THREE.BufferGeometry();
   private starImg = new THREE.TextureLoader().load('/assets/img/circle-16.png');
   private starMaterial = new THREE.PointsMaterial({ color: 0xffffff, size: 1, map: this.starImg});
   private stars: THREE.Points;
+  private velocities: any = [];
+  private accelerations: any = [];
   // Music
   private audio = new Audio("/assets/music/main.mp3");
   public notPlaying: boolean = true;
@@ -211,16 +213,17 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     // this.scene.add(this.bgGalaxy);
     this.scene.add(skybox);
 
+    const starVertices: any = [];
     for (let i = 0; i < 2000; i++) {
-      let star = new THREE.Vector3(
-        (Math.random() - 0.3) * 2000,
-        (Math.random() - 0.3) * 2000,
-        -Math.random() * 2000
-      )
-      star.velocity = 0;
-      star.acceleration = 0.0001;
-      this.starGeometry.vertices.push(star);
+      const x = (Math.random() - 0.3) * 2000;
+      const y = (Math.random() - 0.3) * 2000;
+      const z = -Math.random() * 2000;
+      starVertices.push(x, y, z);
+      this.velocities.push(0);
+      this.accelerations.push(0.0001);
     }
+    this.starGeometry.setAttribute('position', new THREE.Float32BufferAttribute(starVertices, 3));
+    
     this.stars = new THREE.Points(this.starGeometry, this.starMaterial);
     this.scene.add(this.stars);
 
@@ -383,15 +386,17 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     (function render() {
       requestAnimationFrame(render);
       // stars
-      for (let i = 0; i < component.starGeometry.vertices.length; i++) {
-        component.starGeometry.vertices[i].velocity += component.starGeometry.vertices[i].acceleration;
-        component.starGeometry.vertices[i].z -= component.starGeometry.vertices[i].velocity;
-        if (component.starGeometry.vertices[i].z < -1800) {
-          component.starGeometry.vertices[i].z = 1;
-          component.starGeometry.vertices[i].velocity = 0;
+      const positionAttribute = component.starGeometry.getAttribute('position');
+      for (let i = 0; i < positionAttribute.count; i++) {
+        let z = positionAttribute.getZ(i);
+        component.velocities[i] += component.accelerations[i];
+        positionAttribute.setZ(i, z - component.velocities[i]);
+        if (z < -1800) {
+          positionAttribute.setZ(i, 1);
+          component.velocities[i] = 0;
         }
       }
-      component.starGeometry.verticesNeedUpdate = true;
+      positionAttribute.needsUpdate = true;
       // earth rotation
       if (component.bRotateEarth == true) {
         component.earth.rotation.y += component.rotationSpeedY;
