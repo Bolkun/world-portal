@@ -387,7 +387,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
             component.camera.rotation.y += 0.025;
           }
         }
-        if(component.camera.zoom > 2.5) {
+        if(component.camera.zoom >= 2.5) {
           component.camera.zoom = 2.5;
           component.camera.rotation.y = 0.375;
           component.camera.updateProjectionMatrix();
@@ -419,7 +419,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
             component.camera.rotation.y -= 0.025;
           }
         }
-        if(component.camera.zoom > 2.5) {
+        if(component.camera.zoom >= 2.5) {
           component.camera.zoom = 2.5;
           component.camera.rotation.y = -0.375;
           component.camera.updateProjectionMatrix();
@@ -431,8 +431,8 @@ export class DashboardComponent implements OnInit, AfterViewInit {
           component.camera.zoom -= 0.1;
           component.camera.updateProjectionMatrix();
         }
-        if(component.camera.rotation.y < 0) {
-          component.camera.rotation.y += 0.025;
+        if(component.camera.rotation.y > 0) {
+          component.camera.rotation.y -= 0.025;
         }
         if(component.camera.zoom < 1) {
           component.camera.zoom = 1;
