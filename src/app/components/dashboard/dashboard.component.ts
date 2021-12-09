@@ -78,16 +78,16 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   private cameraZPosition = 3.0;
   private zoom = 0.2;
   // Bg
-  private ang_rad = this.cameraAnngle * Math.PI / 180;
-  private fov_y = this.cameraZPosition * Math.tan(this.ang_rad / 2) * 2;
-  private bgGalaxy = new THREE.Mesh(
-    new THREE.PlaneGeometry(this.fov_y * window.innerWidth / window.innerHeight, this.fov_y),
-    new THREE.MeshBasicMaterial({
-      map: new THREE.ImageUtils.loadTexture('/assets/img/background.jpg'),
-      transparent: true,
-      opacity: 0.2
-    })
-  );
+  // private ang_rad = this.cameraAnngle * Math.PI / 180;
+  // private fov_y = this.cameraZPosition * Math.tan(this.ang_rad / 2) * 2;
+  // private bgGalaxy = new THREE.Mesh(
+  //   new THREE.PlaneGeometry(this.fov_y * window.innerWidth / window.innerHeight, this.fov_y),
+  //   new THREE.MeshBasicMaterial({
+  //     map: new THREE.ImageUtils.loadTexture('/assets/img/background.jpg'),
+  //     transparent: true,
+  //     opacity: 0.2
+  //   })
+  // );
   private starGeometry = new THREE.Geometry();
   private starImg = new THREE.TextureLoader().load('/assets/img/circle-16.png');
   private starMaterial = new THREE.PointsMaterial({ color: 0xffffff, size: 1, map: this.starImg});
@@ -149,9 +149,9 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     // Resize canvas
     this.camera.aspect = window.innerWidth / window.innerHeight;
     // BG
-    let new_geometry = new THREE.PlaneGeometry(this.fov_y * window.innerWidth / window.innerHeight, this.fov_y);
-    this.bgGalaxy.geometry.dispose();
-    this.bgGalaxy.geometry = new_geometry;
+    // let new_geometry = new THREE.PlaneGeometry(this.fov_y * window.innerWidth / window.innerHeight, this.fov_y);
+    // this.bgGalaxy.geometry.dispose();
+    // this.bgGalaxy.geometry = new_geometry;
     this.camera.updateProjectionMatrix();
     this.renderer.setSize(window.innerWidth, window.innerHeight);
   }
@@ -185,7 +185,32 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
   private createScene() {
     this.scene = new THREE.Scene();
-    this.scene.add(this.bgGalaxy);
+
+    // BG
+    let materialArray: any = [];
+    let texture_ft = new THREE.TextureLoader().load('/assets/img/skybox/space_ft.png');
+    let texture_bk = new THREE.TextureLoader().load('/assets/img/skybox/space_bk.png');
+    let texture_up = new THREE.TextureLoader().load('/assets/img/skybox/space_up.png');
+    let texture_dn = new THREE.TextureLoader().load('/assets/img/skybox/space_dn.png');
+    let texture_rt = new THREE.TextureLoader().load('/assets/img/skybox/space_rt.png');
+    let texture_lf = new THREE.TextureLoader().load('/assets/img/skybox/space_lf.png');
+
+    materialArray.push(new THREE.MeshBasicMaterial({map: texture_ft}));
+    materialArray.push(new THREE.MeshBasicMaterial({map: texture_bk}));
+    materialArray.push(new THREE.MeshBasicMaterial({map: texture_up}));
+    materialArray.push(new THREE.MeshBasicMaterial({map: texture_dn}));
+    materialArray.push(new THREE.MeshBasicMaterial({map: texture_rt}));
+    materialArray.push(new THREE.MeshBasicMaterial({map: texture_lf}));
+
+    for(let i=0; i<6; i++)
+      materialArray[i].side = THREE.BackSide;
+
+    let skyboxGeo = new THREE.BoxGeometry(2000, 2000, 2000);
+    let skybox = new THREE.Mesh(skyboxGeo, materialArray);
+    
+    // this.scene.add(this.bgGalaxy);
+    this.scene.add(skybox);
+
     for (let i = 0; i < 2000; i++) {
       let star = new THREE.Vector3(
         (Math.random() - 0.3) * 2000,
