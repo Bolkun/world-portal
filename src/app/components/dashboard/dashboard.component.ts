@@ -207,7 +207,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
     let skyboxGeo = new THREE.BoxGeometry(2000, 2000, 2000);
     let skybox = new THREE.Mesh(skyboxGeo, materialArray);
-    
+
     // this.scene.add(this.bgGalaxy);
     this.scene.add(skybox);
 

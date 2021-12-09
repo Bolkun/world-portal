@@ -59,6 +59,7 @@ canvas {
 
 .main-menu-item {
   color: white;
+  cursor: pointer;
 }
 
 .white {
