@@ -9,7 +9,7 @@
 <div id="custom-container" class="container custom-container">
   <canvas #canvas id="canvas" style="width: 100%; height: 100%;"></canvas>
   <!-- Date -->
-  <div class="row">
+  <div *ngIf="!slideLoginActive && !slideAboutActive" class="row">
     <div class="col position-absolute">
       <h1 class="text-align-center date">{{ displayDate() }}</h1>
     </div>
@@ -21,7 +21,7 @@
       </button> -->
       <h1 *ngIf="slideLoginActive" class="position-absolute text-align-left vertical-align-center login"
         (click)="closeLogin()">Close</h1>
-      <h1 *ngIf="!slideLoginActive" class="position-absolute text-align-left vertical-align-center login"
+      <h1 *ngIf="!slideLoginActive && !slideAboutActive" class="position-absolute text-align-left vertical-align-center login"
         (click)="login()">Login</h1>
     </div>
     <div class="col-10">
@@ -34,12 +34,12 @@
       <h1 *ngIf="slideAboutActive" class="position-absolute right-20x vertical-align-center z-index-2" (click)="closeAbout()">
         Close
       </h1>
-      <h1 *ngIf="!slideAboutActive" class="position-absolute right-20x vertical-align-center" (click)="about()">About
+      <h1 *ngIf="!slideAboutActive && !slideLoginActive" class="position-absolute right-20x vertical-align-center" (click)="about()">About
       </h1>
     </div>
   </div>
   <!-- Filter -->
-  <div *ngIf="!filterOptionsActive" class="row">
+  <div *ngIf="!filterOptionsActive && !slideLoginActive && !slideAboutActive" class="row">
     <div class="col position-absolute">
       <div class="filter-content">
         <div class="container">
