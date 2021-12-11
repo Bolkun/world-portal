@@ -61,3 +61,7 @@ npm install @angular/animations
 
 Angular Icons
 https://fonts.google.com/icons
+
+Share Links (docu: https://github.com/MurhafSousli/ngx-sharebuttons/wiki/Share-Button-Directive)
+npm i ngx-sharebuttons @angular/cdk
+Icons https://jossef.github.io/material-design-icons-iconfont/
