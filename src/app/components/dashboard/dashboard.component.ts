@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild, HostListener } from '@angular/core';
 import { UserService } from 'src/app/services/user.service';
 import { ApiReliefwebService } from 'src/app/services/api-reliefweb.service';
-import { Router } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import gsap from 'gsap';
 import * as THREE from 'three';
 // @ts-ignore
@@ -32,6 +32,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   filterOptionsActive: boolean = false;
 
   // API
+  id: any;
   date = this.apiReliefwebService.getCurrentDate(); // form: 2021-12-03
   apiData: any;
   // THREE
@@ -174,11 +175,14 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   constructor(
     public userService: UserService,
     public apiReliefwebService: ApiReliefwebService,
-    public router: Router,
+    private router: Router,
+    private route: ActivatedRoute,
     private modalCtl: MatDialog
   ) { }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    this.id = this.route.snapshot.params['id'];
+  }
 
   ngAfterViewInit(): void {
     this.createScene();
@@ -240,87 +244,112 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     this.renderer.setPixelRatio(devicePixelRatio);
     this.renderer.setSize(this.canvas.clientWidth, this.canvas.clientHeight);
 
-    this.apiReliefwebService.getDisastersByDate(this.date).subscribe((data) => {
-      this.apiData = data;
-      let filteredAPIData: any[] = [];
+    if (this.id) {
+      this.apiReliefwebService.getDisastersByID(this.id).subscribe((data) => {
+        this.processAPIData(data);
+      });
+    } else {
+      this.apiReliefwebService.getDisastersByDate(this.date).subscribe((data) => {
+       this.processAPIData(data);
+      });
+    }
 
-      setTimeout(() => {
-        // filter api data based on current date and past dates
-        if (this.date == this.apiReliefwebService.getCurrentDate()) {
-          for (let i = 0; i < this.apiData.count; i++) {
-            if (this.apiData.data[i].fields.status === "current") {
-              let oArticleData: any = {
-                lat: this.apiData.data[i].fields.primary_country.location.lat,
-                lon: this.apiData.data[i].fields.primary_country.location.lon,
-                id: this.apiData.data[i].id,
-                country: this.apiData.data[i].fields.primary_country.name,
-                disaster_type: this.apiData.data[i].fields.type,
-                title: this.apiData.data[i].fields.name,
-                body: this.apiData.data[i].fields["description-html"],
-                link: this.apiData.data[i].fields.url
-              };
-              filteredAPIData.push(oArticleData);
-            }
-          }
-          //console.log(filteredAPIData);
-        } else {
-          for (let i = 0; i < this.apiData.totalCount; i++) {
-            if (this.apiData.data[i].fields.disaster_type) {
-              if (this.apiData.data[i].fields.primary_country.location) {
-                let oArticleData: any = {
-                  lat: this.apiData.data[i].fields.primary_country.location.lat,
-                  lon: this.apiData.data[i].fields.primary_country.location.lon,
-                  id: this.apiData.data[i].id,
-                  country: this.apiData.data[i].fields.primary_country.name,
-                  disaster_type: this.apiData.data[i].fields.disaster_type,
-                  title: this.apiData.data[i].fields.title,
-                  body: this.apiData.data[i].fields["body-html"],
-                  link: this.apiData.data[i].fields.origin
-                };
-                filteredAPIData.push(oArticleData);
-              }
-            }
+  }
+
+  private processAPIData(data: any) {
+    this.apiData = data;
+    let filteredAPIData: any[] = [];
+    // Process
+    setTimeout(() => {
+      // filter api data based on current date and past dates
+      if (this.date == this.apiReliefwebService.getCurrentDate()) {
+        for (let i = 0; i < this.apiData.count; i++) {
+          if (this.apiData.data[i].fields.status === "current") {
+            let oArticleData: any = {
+              lat: this.apiData.data[i].fields.primary_country.location.lat,
+              lon: this.apiData.data[i].fields.primary_country.location.lon,
+              id: this.apiData.data[i].id,
+              country: this.apiData.data[i].fields.primary_country.name,
+              disaster_type: this.apiData.data[i].fields.type,
+              title: this.apiData.data[i].fields.name,
+              body: this.apiData.data[i].fields["description-html"],
+              link: this.apiData.data[i].fields.url
+            };
+            filteredAPIData.push(oArticleData);
           }
         }
-
-        // Build objects with api data
-        for (let j = 0; j < filteredAPIData.length; j++) {
-          let pos = this.convertLatLonToCartesian(filteredAPIData[j].lat, filteredAPIData[j].lon);
-          let location = new THREE.Mesh(
-            new THREE.SphereGeometry(0.01, 20, 20),
-            new THREE.ShaderMaterial({
-              vertexShader: locationVertexShader,
-              fragmentShader: locationFragmentShader
-            })
-          );
-          location.position.set(pos.x, pos.y, pos.z);
-          this.groupLocations.add(location);
-          this.earth.add(this.groupLocations);
-          // Adding api data to three.js objects
-          location.userData.lat = filteredAPIData[j].lat;
-          location.userData.lon = filteredAPIData[j].lon;
-          location.userData.id = filteredAPIData[j].id;
-          location.userData.country = filteredAPIData[j].country;
-          location.userData.disaster_type = filteredAPIData[j].disaster_type;
-          location.userData.title = filteredAPIData[j].title;
-          location.userData.body = filteredAPIData[j].body;
-          location.userData.link = filteredAPIData[j].link;
-          // Generate lines
-          let v = new THREE.Vector3(pos.x, pos.y, pos.z);
-          let v2 = new THREE.Vector3(pos.x * 1.1, pos.y * 1.1, pos.z * 1.1);
-          const geometry = new THREE.BufferGeometry().setFromPoints([v, v2]);
-          const material = new THREE.LineBasicMaterial({ color: 0xf92435 });
-          const line = new THREE.Line(geometry, material);
-          this.earth.add(line);
-          // Draw Curves
-          // if (j < points.length - 1) {
-          //   let posNext = this.convertLatLonToCartesian(points[j + 1].lat, points[j + 1].lon);
-          //   this.getCurve(pos, posNext);
-          // }
+      } else {
+        for (let i = 0; i < this.apiData.count; i++) {
+          let oArticleData: any = {
+            lat: this.apiData.data[i].fields.primary_country.location.lat,
+            lon: this.apiData.data[i].fields.primary_country.location.lon,
+            id: this.apiData.data[i].id,
+            country: this.apiData.data[i].fields.primary_country.name,
+            disaster_type: this.apiData.data[i].fields.type,
+            title: this.apiData.data[i].fields.name,
+            body: this.apiData.data[i].fields["description-html"],
+            link: this.apiData.data[i].fields.url
+          };
+          filteredAPIData.push(oArticleData);
         }
-      }, 3000);
-    });
+      }
+      // Build objects with api data
+      for (let j = 0; j < filteredAPIData.length; j++) {
+        let pos = this.convertLatLonToCartesian(filteredAPIData[j].lat, filteredAPIData[j].lon);
+        let location = new THREE.Mesh(
+          new THREE.SphereGeometry(0.01, 20, 20),
+          new THREE.ShaderMaterial({
+            vertexShader: locationVertexShader,
+            fragmentShader: locationFragmentShader
+          })
+        );
+        location.position.set(pos.x, pos.y, pos.z);
+        this.groupLocations.add(location);
+        this.earth.add(this.groupLocations);
+        // Adding api data to three.js objects
+        location.userData.lat = filteredAPIData[j].lat;
+        location.userData.lon = filteredAPIData[j].lon;
+        location.userData.id = filteredAPIData[j].id;
+        location.userData.country = filteredAPIData[j].country;
+        location.userData.disaster_type = filteredAPIData[j].disaster_type;
+        location.userData.title = filteredAPIData[j].title;
+        location.userData.body = filteredAPIData[j].body;
+        location.userData.link = filteredAPIData[j].link;
+        // Generate lines
+        let v = new THREE.Vector3(pos.x, pos.y, pos.z);
+        let v2 = new THREE.Vector3(pos.x * 1.1, pos.y * 1.1, pos.z * 1.1);
+        const geometry = new THREE.BufferGeometry().setFromPoints([v, v2]);
+        const material = new THREE.LineBasicMaterial({ color: 0xf92435 });
+        const line = new THREE.Line(geometry, material);
+        this.earth.add(line);
+        // Draw Curves
+        // if (j < points.length - 1) {
+        //   let posNext = this.convertLatLonToCartesian(points[j + 1].lat, points[j + 1].lon);
+        //   this.getCurve(pos, posNext);
+        // }
+      }
 
+      if (this.id) {
+        let raycaterObject = [{
+          "object": {
+            "userData": {
+              'lat': filteredAPIData[0].lat,
+              'lon': filteredAPIData[0].lon,
+              'id': filteredAPIData[0].id,
+              'country': filteredAPIData[0].country,
+              'disaster_type': filteredAPIData[0].disaster_type,
+              'title': filteredAPIData[0].title,
+              'body': filteredAPIData[0].body,
+              'link': filteredAPIData[0].link
+            }
+          }
+        }];
+        this.modalCtl.open(ArticleComponent, {
+          data: raycaterObject
+        });
+      }
+     
+    }, 3000);
   }
 
   private convertLatLonToCartesian(lat, lon) {
