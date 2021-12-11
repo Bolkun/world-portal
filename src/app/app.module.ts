@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { FlashMessagesModule, FlashMessagesService } from 'flash-messages-angular';
 import { HttpClientModule } from '@angular/common/http';
+import { ShareModule } from 'ngx-sharebuttons';
 // firebase
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
@@ -45,6 +46,7 @@ import { SafeHtmlPipe } from './pipes/safe-html.pipe';
     MatDialogModule,
     BrowserAnimationsModule,
     MatIconModule,
+    ShareModule,
     // firebase
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule

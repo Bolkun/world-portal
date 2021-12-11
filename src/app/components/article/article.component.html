@@ -2,57 +2,87 @@
   <mat-icon>close</mat-icon>
 </div>
 <div class="container overflow-auto max-h-720x">
-  <div *ngFor="let article of data" class="row h-80vh" style="position: relative;">
+  <div
+    *ngFor="let article of data"
+    class="row h-80vh"
+    style="position: relative;"
+  >
     <div class="col">
       <div class="container">
         <div class="row">
           <div class="col-1">
-            <span style="font-size: 10px; color: grey;">#{{ article.object.userData.id }}</span>
+            <span style="font-size: 10px; color: grey;">
+              #{{ article.object.userData.id }}
+            </span>
             {{ article.object.userData.country }}
           </div>
           <div class="col-9">
             <h1 class="text-align-center">
-              <a href="{{ article.object.userData.link }}" target="_blank">{{ article.object.userData.title }}</a>
+              <a href="{{ article.object.userData.link }}" target="_blank">
+                {{ article.object.userData.title }}
+              </a>
             </h1>
           </div>
           <div class="col-2">
-            <div *ngFor="let disaster_type of article.object.userData.disaster_type">
+            <div
+              *ngFor="
+                let disaster_type of article.object.userData.disaster_type
+              "
+            >
               <p class="text-align-end">{{ disaster_type.name }}</p>
             </div>
           </div>
         </div>
         <div class="row">
           <div class="col">
-            <div class="text-align-justify" [innerHTML]="article.object.userData.body | safeHtml"></div>
+            <div
+              class="text-align-justify"
+              [innerHTML]="article.object.userData.body | safeHtml"
+            ></div>
             <div class="container">
               <div class="row border-b">
                 <div class="col">
-                  <div class="container">
-                    <div class="row max-w-240x m-auto">
-                      <div class="col">
+                  <div class="container text-align-center">
+                    <!-- <div class="col">
                         <mat-icon>thumb_up</mat-icon>
                       </div>
                       <div class="col">
                         <mat-icon>thumb_down</mat-icon>
-                      </div>
-                      <div class="col">
-                        <mat-icon>share</mat-icon>
-                      </div>
+                      </div> -->
+                    <div class="col">
+                      <button class="button-social" shareButton="facebook">
+                        <i class="material-icons">facebook</i>
+                      </button>
+                      <button class="button-social" shareButton="telegram">
+                        <i class="material-icons">telegram</i>
+                      </button>
+                      <button class="button-social" shareButton="whatsapp">
+                        <i class="material-icons">whatsapp</i>
+                      </button>
+                      <button class="button-social" shareButton="email">
+                        <i class="material-icons">email</i>
+                      </button>
+                      <button class="button-social" shareButton="copy">
+                        <i class="material-icons">content_copy</i>
+                      </button>
                     </div>
                   </div>
                 </div>
               </div>
-              <div class="row m-t-10x m-b-20x" *ngFor="let item of commentMockUps">
+              <div
+                class="row m-t-10x m-b-20x"
+                *ngFor="let item of commentMockUps"
+              >
                 <div class="col">
                   <div class="container">
                     <div class="row">
                       <div class="col-10">
                         <h3 class="name-date m-b-0">
-                          <b>{{item.name}}</b>
+                          <b>{{ item.name }}</b>
                         </h3>
                       </div>
                       <div class="col-2">
-                        <p class=" name-date m-b-0">{{item.createdAt}}</p>
+                        <p class="name-date m-b-0">{{ item.createdAt }}</p>
                       </div>
                     </div>
                     <div class="row img-comment">
@@ -60,18 +90,16 @@
                         <div class="user-avatar"></div>
                       </div>
                       <div class="col-11">
-                        {{item.comment}}
+                        {{ item.comment }}
                       </div>
                     </div>
                   </div>
                 </div>
-
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-
   </div>
 </div>

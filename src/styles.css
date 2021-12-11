@@ -15,6 +15,11 @@ canvas {
   left: 0;
 }
 
+.button-social {
+  border: none;
+  background: transparent;
+}
+
 #canvas:hover {
   cursor: all-scroll;
 }

@@ -330,7 +330,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       }
 
       if (this.id) {
-        let raycaterObject = [{
+        let raycasterObject = [{
           "object": {
             "userData": {
               'lat': filteredAPIData[0].lat,
@@ -345,7 +345,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
           }
         }];
         this.modalCtl.open(ArticleComponent, {
-          data: raycaterObject
+          data: raycasterObject
         });
       }
      

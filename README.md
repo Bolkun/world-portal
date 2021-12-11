@@ -64,4 +64,7 @@ https://fonts.google.com/icons
 
 Share Links (docu: https://github.com/MurhafSousli/ngx-sharebuttons/wiki/Share-Button-Directive)
 npm i ngx-sharebuttons @angular/cdk
+
 Icons https://jossef.github.io/material-design-icons-iconfont/
+npm install material-design-icons-iconfont
+Add to index.html <link href=".../material-design-icons.css" rel="stylesheet">
