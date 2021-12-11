@@ -50,19 +50,19 @@
                         <mat-icon>thumb_down</mat-icon>
                       </div> -->
                     <div class="col">
-                      <button class="button-social" shareButton="facebook">
+                      <button class="button-social" shareButton="facebook" url="{{ social_url + '/' + article.object.userData.id }}">
                         <i class="material-icons">facebook</i>
                       </button>
-                      <button class="button-social" shareButton="telegram">
+                      <button class="button-social" shareButton="telegram" url="{{ social_url + '/' + article.object.userData.id }}">
                         <i class="material-icons">telegram</i>
                       </button>
-                      <button class="button-social" shareButton="whatsapp">
+                      <button class="button-social" shareButton="whatsapp" url="{{ social_url + '/' + article.object.userData.id }}">
                         <i class="material-icons">whatsapp</i>
                       </button>
-                      <button class="button-social" shareButton="email">
+                      <button class="button-social" shareButton="email" url="{{ social_url + '/' + article.object.userData.id }}">
                         <i class="material-icons">email</i>
                       </button>
-                      <button class="button-social" shareButton="copy">
+                      <button class="button-social" shareButton="copy" url="{{ social_url + '/' + article.object.userData.id }}">
                         <i class="material-icons">content_copy</i>
                       </button>
                     </div>

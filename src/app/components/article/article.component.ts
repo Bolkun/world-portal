@@ -7,6 +7,7 @@ import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
   styleUrls: ['./article.component.css']
 })
 export class ArticleComponent implements OnInit {
+  social_url = location.origin + '/dashboard';
   commentMockUps = [
     {
       name: 'Hamedkabir',
@@ -32,5 +33,5 @@ export class ArticleComponent implements OnInit {
   closeArticle() {
     this.modalCtl.closeAll();
   }
-}
 
+}
