@@ -24,6 +24,20 @@ canvas {
   cursor: all-scroll;
 }
 
+/* Tooltip */
+#location-tooltip {
+  position: absolute;
+  display: none;
+}
+
+#location-tooltip p {
+  color: white;
+  background-color: black;
+  padding-left: 3px;
+  padding-right: 3px;
+  border-radius: 3px;
+}
+
 .custom-container {
   max-width: 100% !important;
   width: 100% !important;

@@ -102,6 +102,8 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   private mouse = { x: 0, y: 0 };
   private last!: MouseEvent;
   private mouseDown: boolean = false;
+  // Tooltip
+  private event = new MouseEvent('click');
   @HostListener('click', ['$event.target']) onClick(event) {
     this.raycaster.setFromCamera(this.rMouse, this.camera);
     let intersects = this.raycaster.intersectObjects(this.groupLocations.children);
@@ -125,6 +127,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       // Tooltip
       this.rMouse.x = (event.clientX / window.innerWidth) * 2 - 1;
       this.rMouse.y = - (event.clientY / window.innerHeight) * 2 + 1;
+      this.event = event;
       if (this.mouseDown) {
         // Stop earth rotation
         this.bRotateEarth = false;
@@ -388,27 +391,43 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     this.earth.rotation.y += y / 1000000;
   }
 
-  private resetTooltip() {
-    for (let i = 0; i < this.earth.children.length; i++) {
-      if (this.earth.children[i].material) {
-        this.earth.children[i].material.opacity = 1.0;
-      }
-    }
-  }
+  // private resetTooltip() {
+  //   for (let i = 0; i < this.earth.children.length; i++) {
+  //     if (this.earth.children[i].material) {
+  //       this.earth.children[i].material.opacity = 1.0;
+  //     }
+  //   }
+  // }
 
   private hoverTooltip() {
     this.raycaster.setFromCamera(this.rMouse, this.camera);
     let intersects = this.raycaster.intersectObjects(this.groupLocations.children);
+    let tooltip = document.getElementById('location-tooltip');
 
     if (intersects.length > 0) {
       this.bRotateEarth = false;
       this.mouseDown = false;
+      // tooltip
+      document.body.style.cursor = 'pointer';
+      tooltip!.style.top = (this.event.clientY - 20) + 'px';
+      tooltip!.style.left = (this.event.clientX + 20) + 'px';
+      tooltip!.style.display = 'block';
+
       for (let i = 0; i < intersects.length; i++) {
-        intersects[i].object.material.transparent = true;
-        intersects[i].object.material.opacity = 0.5;
+        if (tooltip!.getElementsByTagName('*').length < intersects.length) {
+          tooltip!.innerHTML += "<p>" + intersects[i].object.userData.title + "</p>";
+        } else {
+          tooltip!.innerHTML = "<p>" + intersects[i].object.userData.title + "</p>";
+        }
+        // intersects[i].object.material.transparent = true;
+        // intersects[i].object.material.opacity = 0.5;
       }
     } else {
-      this.bRotateEarth =  true;
+      document.body.style.cursor = 'default';
+      if (tooltip) {
+        tooltip!.style.display = 'none';
+        tooltip!.innerHTML = '';
+      }
     }
   }
 
@@ -502,7 +521,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
           component.bAboutClose = false;
         }
       }
-      component.resetTooltip();
+      //component.resetTooltip();
       component.hoverTooltip();
       component.renderer.render(component.scene, component.camera);
     }());
