@@ -30,6 +30,8 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   slideLoginActive: boolean = false;
   slideAboutActive: boolean = false;
   filterOptionsActive: boolean = false;
+  loaderProg: number = 0;
+  dataLoaded: boolean = false;
 
   // API
   id: any;
@@ -91,7 +93,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   // );
   private starGeometry = new THREE.BufferGeometry();
   private starImg = new THREE.TextureLoader().load('/assets/img/circle-16.png');
-  private starMaterial = new THREE.PointsMaterial({ color: 0xffffff, size: 1, map: this.starImg});
+  private starMaterial = new THREE.PointsMaterial({ color: 0xffffff, size: 1, map: this.starImg });
   private stars: THREE.Points;
   private velocities: any = [];
   private accelerations: any = [];
@@ -184,6 +186,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   ) { }
 
   ngOnInit(): void {
+    this.loaderProgress();
     this.id = this.route.snapshot.params['id'];
   }
 
@@ -204,14 +207,14 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     let texture_rt = new THREE.TextureLoader().load('/assets/img/skybox/space_rt.png');
     let texture_lf = new THREE.TextureLoader().load('/assets/img/skybox/space_lf.png');
 
-    materialArray.push(new THREE.MeshBasicMaterial({map: texture_ft}));
-    materialArray.push(new THREE.MeshBasicMaterial({map: texture_bk}));
-    materialArray.push(new THREE.MeshBasicMaterial({map: texture_up}));
-    materialArray.push(new THREE.MeshBasicMaterial({map: texture_dn}));
-    materialArray.push(new THREE.MeshBasicMaterial({map: texture_rt}));
-    materialArray.push(new THREE.MeshBasicMaterial({map: texture_lf}));
+    materialArray.push(new THREE.MeshBasicMaterial({ map: texture_ft }));
+    materialArray.push(new THREE.MeshBasicMaterial({ map: texture_bk }));
+    materialArray.push(new THREE.MeshBasicMaterial({ map: texture_up }));
+    materialArray.push(new THREE.MeshBasicMaterial({ map: texture_dn }));
+    materialArray.push(new THREE.MeshBasicMaterial({ map: texture_rt }));
+    materialArray.push(new THREE.MeshBasicMaterial({ map: texture_lf }));
 
-    for(let i=0; i<6; i++)
+    for (let i = 0; i < 6; i++)
       materialArray[i].side = THREE.BackSide;
 
     let skyboxGeo = new THREE.BoxGeometry(2000, 2000, 2000);
@@ -230,7 +233,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       this.accelerations.push(0.0001);
     }
     this.starGeometry.setAttribute('position', new THREE.Float32BufferAttribute(starVertices, 3));
-    
+
     this.stars = new THREE.Points(this.starGeometry, this.starMaterial);
     this.scene.add(this.stars);
 
@@ -253,7 +256,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       });
     } else {
       this.apiReliefwebService.getDisastersByDate(this.date).subscribe((data) => {
-       this.processAPIData(data);
+        this.processAPIData(data);
       });
     }
 
@@ -351,7 +354,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
           data: raycasterObject
         });
       }
-     
+      this.dataLoaded = true;
     }, 3000);
   }
 
@@ -460,14 +463,14 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       // Login
       if (component.bLoginOpen) {
         component.bRotateEarth = true;
-        if(component.camera.zoom < 2.5) { // 1 bis 2.5
+        if (component.camera.zoom < 2.5) { // 1 bis 2.5
           component.camera.zoom += 0.1;
           component.camera.updateProjectionMatrix();
-          if(component.camera.rotation.y <= 0.4) {
+          if (component.camera.rotation.y <= 0.4) {
             component.camera.rotation.y += 0.025;
           }
         }
-        if(component.camera.zoom >= 2.5) {
+        if (component.camera.zoom >= 2.5) {
           component.camera.zoom = 2.5;
           component.camera.rotation.y = 0.375;
           component.camera.updateProjectionMatrix();
@@ -475,14 +478,14 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         }
       }
       if (component.bLoginClose) {
-        if(component.camera.zoom > 1) {
+        if (component.camera.zoom > 1) {
           component.camera.zoom -= 0.1;
           component.camera.updateProjectionMatrix();
         }
-        if(component.camera.rotation.y > 0) {
+        if (component.camera.rotation.y > 0) {
           component.camera.rotation.y -= 0.025;
         }
-        if(component.camera.zoom < 1) {
+        if (component.camera.zoom < 1) {
           component.camera.zoom = 1;
           component.camera.rotation.y = 0;
           component.camera.updateProjectionMatrix();
@@ -492,14 +495,14 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       // About
       if (component.bAboutOpen) {
         component.bRotateEarth = true;
-        if(component.camera.zoom < 2.5) { // 1 bis 2.5
+        if (component.camera.zoom < 2.5) { // 1 bis 2.5
           component.camera.zoom += 0.1;
           component.camera.updateProjectionMatrix();
-          if(component.camera.rotation.y <= 0.4) {
+          if (component.camera.rotation.y <= 0.4) {
             component.camera.rotation.y -= 0.025;
           }
         }
-        if(component.camera.zoom >= 2.5) {
+        if (component.camera.zoom >= 2.5) {
           component.camera.zoom = 2.5;
           component.camera.rotation.y = -0.375;
           component.camera.updateProjectionMatrix();
@@ -507,14 +510,14 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         }
       }
       if (component.bAboutClose) {
-        if(component.camera.zoom > 1) {
+        if (component.camera.zoom > 1) {
           component.camera.zoom -= 0.1;
           component.camera.updateProjectionMatrix();
         }
-        if(component.camera.rotation.y > 0) {
+        if (component.camera.rotation.y > 0) {
           component.camera.rotation.y -= 0.025;
         }
-        if(component.camera.zoom < 1) {
+        if (component.camera.zoom < 1) {
           component.camera.zoom = 1;
           component.camera.rotation.y = 0;
           component.camera.updateProjectionMatrix();
@@ -588,13 +591,13 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     }, 1000);
   }
 
-  musicOn() { 
-    this.notPlaying = false; 
+  musicOn() {
+    this.notPlaying = false;
     if (this.audio.paused) {
       this.audio.play();
     } else {
       this.audio.load();
-      this.audio.addEventListener('ended', function() {
+      this.audio.addEventListener('ended', function () {
         this.currentTime = 0;
         this.play();
       }, false);
@@ -607,4 +610,25 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     this.audio.pause();
   }
 
+
+  loaderProgress() {
+    if (!this.dataLoaded) {
+
+      this.loaderProg = this.loaderProg + 1;
+      setTimeout(() => {
+        this.loaderProgress();
+      }, 200);
+    } else if (this.dataLoaded) {
+      if (this.loaderProg < 100) {
+        this.loaderProg = this.loaderProg + 1;
+        setTimeout(() => {
+          this.loaderProgress();
+        }, 50);
+      } else {
+        console.log("finished");
+
+      }
+
+    }
+  }
 }

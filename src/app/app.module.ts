@@ -4,6 +4,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { FlashMessagesModule, FlashMessagesService } from 'flash-messages-angular';
 import { HttpClientModule } from '@angular/common/http';
 import { ShareModule } from 'ngx-sharebuttons';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 // firebase
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
@@ -22,7 +23,7 @@ import { AboutComponent } from './components/about/about.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { FilterPopUpComponent } from './components/filter-pop-up/filter-pop-up.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {MatIconModule} from '@angular/material/icon';
+import { MatIconModule } from '@angular/material/icon';
 import { ArticleComponent } from './components/article/article.component';
 import { SafeHtmlPipe } from './pipes/safe-html.pipe';
 @NgModule({
@@ -47,6 +48,7 @@ import { SafeHtmlPipe } from './pipes/safe-html.pipe';
     BrowserAnimationsModule,
     MatIconModule,
     ShareModule,
+    MatProgressBarModule,
     // firebase
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule
