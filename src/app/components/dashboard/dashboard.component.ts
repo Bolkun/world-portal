@@ -407,6 +407,8 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         intersects[i].object.material.transparent = true;
         intersects[i].object.material.opacity = 0.5;
       }
+    } else {
+      this.bRotateEarth =  true;
     }
   }
 
