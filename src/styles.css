@@ -1,4 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
+@font-face {
+  font-family: ShareTechMono;
+  src: url(assets/font/ShareTechMono-Regular.ttf) format("opentype");
+}
 
 html,
 body {
@@ -36,6 +40,17 @@ canvas {
   padding-left: 3px;
   padding-right: 3px;
   border-radius: 3px;
+}
+
+.clock {
+  color: #2173ca !important;
+  text-shadow: 0 0 20px rgb(148, 135, 197),  0 0 20px rgba(10, 175, 230, 0);
+  font-size: 60px !important;
+}
+
+.date {
+  z-index: 3;
+  margin-top: 40px !important;
 }
 
 .custom-container {
@@ -77,8 +92,14 @@ canvas {
 }
 
 .main-menu-item {
+  font-family: 'ShareTechMono', monospace !important;
   color: white;
   cursor: pointer;
+}
+
+.main-menu-item:hover {
+  color: #2173ca !important;
+  text-shadow: 0 0 20px rgb(148, 135, 197),  0 0 20px rgba(10, 175, 230, 0);
 }
 
 .white {
@@ -97,11 +118,6 @@ canvas {
 
 .text-align-center {
   text-align: center;
-}
-
-.date {
-  z-index: 3;
-  margin-top: 20px !important;
 }
 
 .login {
