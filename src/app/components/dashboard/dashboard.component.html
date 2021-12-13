@@ -1,22 +1,4 @@
 <!-- Loader -->
-<div *ngIf="loaderProg < 100" class="container">
-  <div class="row text-align-center">
-    <div class="col">
-      <div>
-        <h1>
-          AFTER A STORM COMES A CALM!
-        </h1>
-        <h4>Loading!</h4>
-      </div>
-    </div>
-  </div>
-  <div class="row text-align-center">
-    <div class="col">
-      <mat-progress-bar mode="determinate" [value]="loaderProg"></mat-progress-bar>
-
-    </div>
-  </div>
-</div>
 <!-- Login Component -->
 <div *ngIf="slideLoginActive">
   <app-login id="loginSlide" class="app-login-component"></app-login>
@@ -25,7 +7,8 @@
 <div *ngIf="slideAboutActive">
   <app-about id="aboutSlide" class="app-about-component"></app-about>
 </div>
-<div *ngIf="loaderProg >= 100" id="custom-container" class="container custom-container">
+<!-- Dashboard -->
+<div id="custom-container" class="container custom-container">
   <canvas #canvas id="canvas" style="width: 100%; height: 100%;"></canvas>
   <!-- Date -->
   <div *ngIf="!slideLoginActive && !slideAboutActive" class="row">

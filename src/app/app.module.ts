@@ -26,6 +26,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatIconModule } from '@angular/material/icon';
 import { ArticleComponent } from './components/article/article.component';
 import { SafeHtmlPipe } from './pipes/safe-html.pipe';
+import { LoaderComponent } from './components/loader/loader.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -37,7 +38,8 @@ import { SafeHtmlPipe } from './pipes/safe-html.pipe';
     AboutComponent,
     FilterPopUpComponent,
     ArticleComponent,
-    SafeHtmlPipe
+    SafeHtmlPipe,
+    LoaderComponent
   ],
   imports: [
     BrowserModule,

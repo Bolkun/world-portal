@@ -19,6 +19,8 @@ import locationFragmentShader from 'src/assets/shaders/locationFragment.glsl';
 import { MatDialog } from '@angular/material/dialog';
 import { FilterPopUpComponent } from '../filter-pop-up/filter-pop-up.component';
 import { ArticleComponent } from '../article/article.component';
+import { LoaderComponent } from '../loader/loader.component';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-dashboard',
@@ -30,8 +32,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   slideLoginActive: boolean = false;
   slideAboutActive: boolean = false;
   filterOptionsActive: boolean = false;
-  loaderProg: number = 0;
-  dataLoaded: boolean = false;
+  hamedkabir?: any;
 
   // API
   id: any;
@@ -186,13 +187,13 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   ) { }
 
   ngOnInit(): void {
-    this.loaderProgress();
     this.id = this.route.snapshot.params['id'];
   }
 
   ngAfterViewInit(): void {
     this.createScene();
     this.startRenderingLoop();
+    this.loaderProgress();
   }
 
   private createScene() {
@@ -255,6 +256,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         this.processAPIData(data);
       });
     } else {
+      this.hamedkabir = this.apiReliefwebService.getDisastersByDate(this.date);
       this.apiReliefwebService.getDisastersByDate(this.date).subscribe((data) => {
         this.processAPIData(data);
       });
@@ -354,7 +356,6 @@ export class DashboardComponent implements OnInit, AfterViewInit {
           data: raycasterObject
         });
       }
-      this.dataLoaded = true;
     }, 3000);
   }
 
@@ -612,23 +613,14 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
 
   loaderProgress() {
-    if (!this.dataLoaded) {
+    // Open Modal
+    this.modalCtl.open(LoaderComponent, {
+      data: this.hamedkabir,
+      height: '100vh',
+      width: '100%',
+      hasBackdrop: false,
+      restoreFocus: false
 
-      this.loaderProg = this.loaderProg + 1;
-      setTimeout(() => {
-        this.loaderProgress();
-      }, 200);
-    } else if (this.dataLoaded) {
-      if (this.loaderProg < 100) {
-        this.loaderProg = this.loaderProg + 1;
-        setTimeout(() => {
-          this.loaderProgress();
-        }, 50);
-      } else {
-        console.log("finished");
-
-      }
-
-    }
+    });
   }
 }
