@@ -355,3 +355,14 @@ a:link {
 .form-header {
   color: #212529;
 }
+
+.tipps {
+  color: white;
+  font-size: 18px;
+  font-family: 'ShareTechMono', monospace !important;
+  color: #2173ca !important;
+}
+
+.tipps span {
+  color: orange;
+}

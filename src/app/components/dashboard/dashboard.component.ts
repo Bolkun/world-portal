@@ -104,6 +104,13 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   private mouseDown: boolean = false;
   // Tooltip
   private event = new MouseEvent('click');
+  // Tipps
+  private headIndex = 1;
+  private aTipp = [
+    "You can rotate and zoom earth with your mouse 👍(≖‿‿≖👍)", // equel to html
+    "You can login and leave comments ✍(◔◡◔)",
+    "You can use filter to get certain information of a country, date or disaster type (>‿◠)✌"
+  ];
   @HostListener('click', ['$event.target']) onClick(event) {
     this.raycaster.setFromCamera(this.rMouse, this.camera);
     let intersects = this.raycaster.intersectObjects(this.groupLocations.children);
@@ -190,6 +197,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     this.createScene();
     this.startRenderingLoop();
+    this.animateTipps();
   }
 
   private createScene() {
@@ -605,6 +613,21 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   musicOff() {
     this.notPlaying = true;
     this.audio.pause();
+  }
+
+  animateTipps() {
+    setInterval(() => this.changeTipp(), 7000);
+  }
+
+  changeTipp() {
+    let tipp = document.getElementById('tipp');
+    if (tipp) {
+      tipp!.innerHTML = this.aTipp[this.headIndex];
+      this.headIndex++;
+      if(this.headIndex >= this.aTipp.length){
+        this.headIndex=0;
+      }
+    }
   }
 
 }
