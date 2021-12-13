@@ -197,7 +197,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     this.createScene();
     this.startRenderingLoop();
-    this.animateTipps();
+    this.animateTips();
   }
 
   private createScene() {
@@ -615,11 +615,11 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     this.audio.pause();
   }
 
-  animateTipps() {
-    setInterval(() => this.changeTipp(), 7000);
+  animateTips() {
+    setInterval(() => this.changeTip(), 7000);
   }
 
-  changeTipp() {
+  changeTip() {
     let tipp = document.getElementById('tipp');
     if (tipp) {
       tipp!.innerHTML = this.aTipp[this.headIndex];
