@@ -7,10 +7,43 @@
 html,
 body {
   height: 100%;
+  background: black;
 }
 body {
   margin: 0;
   font-family: Roboto, 'Helvetica Neue', sans-serif;
+}
+
+.form-label {
+  color: #2173ca !important;
+  text-shadow: 0 0 30px rgb(148, 135, 197),  0 0 20px rgba(10, 175, 230, 0);
+}
+
+.form-select {
+  background-color: transparent !important;
+  border-color: black !important;
+  color: black !important;
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
+  filter: invert(100%);
+}
+
+select > button {
+  color: red !important;
+  background-color: red !important;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(100%); /* date icon*/
+}
+
+.form-control {
+  background: transparent !important;
+  border-color: white !important;
+  color: white !important;
+}
+
+.search {
+  margin-top: 15px;
 }
 
 canvas {
@@ -109,7 +142,7 @@ canvas {
 .filter-content {
   position: relative;
   margin: 0;
-  bottom: -70px;
+  bottom: 0;
 }
 
 .vertical-align-center {
@@ -159,12 +192,16 @@ h3 {
   right: 20px;
 }
 
-.left-50procent {
-  left: 50%;
+.left-45procent {
+  left: 45%;
 }
 
 .top-45x {
   top: -45px;
+}
+
+.top-50x {
+  top: -50px;
 }
 
 .bottom-10x {

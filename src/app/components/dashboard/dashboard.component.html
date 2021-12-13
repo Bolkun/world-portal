@@ -69,12 +69,18 @@
       </div>
     </div>
   </div>
-  <div *ngIf="filterOptionsActive" class="row">
-    <div class="col position-absolute bottom-10x">
-      <button mat-icon-button color="warn" (click)="closeFilter()" class="position-absolute left-50procent top-45x">
-        <mat-icon>cancel</mat-icon>
-      </button>
-      <app-filter-pop-up></app-filter-pop-up>
+  <div *ngIf="filterOptionsActive && !slideLoginActive && !slideAboutActive" class="row">
+    <div class="col position-absolute">
+      <div class="filter-content">
+        <div class="container">
+          <div class="row">
+            <div class="col text-align-center">
+              <h1 class="main-menu-item" (click)="closeFilter()">Close</h1>
+              <app-filter-pop-up></app-filter-pop-up>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
