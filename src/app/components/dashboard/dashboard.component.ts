@@ -17,7 +17,7 @@ import locationVertexShader from 'src/assets/shaders/locationVertex.glsl';
 // @ts-ignore
 import locationFragmentShader from 'src/assets/shaders/locationFragment.glsl';
 import { MatDialog } from '@angular/material/dialog';
-import { FilterPopUpComponent } from '../filter-pop-up/filter-pop-up.component';
+import { FilterComponent } from '../filter/filter.component';
 import { ArticleComponent } from '../article/article.component';
 
 @Component({
@@ -533,7 +533,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   }
 
   openFilterModal() {
-    // this.modalCtl.open(FilterPopUpComponent);
+    // this.modalCtl.open(FilterComponent);
     this.filterOptionsActive = true;
   }
 
