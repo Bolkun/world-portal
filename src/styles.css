@@ -15,6 +15,7 @@ body {
 }
 
 .form-label {
+  font-family: 'ShareTechMono', monospace !important;
   color: #2173ca !important;
   text-shadow: 0 0 30px rgb(148, 135, 197),  0 0 20px rgba(10, 175, 230, 0);
 }
