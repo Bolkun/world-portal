@@ -22,10 +22,13 @@
       <!-- <button *ngIf="slideLoginActive" mat-icon-button color="warn" (click)="resetSlide()" class="position-absolute text-align-left vertical-align-center">
         <mat-icon>cancel</mat-icon>
       </button> -->
-      <h1 *ngIf="slideLoginActive" class="main-menu-item position-absolute text-align-left vertical-align-center login"
+      <h1 id="closeLogin" *ngIf="slideLoginActive" class="main-menu-item position-absolute text-align-left vertical-align-center login"
         (click)="closeLogin()">Close</h1>
-      <h1 *ngIf="!slideLoginActive && !slideAboutActive"
+      <h1 id="loginButton" *ngIf="!slideLoginActive && !slideAboutActive && !userService.isLoggedIn()"
         class="main-menu-item position-absolute text-align-left vertical-align-center login" (click)="login()">Login
+      </h1>
+      <h1 *ngIf="userService.isLoggedIn()"
+        class="main-menu-item position-absolute text-align-left vertical-align-center login" (click)="userService.SignOut()">Logout
       </h1>
     </div>
     <div class="col-10">

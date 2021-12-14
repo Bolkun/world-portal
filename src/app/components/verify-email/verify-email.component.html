@@ -3,18 +3,17 @@
   <flash-messages></flash-messages>
   <div *ngIf="userService.userData as user">
     <div *ngIf="userService.userData.emailVerified === false">
-      <p>We have sent a confirmation email to <strong>{{user.email}}</strong>.</p>
-      <p>Please check your email (spam directory) and click on the link to verfiy your email address.</p>
+      <p style="color: orange;">We have sent a confirmation email to <strong>{{user.email}}</strong>.</p>
+      <p style="color: orange;">Please check your email (spam directory) and click on the link to verfiy your email address.</p>
     </div>
   </div>
   <div>
     <!-- Calling SendVerificationMail() method using userService Api -->
-    <button type="button" class="btn btnSecondary" (click)="userService.SendVerificationMail()">
-      <i class="fas fa-redo-alt"></i>
+    <button type="button" class="form-control search" (click)="userService.SendVerificationMail()">
       Resend Verification Email
     </button>
   </div>
-  <div>
-    <span>Go back to <a routerLink="/dashboard">Dashboard and Login</a>!</span>
+  <div style="padding-top: 10px;">
+    <span style="color: orange;">Go back to <a class="link" (click)="backLogin()">Login</a></span>
   </div>
 </div>

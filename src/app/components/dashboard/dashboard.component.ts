@@ -569,7 +569,6 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       doc.style.transform = 'translateX(-150%)';
     }
     setTimeout(() => {
-
       this.slideLoginActive = false;
     }, 1000);
   }

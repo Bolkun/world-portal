@@ -58,7 +58,9 @@ export class UserService {
       this.GetUserData(result.user.uid);
       localStorage.setItem('userEmail', JSON.stringify(result.user?.email));
       this.ngZone.run(() => {
-        this.router.navigate(['dashboard']);
+        // Go to dashboard
+        document.getElementById('closeLogin')!.click();
+        document.getElementById('closeLogin')!.style.display = 'none';
       });
     }).catch((error) => {
       this.flashMessage.show(error.message, { cssClass: 'alert-danger', timeout: this.flashMessageTimeout });
@@ -195,7 +197,10 @@ export class UserService {
   SignOut() {
     return this.auth.signOut().then(() => {
       localStorage.removeItem('userEmail');
-      this.router.navigate(['login']);
+      let closeButton = document.getElementById('closeLogin');
+      if(closeButton) {
+        closeButton!.style.display = 'block';
+      }
     });
   }
   
