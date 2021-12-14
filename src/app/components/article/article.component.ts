@@ -60,6 +60,8 @@ export class ArticleComponent implements OnInit {
   }
 
   openSingleArticle(article) {
+    let content = document.getElementById('content');
+    content!.scrollTop = 0;
     this.singleArticle = true;
     this.singleArticleData = article;
   }

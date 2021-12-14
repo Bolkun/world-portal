@@ -4,18 +4,18 @@
 <div *ngIf="singleArticle && backButtonBySingleArticle" class="back-article-button" (click)="backArticle()">
   <mat-icon>keyboard_backspace</mat-icon>
 </div>
-<div class="container overflow-auto max-h-720x">
+<div id="content" class="container overflow-auto max-h-720x">
   <div *ngIf="!singleArticle">
     <div class="row">
-      <div class="col-6" *ngFor="let article of data;let indexOfelement=index;">
+      <div class="col-6" *ngFor="let article of data">
         <mat-card class="m-b-20x">
           <mat-card-title-group>
             <mat-card-title class="line-h-normal">{{ article.object.userData.title }}</mat-card-title>
             <mat-card-subtitle style="color: #ff1d00;">{{ article.object.userData.country }}</mat-card-subtitle>
           </mat-card-title-group>
           <mat-card-content>
-            <p [ngClass]="{'limitTextHeight': readMore[indexOfelement]}"
-              [innerHTML]="article.object.userData.body | safeHtml">
+            <p 
+              [innerHTML]="article.object.userData.body.split('\n')[0] | safeHtml">
 
             </p>
           </mat-card-content>
