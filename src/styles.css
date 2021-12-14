@@ -375,6 +375,7 @@ a:link {
   position: relative;
   margin-left: 50px;
   background-color: transparent;
+  max-width: 350px;
 }
 
 .form-header {
@@ -392,4 +393,8 @@ a:link {
 
 .tipps span {
   color: orange;
+}
+
+.alert-danger {
+  color: #ff1d00 !important;
 }
