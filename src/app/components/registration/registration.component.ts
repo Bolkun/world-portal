@@ -22,7 +22,6 @@ export class RegistrationComponent implements OnInit {
 
   async signUp(userNickname, userEmail, userPwd){
     await this.userService.SignUp(userNickname, userEmail, userPwd);
-    
   }
 
   async googleReg() {

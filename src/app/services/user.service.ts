@@ -6,12 +6,13 @@ import { FlashMessagesService } from 'flash-messages-angular';
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/compat/firestore';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import firebase from 'firebase/compat/app'; // firebase.auth
+import { LoginComponent } from '../components/login/login.component';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
-  userData: any; // Save logged in user data
+  public userData: any; // Save logged in user data
   loggedIn = new BehaviorSubject<boolean>(false);
   loggedIn$ = this.loggedIn.asObservable();
   flashMessageTimeout: number = 5000;
@@ -73,7 +74,8 @@ export class UserService {
         // SignUp
         return user.sendEmailVerification().then(() => {
           // Function createUserWithEmailAndPassword() in SignIn method promise that emailVarified will be true
-          this.router.navigate(['verify-email']);
+          //this.router.navigate(['verify-email']);
+          LoginComponent.openPage('verifyEmail');
         });
       }
     } else {

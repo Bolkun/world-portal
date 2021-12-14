@@ -22,3 +22,6 @@
     <span style="color: orange;">Already have an account? <a class="link" (click)="backLogin()">Login</a></span>
   </div>
 </div>
+
+<!-- forgot Password -->
+<app-reset-password *ngIf="routingsComponent.forgotPassword" (goBackToLogin)="openPage('login')"></app-reset-password>

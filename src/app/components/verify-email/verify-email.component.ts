@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -7,6 +7,8 @@ import { UserService } from 'src/app/services/user.service';
   styleUrls: ['./verify-email.component.css']
 })
 export class VerifyEmailComponent implements OnInit {
+  @Output() goBackToLogin: EventEmitter<any> =
+  new EventEmitter<any>();
 
   constructor(
     public userService: UserService
@@ -14,4 +16,7 @@ export class VerifyEmailComponent implements OnInit {
 
   ngOnInit(): void {}
 
+  backLogin() {
+    this.goBackToLogin.emit();
+  }
 }
