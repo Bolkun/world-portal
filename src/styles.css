@@ -43,6 +43,30 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   color: white !important;
 }
 
+.btn {
+  display: inline-block;
+  background: #000;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  margin: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 15px;
+  font-family: inherit;
+}
+
+.btnGoogle {
+  background: url(assets/icon/google.png);
+  color: #212529;
+  font-family: "Roboto";
+  font-weight: bold;
+  background-size: cover;
+  height: 35px;
+  width: 35px;
+}
+
 .search {
   margin-top: 15px;
 }
@@ -235,6 +259,7 @@ a:focus {
 
 a:link {
   text-decoration: none;
+  cursor: pointer !important;
 }
 
 .mat-dialog-container {
@@ -349,11 +374,13 @@ a:link {
   color: #212529;
   position: relative;
   margin-left: 50px;
-  background-color: white;
+  background-color: transparent;
 }
 
 .form-header {
-  color: #212529;
+  font-family: 'ShareTechMono', monospace !important;
+  color: #2173ca !important;
+  text-shadow: 0 0 30px rgb(148, 135, 197),  0 0 20px rgba(10, 175, 230, 0);
 }
 
 .tipps {
