@@ -75,7 +75,6 @@ export class UserService {
         return user.sendEmailVerification().then(() => {
           // Function createUserWithEmailAndPassword() in SignIn method promise that emailVarified will be true
           //this.router.navigate(['verify-email']);
-          LoginComponent.openPage('verifyEmail');
         });
       }
     } else {

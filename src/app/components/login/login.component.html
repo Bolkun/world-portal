@@ -12,7 +12,8 @@
   </div>
   <div class="form-footer">
     <!-- Calling SignIn Api from userService -->
-    <button class="form-control search" (click)="userService.SignIn(userEmail.value, userPassword.value)">Sign in</button>
+    <button class="form-control search" (click)="userService.SignIn(userEmail.value, userPassword.value)">Sign
+      in</button>
     <!-- Calling GoogleAuth Api from userService -->
     <button class="btn btnGoogle" (click)="userService.GoogleLog()"></button>
   </div>
@@ -21,12 +22,16 @@
       <a class="link" (click)="openPage('forgotPassword')">Forgot Password?</a>
     </div>
     <div>
-      <span style="color: orange;">Don't have an account? <a class="link" (click)="openRegistration()">Register</a></span>
+      <span style="color: orange;">Don't have an account? <a class="link"
+          (click)="openRegistration()">Register</a></span>
     </div>
-  </div> 
+  </div>
 </div>
 
 <!-- registration -->
-<app-registration *ngIf="routingsComponent.registration" (goBackToLogin)="openPage('login')"></app-registration>
+<app-registration *ngIf="routingsComponent.registration" (goBackToLogin)="openPage('login')"
+  (goToVerifyEmail)="openPage('verifyEmail')"></app-registration>
+<!-- verify Email -->
+<app-verify-email *ngIf="routingsComponent.verifyEmail" (goBackToLogin)="openPage('login')"></app-verify-email>
 <!-- forgot Password -->
 <app-reset-password *ngIf="routingsComponent.forgotPassword" (goBackToLogin)="openPage('login')"></app-reset-password>
