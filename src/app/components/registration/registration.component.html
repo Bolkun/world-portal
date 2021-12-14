@@ -1,24 +1,24 @@
 <div class="container add-form">
-  <h1 class="form-header">Registration</h1>
+  <h1 class="form-header text-align-center">Register</h1>
   <flash-messages></flash-messages>
-  <div class="form-control">
-    <label>Nickname</label>
-    <input type="text" placeholder="Nickname" #userNickname required>
+  <div>
+    <label class="form-label">Name</label>
+    <input class="form-control" type="text" placeholder="Name" #userNickname required>
   </div>
-  <div class="form-control">
-    <label>Email</label>
-    <input type="email" placeholder="Email Address" #userEmail required>
+  <div style="padding-top: 10px;">
+    <label class="form-label">Email</label>
+    <input class="form-control" type="email" placeholder="Email" #userEmail required>
   </div>
-  <div class="form-control">
-    <label for="text">Password</label>
-    <input type="password" placeholder="Password" #userPwd required>
+  <div style="padding-top: 10px;">
+    <label class="form-label" for="text">Password</label>
+    <input class="form-control" type="password" placeholder="Password" #userPwd required>
   </div>
   <div class="form-footer">
-    <input type="button" class="btn btnSuccess" value="Sign up" (click)="signUp(userNickname.value, userEmail.value, userPwd.value)">
+    <input type="button" class="form-control search" value="Sign up" (click)="signUp(userNickname.value, userEmail.value, userPwd.value)">
     <!-- Continue with Google -->
     <button type="button" class="btn btnGoogle" (click)="userService.GoogleReg()"></button>
   </div>
   <div>
-    <span>Already have an account? <a (click)="backLogin()">Login</a></span>
+    <span style="color: orange;">Already have an account? <a class="link" (click)="backLogin()">Login</a></span>
   </div>
 </div>
