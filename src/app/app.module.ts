@@ -5,6 +5,7 @@ import { FlashMessagesModule, FlashMessagesService } from 'flash-messages-angula
 import { HttpClientModule } from '@angular/common/http';
 import { ShareModule } from 'ngx-sharebuttons';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatCardModule } from '@angular/material/card';
 // firebase
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
@@ -51,6 +52,7 @@ import { LoaderComponent } from './components/loader/loader.component';
     MatIconModule,
     ShareModule,
     MatProgressBarModule,
+    MatCardModule,
     // firebase
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule

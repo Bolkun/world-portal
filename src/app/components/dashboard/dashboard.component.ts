@@ -193,6 +193,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     this.createScene();
     this.startRenderingLoop();
     // this.loaderProgress();
+    
   }
 
   private createScene() {

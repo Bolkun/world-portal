@@ -28,6 +28,8 @@ export class ArticleComponent implements OnInit {
   ]
 
   readMore: boolean[] = [];
+  singleArticle: boolean = false;
+  singleArticleData: any;
   constructor(@Inject(MAT_DIALOG_DATA) public data: any, private modalCtl: MatDialog) { }
 
   ngOnInit(): void {
@@ -36,6 +38,12 @@ export class ArticleComponent implements OnInit {
         const bool = true;
         this.readMore.push(bool);
       });
+      if (this.data.length > 0) {
+        this.singleArticle = false;
+      } else {
+        this.singleArticle = true;
+        this.singleArticleData = this.data;
+      }
     }
   }
 
@@ -45,6 +53,11 @@ export class ArticleComponent implements OnInit {
 
   showText(indexOfelement) {
     this.readMore[indexOfelement] = !this.readMore[indexOfelement];
+  }
+
+  openSingleArticle(article) {
+    this.singleArticle = true;
+    this.singleArticleData = article;
   }
 
 }
