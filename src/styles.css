@@ -424,3 +424,22 @@ a:link {
 .alert-danger {
   color: #ff1d00 !important;
 }
+
+.readMore {
+  display: inline-block;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  border: 1px solid black;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 15px;
+  background-color: transparent;
+  color: #212529;
+  transition: 0.2s ease-in-out;
+}
+
+.readMore:hover {
+  color: white !important;
+  background-color: black;
+}
