@@ -7,6 +7,7 @@
 html,
 body {
   height: 100%;
+  background: black;
 }
 body {
   margin: 0;
@@ -15,6 +16,63 @@ body {
 
 .line-h-normal {
   line-height: normal;
+}
+
+.form-label {
+  font-family: 'ShareTechMono', monospace !important;
+  color: #2173ca !important;
+  text-shadow: 0 0 30px rgb(148, 135, 197),  0 0 20px rgba(10, 175, 230, 0);
+}
+
+.form-select {
+  background-color: transparent !important;
+  border-color: black !important;
+  color: black !important;
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
+  filter: invert(100%);
+}
+
+select > button {
+  color: red !important;
+  background-color: red !important;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(100%); /* date icon*/
+}
+
+.form-control {
+  background: transparent !important;
+  border-color: white !important;
+  color: white !important;
+}
+
+.btn {
+  display: inline-block;
+  background: #000;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  margin: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 15px;
+  font-family: inherit;
+}
+
+.btnGoogle {
+  background: url(assets/icon/google.png);
+  color: #212529;
+  font-family: "Roboto";
+  font-weight: bold;
+  background-size: cover;
+  height: 35px;
+  width: 35px;
+}
+
+.search {
+  margin-top: 15px;
 }
 
 canvas {
@@ -113,7 +171,7 @@ canvas {
 .filter-content {
   position: relative;
   margin: 0;
-  bottom: -70px;
+  bottom: 0;
 }
 
 .vertical-align-center {
@@ -163,12 +221,16 @@ h3 {
   right: 20px;
 }
 
-.left-50procent {
-  left: 50%;
+.left-45procent {
+  left: 45%;
 }
 
 .top-45x {
   top: -45px;
+}
+
+.top-50x {
+  top: -50px;
 }
 
 .bottom-10x {
@@ -201,6 +263,7 @@ a:focus {
 
 a:link {
   text-decoration: none;
+  cursor: pointer !important;
 }
 
 .mat-dialog-container {
@@ -315,9 +378,27 @@ a:link {
   color: #212529;
   position: relative;
   margin-left: 50px;
-  background-color: white;
+  background-color: transparent;
+  max-width: 350px;
 }
 
 .form-header {
-  color: #212529;
+  font-family: 'ShareTechMono', monospace !important;
+  color: #2173ca !important;
+  text-shadow: 0 0 30px rgb(148, 135, 197),  0 0 20px rgba(10, 175, 230, 0);
+}
+
+.tipps {
+  color: white;
+  font-size: 18px;
+  font-family: 'ShareTechMono', monospace !important;
+  color: #2173ca !important;
+}
+
+.tipps span {
+  color: orange;
+}
+
+.alert-danger {
+  color: #ff1d00 !important;
 }

@@ -56,7 +56,7 @@
           </div>
           <div class="row">
             <div class="col-5 text-align-center">
-              <h1 class="main-menu-item">Country</h1>
+              <h1 class="main-menu-item" (click)="openFilterModal()">Country</h1>
             </div>
             <div class="col-2 text-align-center">
               <button *ngIf="notPlaying" id="musicOn" class="btnMusic" (click)="musicOn()">
@@ -67,19 +67,31 @@
               </button>
             </div>
             <div class="col-5 text-align-center">
-              <h1 class="main-menu-item">Disaster</h1>
+              <h1 class="main-menu-item" (click)="openFilterModal()">Disaster</h1>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col text-align-center" onload="animateTipps()">
+              <br>
+              <p class="tipps">Tips:<span id="tipp">You can rotate and zoom earth with your mouse 👍(≖‿‿≖👍)</span></p>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-  <div *ngIf="filterOptionsActive" class="row">
-    <div class="col position-absolute bottom-10x">
-      <button mat-icon-button color="warn" (click)="closeFilter()" class="position-absolute left-50procent top-45x">
-        <mat-icon>cancel</mat-icon>
-      </button>
-      <app-filter-pop-up></app-filter-pop-up>
+  <div *ngIf="filterOptionsActive && !slideLoginActive && !slideAboutActive" class="row">
+    <div class="col position-absolute">
+      <div class="filter-content">
+        <div class="container">
+          <div class="row">
+            <div class="col text-align-center">
+              <h1 class="main-menu-item" (click)="closeFilter()">Close</h1>
+              <app-filter></app-filter>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>

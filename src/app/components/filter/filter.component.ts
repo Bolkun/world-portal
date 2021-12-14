@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { ApiReliefwebService } from 'src/app/services/api-reliefweb.service';
 
 @Component({
-  selector: 'app-filter-pop-up',
-  templateUrl: './filter-pop-up.component.html',
-  styleUrls: ['./filter-pop-up.component.css']
+  selector: 'app-filter',
+  templateUrl: './filter.component.html',
+  styleUrls: ['./filter.component.css']
 })
-export class FilterPopUpComponent implements OnInit {
+export class FilterComponent implements OnInit {
   public countries: any[] = [
     'Afghanistan',
     'Aland Islands (Finland)',

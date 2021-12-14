@@ -22,7 +22,7 @@ import { UserService } from './services/user.service';
 import { ApiReliefwebService } from './services/api-reliefweb.service';
 import { AboutComponent } from './components/about/about.component';
 import { MatDialogModule } from '@angular/material/dialog';
-import { FilterPopUpComponent } from './components/filter-pop-up/filter-pop-up.component';
+import { FilterComponent } from './components/filter/filter.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatIconModule } from '@angular/material/icon';
 import { ArticleComponent } from './components/article/article.component';
@@ -37,7 +37,7 @@ import { LoaderComponent } from './components/loader/loader.component';
     ResetPasswordComponent,
     VerifyEmailComponent,
     AboutComponent,
-    FilterPopUpComponent,
+    FilterComponent,
     ArticleComponent,
     SafeHtmlPipe,
     LoaderComponent

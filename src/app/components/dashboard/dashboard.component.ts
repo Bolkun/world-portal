@@ -17,7 +17,7 @@ import locationVertexShader from 'src/assets/shaders/locationVertex.glsl';
 // @ts-ignore
 import locationFragmentShader from 'src/assets/shaders/locationFragment.glsl';
 import { MatDialog } from '@angular/material/dialog';
-import { FilterPopUpComponent } from '../filter-pop-up/filter-pop-up.component';
+import { FilterComponent } from '../filter/filter.component';
 import { ArticleComponent } from '../article/article.component';
 import { LoaderComponent } from '../loader/loader.component';
 import { Observable } from 'rxjs';
@@ -106,6 +106,13 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   private mouseDown: boolean = false;
   // Tooltip
   private event = new MouseEvent('click');
+  // Tipps
+  private headIndex = 1;
+  private aTipp = [
+    "You can rotate and zoom earth with your mouse 👍(≖‿‿≖👍)", // equel to html
+    "You can login and leave comments ✍(◔◡◔)",
+    "You can use filter to get certain information of a country, date or disaster type (>‿◠)✌"
+  ];
   @HostListener('click', ['$event.target']) onClick(event) {
     this.raycaster.setFromCamera(this.rMouse, this.camera);
     let intersects = this.raycaster.intersectObjects(this.groupLocations.children);
@@ -190,10 +197,10 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
+    // this.loaderProgress();
     this.createScene();
     this.startRenderingLoop();
-    // this.loaderProgress();
-    
+    this.animateTips();
   }
 
   private createScene() {
@@ -536,7 +543,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   }
 
   openFilterModal() {
-    // this.modalCtl.open(FilterPopUpComponent);
+    // this.modalCtl.open(FilterComponent);
     this.filterOptionsActive = true;
   }
 
@@ -610,7 +617,6 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     this.audio.pause();
   }
 
-
   loaderProgress() {
     // Open Modal
     this.modalCtl.open(LoaderComponent, {
@@ -622,4 +628,20 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
     });
   }
+
+  animateTips() {
+    setInterval(() => this.changeTip(), 7000);
+  }
+
+  changeTip() {
+    let tipp = document.getElementById('tipp');
+    if (tipp) {
+      tipp!.innerHTML = this.aTipp[this.headIndex];
+      this.headIndex++;
+      if (this.headIndex >= this.aTipp.length) {
+        this.headIndex = 0;
+      }
+    }
+  }
+
 }
