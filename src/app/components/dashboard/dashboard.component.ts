@@ -32,7 +32,6 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   slideLoginActive: boolean = false;
   slideAboutActive: boolean = false;
   filterOptionsActive: boolean = false;
-  hamedkabir?: any;
 
   // API
   id: any;
@@ -193,7 +192,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     this.createScene();
     this.startRenderingLoop();
-    this.loaderProgress();
+    // this.loaderProgress();
   }
 
   private createScene() {
@@ -256,7 +255,6 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         this.processAPIData(data);
       });
     } else {
-      this.hamedkabir = this.apiReliefwebService.getDisastersByDate(this.date);
       this.apiReliefwebService.getDisastersByDate(this.date).subscribe((data) => {
         this.processAPIData(data);
       });
@@ -615,7 +613,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   loaderProgress() {
     // Open Modal
     this.modalCtl.open(LoaderComponent, {
-      data: this.hamedkabir,
+      data: this.apiData,
       height: '100vh',
       width: '100%',
       hasBackdrop: false,

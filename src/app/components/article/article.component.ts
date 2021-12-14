@@ -26,12 +26,25 @@ export class ArticleComponent implements OnInit {
       createdAt: '03.12.2021'
     }
   ]
+
+  readMore: boolean[] = [];
   constructor(@Inject(MAT_DIALOG_DATA) public data: any, private modalCtl: MatDialog) { }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    if (this.data) {
+      this.data.forEach(() => {
+        const bool = true;
+        this.readMore.push(bool);
+      });
+    }
+  }
 
   closeArticle() {
     this.modalCtl.closeAll();
+  }
+
+  showText(indexOfelement) {
+    this.readMore[indexOfelement] = !this.readMore[indexOfelement];
   }
 
 }
