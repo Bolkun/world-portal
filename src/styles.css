@@ -373,6 +373,28 @@ a:link {
   font-size: 30px;
 }
 
+.back-article-button {
+  position: relative;
+  top: -12px;
+  left: -7px;
+  background-color: white;
+  border-radius: 100px;
+  transition: 0.2s ease-in-out;
+  height: 30px;
+  cursor: pointer;
+  float: left;
+  color: #ff1d00;
+}
+
+.back-article-button:hover {
+  background-color: rgba(255, 255, 255, 0.726);
+}
+
+.back-article-button mat-icon {
+  font-size: 30px;
+}
+
+
 /* Login */
 .add-form {
   color: #212529;
