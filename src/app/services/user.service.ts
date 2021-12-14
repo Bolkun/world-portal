@@ -13,6 +13,7 @@ import { LoginComponent } from '../components/login/login.component';
 })
 export class UserService {
   public userData: any; // Save logged in user data
+  public regIn = false;
   loggedIn = new BehaviorSubject<boolean>(false);
   loggedIn$ = this.loggedIn.asObservable();
   flashMessageTimeout: number = 5000;
@@ -39,10 +40,15 @@ export class UserService {
   }
 
   SignUp(nickname: string, email: string, password: string) {
+    if (nickname == '' || nickname == undefined) {
+      this.flashMessage.show('Please write your name!', { cssClass: 'alert-danger', timeout: this.flashMessageTimeout });
+      return false;
+    }
     return this.auth.createUserWithEmailAndPassword(email, password).then((result) => {
       /* Call the SendVerificaitonMail() function when new user sign up and returns promise */
       this.SendVerificationMail();
       this.SetUserData(result.user!, nickname);
+      this.regIn = true;
     }).catch((error) => {
       this.flashMessage.show(error.message, { cssClass: 'alert-danger', timeout: this.flashMessageTimeout });
     });
@@ -112,6 +118,7 @@ export class UserService {
 
   // Sign up with Google
   GoogleReg() {
+    this.regIn = true;
     return this.RegLogin(new firebase.auth.GoogleAuthProvider());
   }
 
@@ -124,7 +131,9 @@ export class UserService {
   RegLogin(provider: firebase.auth.AuthProvider) {
     return this.auth.signInWithPopup(provider).then((result) => {
       this.ngZone.run(() => {
-        this.router.navigate(['dashboard']);
+        // Go to dashboard
+        document.getElementById('closeLogin')!.click();
+        document.getElementById('closeLogin')!.style.display = 'none';
       });
       this.SetUserData(result.user!);
       localStorage.setItem('userEmail', JSON.stringify(result.user?.email));
@@ -137,7 +146,8 @@ export class UserService {
   AuthLogin(provider: firebase.auth.AuthProvider) {
     return this.auth.signInWithPopup(provider).then((result) => {
       this.ngZone.run(() => {
-        this.router.navigate(['dashboard']);
+        document.getElementById('closeLogin')!.click();
+        document.getElementById('closeLogin')!.style.display = 'none';
       });
       this.GetUserData(result.user!.uid);
       localStorage.setItem('userEmail', JSON.stringify(result.user?.email));
