@@ -30,6 +30,7 @@ export class ArticleComponent implements OnInit {
   readMore: boolean[] = [];
   singleArticle: boolean = false;
   singleArticleData: any;
+  backButtonBySingleArticle: boolean = false;
   constructor(@Inject(MAT_DIALOG_DATA) public data: any, private modalCtl: MatDialog) { }
 
   ngOnInit(): void {
@@ -38,11 +39,14 @@ export class ArticleComponent implements OnInit {
         const bool = true;
         this.readMore.push(bool);
       });
-      if (this.data.length > 0) {
+
+      if (this.data.length > 1) {
         this.singleArticle = false;
-      } else {
+        this.backButtonBySingleArticle = true;
+      } else if (this.data.length === 1) {
         this.singleArticle = true;
-        this.singleArticleData = this.data;
+        this.singleArticleData = this.data[0];
+        this.backButtonBySingleArticle = false;
       }
     }
   }
@@ -58,6 +62,10 @@ export class ArticleComponent implements OnInit {
   openSingleArticle(article) {
     this.singleArticle = true;
     this.singleArticleData = article;
+  }
+
+  backArticle() {
+    this.singleArticle = false;
   }
 
 }

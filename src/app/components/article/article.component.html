@@ -1,6 +1,9 @@
 <div class="close-button" (click)="closeArticle()">
   <mat-icon>close</mat-icon>
 </div>
+<div *ngIf="singleArticle && backButtonBySingleArticle" class="back-article-button" (click)="backArticle()">
+  <mat-icon>keyboard_backspace</mat-icon>
+</div>
 <div class="container overflow-auto max-h-720x">
   <div *ngIf="!singleArticle">
     <div class="row">
