@@ -9,24 +9,24 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class ArticleComponent implements OnInit {
   social_url = location.origin + '/dashboard';
-  commentMockUps = [
-    {
-      name: 'Hamedkabir',
-      comment: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam',
-      createdAt: '03.12.2021'
-    }
-    ,
-    {
-      name: 'Hamedkabir',
-      comment: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam',
-      createdAt: '03.12.2021'
-    },
-    {
-      name: 'Hamedkabir',
-      comment: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam',
-      createdAt: '03.12.2021'
-    }
-  ]
+  // commentMockUps = [
+  //   {
+  //     name: 'Hamedkabir',
+  //     comment: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam',
+  //     createdAt: '03.12.2021'
+  //   }
+  //   ,
+  //   {
+  //     name: 'Hamedkabir',
+  //     comment: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam',
+  //     createdAt: '03.12.2021'
+  //   },
+  //   {
+  //     name: 'Hamedkabir',
+  //     comment: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam',
+  //     createdAt: '03.12.2021'
+  //   }
+  // ]
 
   readMore: boolean[] = [];
   singleArticle: boolean = false;
@@ -71,6 +71,10 @@ export class ArticleComponent implements OnInit {
 
   backArticle() {
     this.singleArticle = false;
+  }
+
+  async saveComment(articleID, comment){
+    await this.userService.SaveComment(articleID, this.userService.userData.uid, this.userService.userData.displayName, this.userService.userData.photoURL, comment);
   }
 
 }

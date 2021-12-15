@@ -3,7 +3,7 @@ import { User } from '../services/user';
 import { Router } from "@angular/router";
 import { BehaviorSubject } from 'rxjs';
 import { FlashMessagesService } from 'flash-messages-angular';
-import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/compat/firestore';
+import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection } from '@angular/fire/compat/firestore';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import firebase from 'firebase/compat/app'; // firebase.auth
 import { LoginComponent } from '../components/login/login.component';
@@ -14,6 +14,7 @@ import { LoginComponent } from '../components/login/login.component';
 export class UserService {
   public userData: any; // Save logged in user data
   public regIn = false;
+  public commentCollection!: AngularFirestoreCollection;
   loggedIn = new BehaviorSubject<boolean>(false);
   loggedIn$ = this.loggedIn.asObservable();
   flashMessageTimeout: number = 5000;
@@ -37,6 +38,7 @@ export class UserService {
         this.loggedIn.next(false);
       }
     });
+    this.commentCollection = this.afs.collection('comments');
   }
 
   SignUp(nickname: string, email: string, password: string) {
@@ -212,6 +214,33 @@ export class UserService {
         closeButton!.style.display = 'block';
       }
     });
+  }
+
+  SaveComment(articleID: string, userID: string, displayName: string, photoURL: string, comment: string) {
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
+    var yyyy = today.getFullYear();
+    var hour = today.getHours();
+    var minutes = today.getMinutes();
+    let values: any = {
+      articleID: articleID,
+      userID: userID,
+      displayName: displayName,
+      photoURL: photoURL,
+      date: dd + '.' + mm + '.' + yyyy + ' ' + hour + ':' + minutes,
+      comment: comment
+    }
+    return this.commentCollection.add(values).then(result => {
+      // clear textarea
+      (<HTMLInputElement>document.getElementById("text")).value = '';
+    }).catch((error) => {
+      this.flashMessage.show(error.message, { cssClass: 'alert-danger', timeout: this.flashMessageTimeout });
+    });
+  }
+
+  getComments(articleID) {
+    return this.afs.collection('comments', ref => ref.where("articleID", "==", articleID).orderBy("date", "desc")).valueChanges(); // index in firestore erstellen durch error link
   }
   
 }
