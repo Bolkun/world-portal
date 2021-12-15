@@ -127,11 +127,11 @@
                         </div>
                       </div>
                       <div class="row img-comment">
-                        <div class="col-1 p-0">
+                        <div class="col-sm-3 col-md-1 p-0">
                           <div *ngIf="commentItems.photoURL" class="user-avatar" [ngStyle]="{'background-image': 'url('+ commentItems.photoURL +')'}"></div>
                           <div *ngIf="!commentItems.photoURL"class="user-avatar"></div>
                         </div>
-                        <div class="col-11">
+                        <div class="col-sm-9 col-md-11">
                           {{ commentItems.comment }}
                         </div>
                       </div>

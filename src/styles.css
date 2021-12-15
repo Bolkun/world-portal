@@ -307,8 +307,7 @@ a:link {
 }
 
 .user-avatar {
-  max-width: 50px;
-  width: 100%;
+  width: 50px;
   height: 50px;
   background-image: url('assets/img/placeholder-avatar.png');
   background-position: center;
@@ -344,6 +343,7 @@ a:link {
 
 .mat-card-actions {
   padding: 0 !important;
+  margin-right: 0 !important;
 }
 
 /* textArea auto Grow */
