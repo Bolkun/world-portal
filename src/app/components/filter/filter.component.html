@@ -9,7 +9,8 @@
     </div>
     <div class="col">
       <label class="form-label">Date</label>
-      <input class="form-control" type="date" id="date" name="date" value="{{ apiReliefwebService.getCurrentDate() }}">
+      <input class="form-control" type="date" id="date" name="date" max="{{ apiReliefwebService.getCurrentDate() }}"
+        value="{{ apiReliefwebService.getCurrentDate() }}">
     </div>
     <div class="col">
       <label class="form-label">Disaster</label>

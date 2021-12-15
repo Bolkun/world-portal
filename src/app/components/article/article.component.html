@@ -14,8 +14,7 @@
             <mat-card-subtitle style="color: #ff1d00;">{{ article.object.userData.country }}</mat-card-subtitle>
           </mat-card-title-group>
           <mat-card-content>
-            <p 
-              [innerHTML]="article.object.userData.body.split('\n')[0] | safeHtml">
+            <p [innerHTML]="article.object.userData.body.split('\n')[0] | safeHtml">
             </p>
           </mat-card-content>
           <mat-card-actions align="end">
@@ -57,14 +56,13 @@
                 <!-- <p [ngClass]="{'limitTextHeight': readMore[indexOfelement]}"
                   [innerHTML]="singleArticleData.object.userData.body | safeHtml">
                 </p> -->
-                <p
-                  [innerHTML]="singleArticleData.object.userData.body | safeHtml">
+                <p [innerHTML]="singleArticleData.object.userData.body | safeHtml">
                 </p>
                 <!-- <button type="button" (click)="showText(indexOfelement)">
                   {{readMore[indexOfelement] ? 'Read More' : 'Read Less'}} </button> -->
               </div>
               <div class="container">
-                <div class="row border-b">
+                <div class="row">
                   <div class="col">
                     <div class="container text-align-center">
                       <!-- <div class="col">
@@ -95,6 +93,22 @@
                           <i class="material-icons">content_copy</i>
                         </button>
                       </div>
+                    </div>
+                  </div>
+                </div>
+                <div *ngIf="userService.isLoggedIn()">
+                  <div class="row">
+                    <div class="col">
+                      <div class="grow-wrap">
+                        <textarea name="text" id="text" onInput="this.parentNode.dataset.replicatedValue = this.value" class="article-comment" type="text" placeholder="Add a public comment..."></textarea>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col">
+                      <mat-card-actions class="article-comment-button">
+                        <button mat-button>Comment</button>
+                      </mat-card-actions>
                     </div>
                   </div>
                 </div>

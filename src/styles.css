@@ -9,6 +9,7 @@ body {
   height: 100%;
   background: black;
 }
+
 body {
   margin: 0;
   font-family: Roboto, 'Helvetica Neue', sans-serif;
@@ -21,7 +22,7 @@ body {
 .form-label {
   font-family: 'ShareTechMono', monospace !important;
   color: #2173ca !important;
-  text-shadow: 0 0 30px rgb(148, 135, 197),  0 0 20px rgba(10, 175, 230, 0);
+  text-shadow: 0 0 30px rgb(148, 135, 197), 0 0 20px rgba(10, 175, 230, 0);
 }
 
 .form-select {
@@ -32,13 +33,14 @@ body {
   filter: invert(100%);
 }
 
-select > button {
+select>button {
   color: red !important;
   background-color: red !important;
 }
 
 input[type="date"]::-webkit-calendar-picker-indicator {
-  filter: invert(100%); /* date icon*/
+  filter: invert(100%);
+  /* date icon*/
 }
 
 .form-control {
@@ -106,7 +108,7 @@ canvas {
 
 .clock {
   color: #2173ca !important;
-  text-shadow: 0 0 20px rgb(148, 135, 197),  0 0 20px rgba(10, 175, 230, 0);
+  text-shadow: 0 0 20px rgb(148, 135, 197), 0 0 20px rgba(10, 175, 230, 0);
   font-size: 60px !important;
 }
 
@@ -161,7 +163,7 @@ canvas {
 
 .main-menu-item:hover {
   color: #2173ca !important;
-  text-shadow: 0 0 20px rgb(148, 135, 197),  0 0 20px rgba(10, 175, 230, 0);
+  text-shadow: 0 0 20px rgb(148, 135, 197), 0 0 20px rgba(10, 175, 230, 0);
 }
 
 .white {
@@ -280,16 +282,19 @@ a:link {
 }
 
 .overflow-auto::-webkit-scrollbar-thumb {
-  background-color: #ff1d00; /*scroll line color*/
+  background-color: #ff1d00;
+  /*scroll line color*/
   border-radius: 20px;
 }
 
 .overflow-auto::-webkit-scrollbar-track {
-  background: #0000004a; /*scroll bg*/
+  background: #0000004a;
+  /*scroll bg*/
 }
 
 .overflow-auto::-webkit-scrollbar-corner {
-  background: #0000004a; /*scroll bg*/
+  background: #0000004a;
+  /*scroll bg*/
 }
 
 .max-h-720x {
@@ -305,6 +310,71 @@ a:link {
   background-repeat: no-repeat;
   background-size: cover;
   border-radius: 100px;
+}
+
+.article-comment-button {
+  float: right;
+  margin: 5px 0 10px 0;
+}
+
+.article-comment-button button {
+  display: inline-block;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  border: 1px solid white;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 15px;
+  background-color: #212529;
+  color: white;
+  transition: 0.2s ease-in-out;
+}
+
+.article-comment-button button:hover {
+  background-color: transparent;
+  color: #212529;
+  border: 1px solid black;
+}
+
+.mat-card-actions {
+  padding: 0 !important;
+}
+
+/* textArea auto Grow */
+.grow-wrap {
+  /* easy way to plop the elements on top of each other and have them both sized based on the tallest one's height */
+  display: grid;
+}
+
+.grow-wrap::after {
+  /* Note the weird space! Needed to preventy jumpy behavior */
+  content: attr(data-replicated-value) " ";
+
+  /* This is how textarea text behaves */
+  white-space: pre-wrap;
+
+  /* Hidden from view, clicks, and screen readers */
+  visibility: hidden;
+}
+
+.grow-wrap>textarea {
+  /* You could leave this, but after a user resizes, then it ruins the auto sizing */
+  resize: none;
+
+  /* Firefox shows scrollbar on growth, you can hide like this. */
+  overflow: hidden;
+}
+
+.grow-wrap>textarea,
+.grow-wrap::after {
+  /* Identical styling required!! */
+  border: 1px solid black;
+  padding: 0.5rem;
+  font: inherit;
+
+  /* Place on top of each other */
+  grid-area: 1 / 1 / 2 / 2;
 }
 
 .img-comment {
@@ -407,7 +477,7 @@ a:link {
 .form-header {
   font-family: 'ShareTechMono', monospace !important;
   color: #2173ca !important;
-  text-shadow: 0 0 30px rgb(148, 135, 197),  0 0 20px rgba(10, 175, 230, 0);
+  text-shadow: 0 0 30px rgb(148, 135, 197), 0 0 20px rgba(10, 175, 230, 0);
 }
 
 .tipps {

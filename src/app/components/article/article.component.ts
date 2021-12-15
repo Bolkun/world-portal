@@ -1,5 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-article',
@@ -31,7 +32,9 @@ export class ArticleComponent implements OnInit {
   singleArticle: boolean = false;
   singleArticleData: any;
   backButtonBySingleArticle: boolean = false;
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private modalCtl: MatDialog) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any,
+              private modalCtl: MatDialog,
+              public userService: UserService) { }
 
   ngOnInit(): void {
     if (this.data) {
