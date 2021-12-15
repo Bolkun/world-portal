@@ -124,7 +124,7 @@ export class UserService {
 
   // Sign up with Google
   GoogleLog() {
-    return this.AuthLogin(new firebase.auth.GoogleAuthProvider());
+    return this.RegLogin(new firebase.auth.GoogleAuthProvider());
   }
 
   // Reg logic to run auth providers
@@ -143,18 +143,18 @@ export class UserService {
   }
 
   // Auth logic to run auth providers
-  AuthLogin(provider: firebase.auth.AuthProvider) {
-    return this.auth.signInWithPopup(provider).then((result) => {
-      this.ngZone.run(() => {
-        document.getElementById('closeLogin')!.click();
-        document.getElementById('closeLogin')!.style.display = 'none';
-      });
-      this.GetUserData(result.user!.uid);
-      localStorage.setItem('userEmail', JSON.stringify(result.user?.email));
-    }).catch((error) => {
-      this.flashMessage.show(error.message, { cssClass: 'alert-danger', timeout: this.flashMessageTimeout });
-    });
-  }
+  // AuthLogin(provider: firebase.auth.AuthProvider) {
+  //   return this.auth.signInWithPopup(provider).then((result) => {
+  //     this.ngZone.run(() => {
+  //       document.getElementById('closeLogin')!.click();
+  //       document.getElementById('closeLogin')!.style.display = 'none';
+  //     });
+  //     this.GetUserData(result.user!.uid);
+  //     localStorage.setItem('userEmail', JSON.stringify(result.user?.email));
+  //   }).catch((error) => {
+  //     this.flashMessage.show(error.message, { cssClass: 'alert-danger', timeout: this.flashMessageTimeout });
+  //   });
+  // }
 
   GetUserData(uid: string) {
     if (uid) {
