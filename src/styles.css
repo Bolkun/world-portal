@@ -518,3 +518,14 @@ a:link {
   color: white !important;
   background-color: black;
 }
+
+/* About */
+.aboutNames {
+  font-family: 'ShareTechMono', monospace !important;
+  color: #ff1d00 !important;
+}
+
+.aboutContent {
+  font-family: 'ShareTechMono', monospace !important;
+  color: #2173ca !important;
+}

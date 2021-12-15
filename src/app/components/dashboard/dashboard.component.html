@@ -27,7 +27,7 @@
       <h1 id="loginButton" *ngIf="!slideLoginActive && !slideAboutActive && !userService.isLoggedIn()"
         class="main-menu-item position-absolute text-align-left vertical-align-center login" (click)="login()">Login
       </h1>
-      <h1 *ngIf="userService.isLoggedIn()"
+      <h1 *ngIf="userService.isLoggedIn() && !slideAboutActive"
         class="main-menu-item position-absolute text-align-left vertical-align-center login" (click)="userService.SignOut()">Logout
       </h1>
     </div>
