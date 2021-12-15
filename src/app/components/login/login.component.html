@@ -1,29 +1,39 @@
 <!-- login -->
 <div *ngIf="routingsComponent.login" class="container add-form">
-  <h1 class="form-header text-align-center">LOGIN</h1>
-  <flash-messages></flash-messages>
-  <div>
-    <label class="form-label">Email</label>
-    <input class="form-control" type="email" placeholder="Email" #userEmail required>
-  </div>
-  <div style="padding-top: 10px;">
-    <label class="form-label">Password</label>
-    <input class="form-control" type="password" placeholder="Password" #userPassword required>
-  </div>
-  <div class="form-footer">
-    <!-- Calling SignIn Api from userService -->
-    <button class="form-control search" (click)="userService.SignIn(userEmail.value, userPassword.value)">Sign
-      in</button>
-    <!-- Calling GoogleAuth Api from userService -->
-    <button class="btn btnGoogle" (click)="userService.GoogleLog()"></button>
-  </div>
-  <div>
-    <div>
-      <a class="link" (click)="openPage('forgotPassword')">Forgot Password?</a>
+  <div class="row">
+    <div class="col">
+      <h1 class="form-header text-align-center">LOGIN</h1>
+      <flash-messages></flash-messages>
     </div>
-    <div>
-      <span style="color: orange;">Don't have an account? <a class="link"
-          (click)="openRegistration()">Register</a></span>
+  </div>
+  <div class="row">
+    <div class="col">
+      <div>
+        <div>
+          <label class="form-label">Email</label>
+          <input class="form-control" type="email" placeholder="Email" #userEmail required>
+        </div>
+        <div style="padding-top: 10px;">
+          <label class="form-label">Password</label>
+          <input class="form-control" type="password" placeholder="Password" #userPassword required>
+        </div>
+        <div class="form-footer">
+          <!-- Calling SignIn Api from userService -->
+          <button class="form-control search" (click)="userService.SignIn(userEmail.value, userPassword.value)">Sign
+            in</button>
+          <!-- Calling GoogleAuth Api from userService -->
+          <button class="btn btnGoogle" (click)="userService.GoogleLog()"></button>
+        </div>
+        <div>
+          <div>
+            <a class="link" (click)="openPage('forgotPassword')">Forgot Password?</a>
+          </div>
+          <div>
+            <span style="color: orange;">Don't have an account? <a class="link"
+                (click)="openRegistration()">Register</a></span>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>

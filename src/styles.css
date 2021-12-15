@@ -15,6 +15,10 @@ body {
   font-family: Roboto, 'Helvetica Neue', sans-serif;
 }
 
+.mat-typography {
+  overflow: hidden !important;
+}
+
 .line-h-normal {
   line-height: normal;
 }
@@ -129,16 +133,17 @@ canvas {
 .app-login-component {
   position: absolute;
   top: 35%;
-  left: 15%;
+  left: 120px;
   z-index: 1;
   transition: 1s ease-in-out;
   transform: translateX(-150%);
+  max-width: 50%;
 }
 
 .app-about-component {
   position: absolute;
   top: 35%;
-  right: 15%;
+  right: 175px;
   z-index: 1;
   transition: 1s ease-in-out;
   transform: translateX(150%);
