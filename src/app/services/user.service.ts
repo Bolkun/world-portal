@@ -221,8 +221,10 @@ export class UserService {
     var dd = String(today.getDate()).padStart(2, '0');
     var mm = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
     var yyyy = today.getFullYear();
-    var hour = today.getHours();
-    var minutes = today.getMinutes();
+    var hour: any = today.getHours();
+    var minutes: any = today.getMinutes();
+    if (hour < 10) { hour = "0"+hour; }
+    if (minutes < 10) { minutes = "0"+minutes; }
     let values: any = {
       articleID: articleID,
       userID: userID,
