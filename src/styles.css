@@ -132,12 +132,15 @@ canvas {
 
 .app-login-component {
   position: absolute;
-  top: 35%;
+  top: 30%;
   left: 120px;
   z-index: 1;
   transition: 1s ease-in-out;
   transform: translateX(-150%);
   max-width: 50%;
+  background-color: #15203080;
+  padding: 30px;
+  border-radius: 10px;
 }
 
 .app-about-component {
