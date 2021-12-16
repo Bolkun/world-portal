@@ -376,13 +376,37 @@ export class DashboardComponent implements OnInit, AfterViewInit {
               'disaster_type': filteredAPIData[0].disaster_type,
               'title': filteredAPIData[0].title,
               'body': filteredAPIData[0].body,
-              'link': filteredAPIData[0].link
+              'link': filteredAPIData[0].link,
+              'comments': ''
             }
           }
         }];
-        this.modalCtl.open(ArticleComponent, {
-          data: raycasterObject
+        this.userService.getComments(filteredAPIData[0].id).subscribe((result: any) => {
+          raycasterObject[0].object.userData.comments = result;
         });
+        // this.modalCtl.open(ArticleComponent, {
+        //   data: raycasterObject
+        // });
+        const userId = localStorage.getItem('userID');
+        if (userId) {
+          this.userService.GetUserData(userId).pipe(take(1)).subscribe(res => {
+            const objectData = {
+              intersects: raycasterObject,
+              userData: res
+            }
+            this.modalCtl.open(ArticleComponent, {
+              data: objectData
+            });
+          })
+        } else {
+          const objectData = {
+            intersects: raycasterObject,
+            userData: undefined
+          }
+          this.modalCtl.open(ArticleComponent, {
+            data: objectData
+          });
+        }
       }
     }, 3000);
   }
