@@ -14,8 +14,8 @@ export class UserService {
   public userData: any; // Save logged in user data
   public regIn = false;
   public commentCollection!: AngularFirestoreCollection;
-  loggedIn = new BehaviorSubject<boolean>(false);
-  loggedIn$ = this.loggedIn.asObservable();
+  // loggedIn = new BehaviorSubject<boolean>(false);
+  // loggedIn$ = this.loggedIn.asObservable();
   flashMessageTimeout: number = 5000;
 
   constructor(

@@ -126,7 +126,6 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       // Open Modal
       const userId = localStorage.getItem('userID');
       if (userId) {
-
         this.userService.GetUserData(userId).pipe(take(1)).subscribe(res => {
           const objectData = {
             intersects: intersects,
@@ -136,7 +135,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
             data: objectData
           });
         })
-      }else {
+      } else {
         const objectData = {
           intersects: intersects,
           userData: undefined
