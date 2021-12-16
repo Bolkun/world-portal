@@ -20,7 +20,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { FilterComponent } from '../filter/filter.component';
 import { ArticleComponent } from '../article/article.component';
 import { LoaderComponent } from '../loader/loader.component';
-import { Observable } from 'rxjs';
+import { Observable, take } from 'rxjs';
 
 @Component({
   selector: 'app-dashboard',
@@ -124,9 +124,19 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         });
       }
       // Open Modal
-      this.modalCtl.open(ArticleComponent, {
-        data: intersects
-      });
+      const hamed = localStorage.getItem('userID');
+      if (hamed) {
+
+        this.userService.GetUserData(hamed).pipe(take(1)).subscribe(res => {
+          const test = {
+            intersects: intersects,
+            userData: res
+          }
+          this.modalCtl.open(ArticleComponent, {
+            data: test
+          });
+        })
+      }
     }
   }
   @HostListener('mouseup', ['$event']) onMouseup(event) {
@@ -194,7 +204,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     public apiReliefwebService: ApiReliefwebService,
     private router: Router,
     private route: ActivatedRoute,
-    private modalCtl: MatDialog
+    private modalCtl: MatDialog,
   ) { }
 
   ngOnInit(): void {

@@ -7,7 +7,7 @@
 <div id="content" class="container overflow-auto max-h-720x">
   <div *ngIf="!singleArticle">
     <div class="row">
-      <div class="col-6" *ngFor="let article of data">
+      <div class="col-6" *ngFor="let article of articleData">
         <mat-card class="m-b-20x">
           <mat-card-title-group>
             <mat-card-title class="line-h-normal">{{ article.object.userData.title }}</mat-card-title>
@@ -108,7 +108,7 @@
                   <div class="row">
                     <div class="col">
                       <mat-card-actions class="article-comment-button">
-                        <button (click)="saveComment(singleArticleData.object.userData.id, userService.userData.uid, userService.userData.displayName, userService.userData.photoURL,  comment.value)" mat-button>Comment</button>
+                        <button (click)="saveComment(singleArticleData.object.userData.id, comment.value)" mat-button>Comment</button>
                       </mat-card-actions>
                     </div>
                   </div>
@@ -146,3 +146,5 @@
     </div>
   </div>
 </div>
+
+

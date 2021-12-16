@@ -1,7 +1,7 @@
 import { Injectable, NgZone } from '@angular/core';
 import { User } from '../services/user';
 import { Router } from "@angular/router";
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, take } from 'rxjs';
 import { FlashMessagesService } from 'flash-messages-angular';
 import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection } from '@angular/fire/compat/firestore';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
@@ -64,7 +64,13 @@ export class UserService {
         this.flashMessage.show('Please verify Email Address!', { cssClass: 'alert-danger', timeout: this.flashMessageTimeout });
         return false;
       }
-      this.GetUserData(result.user.uid);
+      this.GetUserData(result.user.uid).pipe(take(1)).subscribe((res: any) => {
+        localStorage.setItem('userID', res['uid']);
+
+        setTimeout(() => {
+          localStorage.setItem('userID', res['uid']);
+        }, 100);
+      });
       localStorage.setItem('userEmail', JSON.stringify(result.user?.email));
       this.ngZone.run(() => {
         // Go to dashboard
@@ -132,9 +138,9 @@ export class UserService {
 
   // Reg logic to run auth providers
   RegLogin(provider: firebase.auth.AuthProvider) {
-    return this.auth.signInWithPopup(provider).then((result) => {
+    return this.auth.signInWithPopup(provider).then((result: any) => {
       this.GetUserDataOnEmail(JSON.stringify(result.user?.email));
-      if(!this.userData) {
+      if (!this.userData) {
         this.SetUserData(result.user!);
       }
       this.ngZone.run(() => {
@@ -143,6 +149,10 @@ export class UserService {
         document.getElementById('closeLogin')!.style.display = 'none';
         // document.getElementById('name')!.innerHTML = this.userData.displayName;
       });
+      localStorage.setItem('userID', result.user?.uid);
+      setTimeout(() => {
+        localStorage.setItem('userID', result.user?.uid);
+      }, 100);
       localStorage.setItem('userEmail', JSON.stringify(result.user?.email));
     }).catch((error) => {
       this.flashMessage.show(error.message, { cssClass: 'alert-danger', timeout: this.flashMessageTimeout });
@@ -150,16 +160,17 @@ export class UserService {
   }
 
   GetUserData(uid: string) {
-    const userCollection = this.afs.collection('users', ref => ref.where("uid", "==", uid)).valueChanges();
-    userCollection.subscribe((data: any) => {
-      this.userData = {
-        uid: data[0].uid,
-        role: data[0].role,
-        email: data[0].email,
-        displayName: data[0].displayName,
-        photoURL: data[0].photoURL
-      }
-    });
+    // this.afs.collection('users', ref => ref.where("uid", "==", uid)).valueChanges();
+    // userCollection.subscribe((data: any) => {
+    //   this.userData = {
+    //     uid: data[0].uid,
+    //     role: data[0].role,
+    //     email: data[0].email,
+    //     displayName: data[0].displayName,
+    //     photoURL: data[0].photoURL
+    //   }
+    // });
+    return this.afs.collection('users').doc(uid).valueChanges();
   }
 
   GetUserDataOnEmail(email: string) {
@@ -198,8 +209,9 @@ export class UserService {
   SignOut() {
     return this.auth.signOut().then(() => {
       localStorage.removeItem('userEmail');
+      localStorage.clear();
       let closeButton = document.getElementById('closeLogin');
-      if(closeButton) {
+      if (closeButton) {
         closeButton!.style.display = 'block';
       }
       //window.location.reload();
@@ -207,15 +219,15 @@ export class UserService {
   }
 
   SaveComment(articleID: string, userID: string, displayName: string, photoURL: string, comment: string) {
-    var today = new Date();
-    var dd = String(today.getDate()).padStart(2, '0');
-    var mm = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
-    var yyyy = today.getFullYear();
-    var hour: any = today.getHours();
-    var minutes: any = today.getMinutes();
-    if (hour < 10) { hour = "0"+hour; }
-    if (minutes < 10) { minutes = "0"+minutes; }
-    let values: any = {
+    let today = new Date();
+    let dd = String(today.getDate()).padStart(2, '0');
+    let mm = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
+    let yyyy = today.getFullYear();
+    let hour: any = today.getHours();
+    let minutes: any = today.getMinutes();
+    if (hour < 10) { hour = "0" + hour; }
+    if (minutes < 10) { minutes = "0" + minutes; }
+    const values: any = {
       articleID: articleID,
       userID: userID,
       displayName: displayName,
@@ -224,7 +236,7 @@ export class UserService {
       date: dd + '.' + mm + '.' + yyyy + ' ' + hour + ':' + minutes,
       comment: comment
     }
-    return this.commentCollection.add(values).then(result => {
+    return this.commentCollection.add(values).then(() => {
       // clear textarea
       (<HTMLInputElement>document.getElementById("text")).value = '';
     }).catch((error) => {
@@ -235,5 +247,5 @@ export class UserService {
   getComments(articleID) {
     return this.afs.collection('comments', ref => ref.where("articleID", "==", articleID).orderBy("timestamp", "desc")).valueChanges(); // index in firestore erstellen durch error link
   }
-  
+
 }

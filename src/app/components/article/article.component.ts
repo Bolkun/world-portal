@@ -14,23 +14,28 @@ export class ArticleComponent implements OnInit {
   singleArticle: boolean = false;
   singleArticleData: any;
   backButtonBySingleArticle: boolean = false;
+  userData;
+  articleData;
   constructor(@Inject(MAT_DIALOG_DATA) public data: any,
-              private modalCtl: MatDialog,
-              public userService: UserService) { }
+    private modalCtl: MatDialog,
+    public userService: UserService) { }
 
   ngOnInit(): void {
     if (this.data) {
-      this.data.forEach(() => {
+      this.articleData = this.data.intersects;
+      this.userData = this.data.userData;
+
+      this.articleData.forEach(() => {
         const bool = true;
         this.readMore.push(bool);
       });
 
-      if (this.data.length > 1) {
+      if (this.userData.length > 1) {
         this.singleArticle = false;
         this.backButtonBySingleArticle = true;
-      } else if (this.data.length === 1) {
+      } else if (this.userData.length === 1) {
         this.singleArticle = true;
-        this.singleArticleData = this.data[0];
+        this.singleArticleData = this.articleData[0];
         this.backButtonBySingleArticle = false;
       }
     }
@@ -55,8 +60,8 @@ export class ArticleComponent implements OnInit {
     this.singleArticle = false;
   }
 
-  async saveComment(articleID, userId, displayName, photoUrl, comment){
-    await this.userService.SaveComment(articleID, userId, displayName, photoUrl, comment);
+  async saveComment(articleID, comment) {
+    await this.userService.SaveComment(articleID, this.userData.uid, this.userData.displayName, this.userData.photoURL, comment);
   }
 
 }
