@@ -55,8 +55,8 @@ export class ArticleComponent implements OnInit {
     this.singleArticle = false;
   }
 
-  async saveComment(articleID, comment){
-    await this.userService.SaveComment(articleID, comment);
+  async saveComment(articleID, userId, displayName, photoUrl, comment){
+    await this.userService.SaveComment(articleID, userId, displayName, photoUrl, comment);
   }
 
 }

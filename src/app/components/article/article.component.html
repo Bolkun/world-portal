@@ -108,7 +108,7 @@
                   <div class="row">
                     <div class="col">
                       <mat-card-actions class="article-comment-button">
-                        <button (click)="saveComment(singleArticleData.object.userData.id, comment.value)" mat-button>Comment</button>
+                        <button (click)="saveComment(singleArticleData.object.userData.id, userService.userData.uid, userService.userData.displayName, userService.userData.photoURL,  comment.value)" mat-button>Comment</button>
                       </mat-card-actions>
                     </div>
                   </div>

@@ -6,7 +6,6 @@ import { FlashMessagesService } from 'flash-messages-angular';
 import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection } from '@angular/fire/compat/firestore';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import firebase from 'firebase/compat/app'; // firebase.auth
-import { LoginComponent } from '../components/login/login.component';
 
 @Injectable({
   providedIn: 'root'
@@ -29,10 +28,8 @@ export class UserService {
     /* Login if user email verified */
     // this.auth.onAuthStateChanged((user) => {
     //   //console.log(user);
-      
     //   if (user && user.emailVerified) {
     //     //console.log(user.uid);
-        
     //     this.GetUserData(user.uid);
     //     this.loggedIn.next(true);
     //   } else if (user && !user.emailVerified) {
@@ -61,24 +58,21 @@ export class UserService {
   }
 
   SignIn(email: string, password: string) {
-    this.auth.onAuthStateChanged((user) => {
-      return this.auth.signInWithEmailAndPassword(email, password).then((result) => {
-        /* Login if user email verified */
-        if (!(result.user?.emailVerified)) {
-          this.flashMessage.show('Please verify Email Address!', { cssClass: 'alert-danger', timeout: this.flashMessageTimeout });
-          return false;
-        }
-        this.GetUserData(result.user.uid);
-        localStorage.setItem('userEmail', JSON.stringify(result.user?.email));
-        this.ngZone.run(() => {
-          // Go to dashboard
-          document.getElementById('closeLogin')!.click();
-          document.getElementById('closeLogin')!.style.display = 'none';
-          this.router.navigate(['dashboard']);
-        });
-      }).catch((error) => {
-        this.flashMessage.show(error.message, { cssClass: 'alert-danger', timeout: this.flashMessageTimeout });
+    return this.auth.signInWithEmailAndPassword(email, password).then((result) => {
+      /* Login if user email verified */
+      if (!(result.user?.emailVerified)) {
+        this.flashMessage.show('Please verify Email Address!', { cssClass: 'alert-danger', timeout: this.flashMessageTimeout });
+        return false;
+      }
+      this.GetUserData(result.user.uid);
+      localStorage.setItem('userEmail', JSON.stringify(result.user?.email));
+      this.ngZone.run(() => {
+        // Go to dashboard
+        document.getElementById('closeLogin')!.click();
+        document.getElementById('closeLogin')!.style.display = 'none';
       });
+    }).catch((error) => {
+      this.flashMessage.show(error.message, { cssClass: 'alert-danger', timeout: this.flashMessageTimeout });
     });
   }
 
@@ -156,18 +150,16 @@ export class UserService {
   }
 
   GetUserData(uid: string) {
-    if (uid) {
-      const userCollection = this.afs.collection('users', ref => ref.where("uid", "==", uid)).valueChanges();
-      userCollection.subscribe((data: any) => {
-        this.userData = {
-          uid: data[0].uid,
-          role: data[0].role,
-          email: data[0].email,
-          displayName: data[0].displayName,
-          photoURL: data[0].photoURL
-        }
-      });
-    }
+    const userCollection = this.afs.collection('users', ref => ref.where("uid", "==", uid)).valueChanges();
+    userCollection.subscribe((data: any) => {
+      this.userData = {
+        uid: data[0].uid,
+        role: data[0].role,
+        email: data[0].email,
+        displayName: data[0].displayName,
+        photoURL: data[0].photoURL
+      }
+    });
   }
 
   GetUserDataOnEmail(email: string) {
@@ -210,40 +202,38 @@ export class UserService {
       if(closeButton) {
         closeButton!.style.display = 'block';
       }
+      //window.location.reload();
     });
   }
 
-  SaveComment(articleID: string, comment: string) {
-    let userEmail = JSON.parse(localStorage.getItem('userEmail')!);
-    
-    this.GetUserDataOnEmail(userEmail).subscribe((data: any) => {
-      var today = new Date();
-      var dd = String(today.getDate()).padStart(2, '0');
-      var mm = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
-      var yyyy = today.getFullYear();
-      var hour: any = today.getHours();
-      var minutes: any = today.getMinutes();
-      if (hour < 10) { hour = "0"+hour; }
-      if (minutes < 10) { minutes = "0"+minutes; }
-      let values: any = {
-        articleID: articleID,
-        userID: data[0].uid,
-        displayName: data[0].displayName,
-        photoURL: data[0].photoURL,
-        date: dd + '.' + mm + '.' + yyyy + ' ' + hour + ':' + minutes,
-        comment: comment
-      }
-      return this.commentCollection.add(values).then(result => {
-        // clear textarea
-        (<HTMLInputElement>document.getElementById("text")).value = '';
-      }).catch((error) => {
-        this.flashMessage.show(error.message, { cssClass: 'alert-danger', timeout: this.flashMessageTimeout });
-      });
+  SaveComment(articleID: string, userID: string, displayName: string, photoURL: string, comment: string) {
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
+    var yyyy = today.getFullYear();
+    var hour: any = today.getHours();
+    var minutes: any = today.getMinutes();
+    if (hour < 10) { hour = "0"+hour; }
+    if (minutes < 10) { minutes = "0"+minutes; }
+    let values: any = {
+      articleID: articleID,
+      userID: userID,
+      displayName: displayName,
+      photoURL: photoURL,
+      timestamp: Date.now(),
+      date: dd + '.' + mm + '.' + yyyy + ' ' + hour + ':' + minutes,
+      comment: comment
+    }
+    return this.commentCollection.add(values).then(result => {
+      // clear textarea
+      (<HTMLInputElement>document.getElementById("text")).value = '';
+    }).catch((error) => {
+      this.flashMessage.show(error.message, { cssClass: 'alert-danger', timeout: this.flashMessageTimeout });
     });
   }
 
   getComments(articleID) {
-    return this.afs.collection('comments', ref => ref.where("articleID", "==", articleID).orderBy("date", "desc")).valueChanges(); // index in firestore erstellen durch error link
+    return this.afs.collection('comments', ref => ref.where("articleID", "==", articleID).orderBy("timestamp", "desc")).valueChanges(); // index in firestore erstellen durch error link
   }
   
 }
