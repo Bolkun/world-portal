@@ -96,24 +96,28 @@
                     </div>
                   </div>
                 </div>
-                <div *ngIf="userService.isLoggedIn()">
+                <div *ngIf="userData">
                   <div class="row">
                     <div class="col">
                       <flash-messages></flash-messages>
                       <div class="grow-wrap">
-                        <textarea name="text" id="text" #comment onInput="this.parentNode.dataset.replicatedValue = this.value" class="article-comment" type="text" placeholder="Add a public comment..." required></textarea>
+                        <textarea name="text" id="text" #comment
+                          onInput="this.parentNode.dataset.replicatedValue = this.value" class="article-comment"
+                          type="text" placeholder="Add a public comment..." required></textarea>
                       </div>
                     </div>
                   </div>
                   <div class="row">
                     <div class="col">
                       <mat-card-actions class="article-comment-button">
-                        <button (click)="saveComment(singleArticleData.object.userData.id, comment.value)" mat-button>Comment</button>
+                        <button (click)="saveComment(singleArticleData.object.userData.id, comment.value)"
+                          mat-button>Comment</button>
                       </mat-card-actions>
                     </div>
                   </div>
                 </div>
-                <div class="row m-t-10x m-b-20x" *ngFor="let commentItems of singleArticleData.object.userData.comments">
+                <div class="row m-t-10x m-b-20x"
+                  *ngFor="let commentItems of singleArticleData.object.userData.comments">
                   <div class="col">
                     <div class="container">
                       <div class="row">
@@ -128,8 +132,9 @@
                       </div>
                       <div class="row img-comment">
                         <div class="col-sm-3 col-md-1 p-0">
-                          <div *ngIf="commentItems.photoURL" class="user-avatar" [ngStyle]="{'background-image': 'url('+ commentItems.photoURL +')'}"></div>
-                          <div *ngIf="!commentItems.photoURL"class="user-avatar"></div>
+                          <div *ngIf="commentItems.photoURL" class="user-avatar"
+                            [ngStyle]="{'background-image': 'url('+ commentItems.photoURL +')'}"></div>
+                          <div *ngIf="!commentItems.photoURL" class="user-avatar"></div>
                         </div>
                         <div class="col-sm-9 col-md-11">
                           {{ commentItems.comment }}
@@ -146,5 +151,3 @@
     </div>
   </div>
 </div>
-
-

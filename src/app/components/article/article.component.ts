@@ -30,10 +30,10 @@ export class ArticleComponent implements OnInit {
         this.readMore.push(bool);
       });
 
-      if (this.userData.length > 1) {
+      if (this.articleData.length > 1) {
         this.singleArticle = false;
         this.backButtonBySingleArticle = true;
-      } else if (this.userData.length === 1) {
+      } else if (this.articleData.length === 1) {
         this.singleArticle = true;
         this.singleArticleData = this.articleData[0];
         this.backButtonBySingleArticle = false;

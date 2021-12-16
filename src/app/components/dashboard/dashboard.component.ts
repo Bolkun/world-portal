@@ -124,18 +124,26 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         });
       }
       // Open Modal
-      const hamed = localStorage.getItem('userID');
-      if (hamed) {
+      const userId = localStorage.getItem('userID');
+      if (userId) {
 
-        this.userService.GetUserData(hamed).pipe(take(1)).subscribe(res => {
-          const test = {
+        this.userService.GetUserData(userId).pipe(take(1)).subscribe(res => {
+          const objectData = {
             intersects: intersects,
             userData: res
           }
           this.modalCtl.open(ArticleComponent, {
-            data: test
+            data: objectData
           });
         })
+      }else {
+        const objectData = {
+          intersects: intersects,
+          userData: undefined
+        }
+        this.modalCtl.open(ArticleComponent, {
+          data: objectData
+        });
       }
     }
   }
