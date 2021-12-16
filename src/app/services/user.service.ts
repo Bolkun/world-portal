@@ -27,17 +27,21 @@ export class UserService {
     public flashMessage: FlashMessagesService,
   ) {
     /* Login if user email verified */
-    this.auth.onAuthStateChanged((user) => {
-      if (user && user.emailVerified) {
-        this.GetUserData(user.uid);
-        this.loggedIn.next(true);
-      } else if (user && !user.emailVerified) {
-        this.GetUserData(user.uid);
-        this.loggedIn.next(false);
-      } else {
-        this.loggedIn.next(false);
-      }
-    });
+    // this.auth.onAuthStateChanged((user) => {
+    //   //console.log(user);
+      
+    //   if (user && user.emailVerified) {
+    //     //console.log(user.uid);
+        
+    //     this.GetUserData(user.uid);
+    //     this.loggedIn.next(true);
+    //   } else if (user && !user.emailVerified) {
+    //     this.GetUserData(user.uid);
+    //     this.loggedIn.next(false);
+    //   } else {
+    //     this.loggedIn.next(false);
+    //   }
+    // });
     this.commentCollection = this.afs.collection('comments');
   }
 
@@ -57,21 +61,24 @@ export class UserService {
   }
 
   SignIn(email: string, password: string) {
-    return this.auth.signInWithEmailAndPassword(email, password).then((result) => {
-      /* Login if user email verified */
-      if (!(result.user?.emailVerified)) {
-        this.flashMessage.show('Please verify Email Address!', { cssClass: 'alert-danger', timeout: this.flashMessageTimeout });
-        return false;
-      }
-      this.GetUserData(result.user.uid);
-      localStorage.setItem('userEmail', JSON.stringify(result.user?.email));
-      this.ngZone.run(() => {
-        // Go to dashboard
-        document.getElementById('closeLogin')!.click();
-        document.getElementById('closeLogin')!.style.display = 'none';
+    this.auth.onAuthStateChanged((user) => {
+      return this.auth.signInWithEmailAndPassword(email, password).then((result) => {
+        /* Login if user email verified */
+        if (!(result.user?.emailVerified)) {
+          this.flashMessage.show('Please verify Email Address!', { cssClass: 'alert-danger', timeout: this.flashMessageTimeout });
+          return false;
+        }
+        this.GetUserData(result.user.uid);
+        localStorage.setItem('userEmail', JSON.stringify(result.user?.email));
+        this.ngZone.run(() => {
+          // Go to dashboard
+          document.getElementById('closeLogin')!.click();
+          document.getElementById('closeLogin')!.style.display = 'none';
+          this.router.navigate(['dashboard']);
+        });
+      }).catch((error) => {
+        this.flashMessage.show(error.message, { cssClass: 'alert-danger', timeout: this.flashMessageTimeout });
       });
-    }).catch((error) => {
-      this.flashMessage.show(error.message, { cssClass: 'alert-danger', timeout: this.flashMessageTimeout });
     });
   }
 
@@ -132,31 +139,21 @@ export class UserService {
   // Reg logic to run auth providers
   RegLogin(provider: firebase.auth.AuthProvider) {
     return this.auth.signInWithPopup(provider).then((result) => {
+      this.GetUserDataOnEmail(JSON.stringify(result.user?.email));
+      if(!this.userData) {
+        this.SetUserData(result.user!);
+      }
       this.ngZone.run(() => {
         // Go to dashboard
         document.getElementById('closeLogin')!.click();
         document.getElementById('closeLogin')!.style.display = 'none';
+        // document.getElementById('name')!.innerHTML = this.userData.displayName;
       });
-      this.SetUserData(result.user!);
       localStorage.setItem('userEmail', JSON.stringify(result.user?.email));
     }).catch((error) => {
       this.flashMessage.show(error.message, { cssClass: 'alert-danger', timeout: this.flashMessageTimeout });
     });
   }
-
-  // Auth logic to run auth providers
-  // AuthLogin(provider: firebase.auth.AuthProvider) {
-  //   return this.auth.signInWithPopup(provider).then((result) => {
-  //     this.ngZone.run(() => {
-  //       document.getElementById('closeLogin')!.click();
-  //       document.getElementById('closeLogin')!.style.display = 'none';
-  //     });
-  //     this.GetUserData(result.user!.uid);
-  //     localStorage.setItem('userEmail', JSON.stringify(result.user?.email));
-  //   }).catch((error) => {
-  //     this.flashMessage.show(error.message, { cssClass: 'alert-danger', timeout: this.flashMessageTimeout });
-  //   });
-  // }
 
   GetUserData(uid: string) {
     if (uid) {
@@ -216,28 +213,32 @@ export class UserService {
     });
   }
 
-  SaveComment(articleID: string, userID: string, displayName: string, photoURL: string, comment: string) {
-    var today = new Date();
-    var dd = String(today.getDate()).padStart(2, '0');
-    var mm = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
-    var yyyy = today.getFullYear();
-    var hour: any = today.getHours();
-    var minutes: any = today.getMinutes();
-    if (hour < 10) { hour = "0"+hour; }
-    if (minutes < 10) { minutes = "0"+minutes; }
-    let values: any = {
-      articleID: articleID,
-      userID: userID,
-      displayName: displayName,
-      photoURL: photoURL,
-      date: dd + '.' + mm + '.' + yyyy + ' ' + hour + ':' + minutes,
-      comment: comment
-    }
-    return this.commentCollection.add(values).then(result => {
-      // clear textarea
-      (<HTMLInputElement>document.getElementById("text")).value = '';
-    }).catch((error) => {
-      this.flashMessage.show(error.message, { cssClass: 'alert-danger', timeout: this.flashMessageTimeout });
+  SaveComment(articleID: string, comment: string) {
+    let userEmail = JSON.parse(localStorage.getItem('userEmail')!);
+    
+    this.GetUserDataOnEmail(userEmail).subscribe((data: any) => {
+      var today = new Date();
+      var dd = String(today.getDate()).padStart(2, '0');
+      var mm = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
+      var yyyy = today.getFullYear();
+      var hour: any = today.getHours();
+      var minutes: any = today.getMinutes();
+      if (hour < 10) { hour = "0"+hour; }
+      if (minutes < 10) { minutes = "0"+minutes; }
+      let values: any = {
+        articleID: articleID,
+        userID: data[0].uid,
+        displayName: data[0].displayName,
+        photoURL: data[0].photoURL,
+        date: dd + '.' + mm + '.' + yyyy + ' ' + hour + ':' + minutes,
+        comment: comment
+      }
+      return this.commentCollection.add(values).then(result => {
+        // clear textarea
+        (<HTMLInputElement>document.getElementById("text")).value = '';
+      }).catch((error) => {
+        this.flashMessage.show(error.message, { cssClass: 'alert-danger', timeout: this.flashMessageTimeout });
+      });
     });
   }
 

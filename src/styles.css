@@ -116,6 +116,11 @@ canvas {
   font-size: 60px !important;
 }
 
+.clockName {
+  color: #2173ca !important;
+  text-shadow: 0 0 20px rgb(148, 135, 197), 0 0 20px rgba(10, 175, 230, 0);
+}
+
 .date {
   z-index: 3;
   margin-top: 40px !important;
