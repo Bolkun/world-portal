@@ -220,7 +220,6 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.id = this.route.snapshot.params['id'];
     this.userData$ = this.dashboardFacadeState.getUserData();
-    this.setUserProfile();
   }
 
   ngAfterViewInit(): void {
@@ -698,14 +697,4 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     // this.userData = undefined;
     this.userService.SignOut();
   }
-
-  setUserProfile() {
-    const userId = localStorage.getItem('userID');
-    if (userId) {
-      this.userService.GetUserData(userId).pipe(take(1)).subscribe(res => {
-        // this.userData = res;
-      });
-    }
-  }
-
 }

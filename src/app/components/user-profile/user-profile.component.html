@@ -1,9 +1,11 @@
 <div *ngIf="userData">
   <div class="container">
-    <div class="row">
+    <div class="row" *ngIf="userData.user">
       <div class="col-4">
-        <div mat-card-avatar class="user-profile-image" *ngIf="userData.user.photoURL"
-          [ngStyle]="{'background-image': 'url('+ userData.user.photoURL +')'}">
+        <div>
+          <div mat-card-avatar class="user-profile-image"
+            [ngStyle]="{'background-image': 'url('+ userData.user.photoURL +')'}">
+          </div>
         </div>
       </div>
       <div class="col-8">
