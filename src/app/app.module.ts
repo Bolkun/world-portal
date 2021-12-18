@@ -6,6 +6,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { ShareModule } from 'ngx-sharebuttons';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatCardModule } from '@angular/material/card';
+import { NgxsModule } from '@ngxs/store';
+import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
 // firebase
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
@@ -29,6 +31,7 @@ import { ArticleComponent } from './components/article/article.component';
 import { SafeHtmlPipe } from './pipes/safe-html.pipe';
 import { LoaderComponent } from './components/loader/loader.component';
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
+import { DashboardState } from './components/dashboard/state/dashboard.state';
 @NgModule({
   declarations: [
     AppComponent,
@@ -57,7 +60,12 @@ import { UserProfileComponent } from './components/user-profile/user-profile.com
     MatCardModule,
     // firebase
     AngularFireModule.initializeApp(environment.firebase),
-    AngularFirestoreModule
+    AngularFirestoreModule,
+    // NGXS
+    NgxsModule.forRoot([DashboardState], {
+      developmentMode: !environment.production
+    }),
+    NgxsLoggerPluginModule.forRoot()
   ],
   providers: [
     UserService,

@@ -21,6 +21,7 @@ import { FilterComponent } from '../filter/filter.component';
 import { ArticleComponent } from '../article/article.component';
 import { LoaderComponent } from '../loader/loader.component';
 import { Observable, take } from 'rxjs';
+import { DashboardFacadeStateService } from 'src/app/services/dashboard/dashboard-facade-state.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -37,7 +38,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   id: any;
   date = this.apiReliefwebService.getCurrentDate(); // form: 2021-12-03
   apiData: any;
-  userData: any;
+  userData$: Observable<any> | undefined;
   // THREE
   @ViewChild('canvas') private canvasRef!: ElementRef;
   private get canvas(): HTMLCanvasElement {
@@ -213,10 +214,12 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     private router: Router,
     private route: ActivatedRoute,
     private modalCtl: MatDialog,
+    private dashboardFacadeState: DashboardFacadeStateService
   ) { }
 
   ngOnInit(): void {
     this.id = this.route.snapshot.params['id'];
+    this.userData$ = this.dashboardFacadeState.getUserData();
     this.setUserProfile();
   }
 
@@ -692,7 +695,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   }
 
   signOut() {
-    this.userData = undefined;
+    // this.userData = undefined;
     this.userService.SignOut();
   }
 
@@ -700,7 +703,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     const userId = localStorage.getItem('userID');
     if (userId) {
       this.userService.GetUserData(userId).pipe(take(1)).subscribe(res => {
-        this.userData = res;
+        // this.userData = res;
       });
     }
   }

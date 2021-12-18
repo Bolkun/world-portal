@@ -6,6 +6,7 @@ import { FlashMessagesService } from 'flash-messages-angular';
 import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection } from '@angular/fire/compat/firestore';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import firebase from 'firebase/compat/app'; // firebase.auth
+import { DashboardFacadeStateService } from './dashboard/dashboard-facade-state.service';
 
 @Injectable({
   providedIn: 'root'
@@ -24,6 +25,7 @@ export class UserService {
     public ngZone: NgZone,          // NgZone service to remove outside scope warning
     public router: Router,
     public flashMessage: FlashMessagesService,
+    private dashboardFacadeState: DashboardFacadeStateService
   ) {
     /* Login if user email verified */
     // this.auth.onAuthStateChanged((user) => {
@@ -66,17 +68,9 @@ export class UserService {
       }
       this.GetUserData(result.user.uid).pipe(take(1)).subscribe((res: any) => {
         localStorage.setItem('userID', res['uid']);
-        localStorage.setItem('userData', res);
-        const test = localStorage.getItem('userData');
-        if (test) {
-          
-          console.log(test['uid']);
-        }
-        
-
+        this.dashboardFacadeState.setUser(res);
         setTimeout(() => {
           localStorage.setItem('userID', res['uid']);
-          localStorage.setItem('userData', res);
         }, 100);
       });
       localStorage.setItem('userEmail', JSON.stringify(result.user?.email));
@@ -158,10 +152,9 @@ export class UserService {
         // document.getElementById('name')!.innerHTML = this.userData.displayName;
       });
       localStorage.setItem('userID', result.user?.uid);
-      localStorage.setItem('userData', result.user);
+      this.dashboardFacadeState.setUser(result.user);
       setTimeout(() => {
         localStorage.setItem('userID', result.user?.uid);
-        localStorage.setItem('userData', result.user);
       }, 100);
       localStorage.setItem('userEmail', JSON.stringify(result.user?.email));
     }).catch((error) => {
@@ -220,6 +213,7 @@ export class UserService {
     return this.auth.signOut().then(() => {
       localStorage.removeItem('userEmail');
       localStorage.clear();
+      this.dashboardFacadeState.setUser(undefined);
       let closeButton = document.getElementById('closeLogin');
       if (closeButton) {
         closeButton!.style.display = 'block';

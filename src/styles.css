@@ -567,10 +567,10 @@ app-user-profile {
 
 .user-profile-image {
   background-image: url(./assets/img/placeholder-avatar.png);
-  background-size: contain;
+  background-size: cover;
   width: 75px;
   height: 75px;
   border-radius: 100px;
   background-repeat: no-repeat;
-  background-position: center;
+  background-position: top center;
 }

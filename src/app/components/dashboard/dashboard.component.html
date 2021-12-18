@@ -1,7 +1,5 @@
 <!-- User Profile -->
-<div *ngIf="userData">
-  <app-user-profile [userData]="userData"></app-user-profile>
-</div>
+<app-user-profile *ngIf="userService.isLoggedIn()" [userData]="userData$ | async"></app-user-profile>
 <!-- Login Component -->
 <div *ngIf="slideLoginActive">
   <app-login id="loginSlide" class="app-login-component"></app-login>

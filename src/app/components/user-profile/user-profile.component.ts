@@ -10,11 +10,6 @@ export class UserProfileComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    // setTimeout(() => {
-
-    //   console.log(this.userData);
-    // }, 500);
-
   }
 
 }
