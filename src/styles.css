@@ -404,6 +404,10 @@ a:link {
   font-size: 12px !important;
 }
 
+.no-margin {
+  margin: 0;
+}
+
 .m-auto {
   margin: auto;
 }
@@ -418,6 +422,10 @@ a:link {
 
 .m-b-0 {
   margin-bottom: 0;
+}
+
+.m-l-10x {
+  margin-left: 10px;
 }
 
 .border-b {
@@ -542,4 +550,27 @@ a:link {
 .aboutContent {
   font-family: 'ShareTechMono', monospace !important;
   color: #2173ca !important;
+}
+
+/* User Profile */
+app-user-profile {
+  font-family: 'ShareTechMono', monospace !important;
+  color: #2173ca !important;
+  position: absolute;
+  top: 30px;
+  left: 10px;
+  z-index: 1;
+  background-color: #15203080;
+  padding: 5px;
+  border-radius: 10px;
+}
+
+.user-profile-image {
+  background-image: url(./assets/img/placeholder-avatar.png);
+  background-size: contain;
+  width: 75px;
+  height: 75px;
+  border-radius: 100px;
+  background-repeat: no-repeat;
+  background-position: center;
 }

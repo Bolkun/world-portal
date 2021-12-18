@@ -66,9 +66,17 @@ export class UserService {
       }
       this.GetUserData(result.user.uid).pipe(take(1)).subscribe((res: any) => {
         localStorage.setItem('userID', res['uid']);
+        localStorage.setItem('userData', res);
+        const test = localStorage.getItem('userData');
+        if (test) {
+          
+          console.log(test['uid']);
+        }
+        
 
         setTimeout(() => {
           localStorage.setItem('userID', res['uid']);
+          localStorage.setItem('userData', res);
         }, 100);
       });
       localStorage.setItem('userEmail', JSON.stringify(result.user?.email));
@@ -150,8 +158,10 @@ export class UserService {
         // document.getElementById('name')!.innerHTML = this.userData.displayName;
       });
       localStorage.setItem('userID', result.user?.uid);
+      localStorage.setItem('userData', result.user);
       setTimeout(() => {
         localStorage.setItem('userID', result.user?.uid);
+        localStorage.setItem('userData', result.user);
       }, 100);
       localStorage.setItem('userEmail', JSON.stringify(result.user?.email));
     }).catch((error) => {

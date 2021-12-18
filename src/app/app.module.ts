@@ -28,6 +28,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { ArticleComponent } from './components/article/article.component';
 import { SafeHtmlPipe } from './pipes/safe-html.pipe';
 import { LoaderComponent } from './components/loader/loader.component';
+import { UserProfileComponent } from './components/user-profile/user-profile.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -40,7 +41,8 @@ import { LoaderComponent } from './components/loader/loader.component';
     FilterComponent,
     ArticleComponent,
     SafeHtmlPipe,
-    LoaderComponent
+    LoaderComponent,
+    UserProfileComponent
   ],
   imports: [
     BrowserModule,

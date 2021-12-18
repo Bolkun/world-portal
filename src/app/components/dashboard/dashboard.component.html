@@ -1,4 +1,7 @@
-<!-- Loader -->
+<!-- User Profile -->
+<div *ngIf="userData">
+  <app-user-profile [userData]="userData"></app-user-profile>
+</div>
 <!-- Login Component -->
 <div *ngIf="slideLoginActive">
   <app-login id="loginSlide" class="app-login-component"></app-login>
@@ -23,13 +26,14 @@
       <!-- <button *ngIf="slideLoginActive" mat-icon-button color="warn" (click)="resetSlide()" class="position-absolute text-align-left vertical-align-center">
         <mat-icon>cancel</mat-icon>
       </button> -->
-      <h1 id="closeLogin" *ngIf="slideLoginActive" class="main-menu-item position-absolute text-align-left vertical-align-center login"
-        (click)="closeLogin()">Close</h1>
+      <h1 id="closeLogin" *ngIf="slideLoginActive"
+        class="main-menu-item position-absolute text-align-left vertical-align-center login" (click)="closeLogin()">
+        Close</h1>
       <h1 id="loginButton" *ngIf="!slideLoginActive && !slideAboutActive && !userService.isLoggedIn()"
         class="main-menu-item position-absolute text-align-left vertical-align-center login" (click)="login()">Login
       </h1>
       <h1 *ngIf="userService.isLoggedIn() && !slideAboutActive"
-        class="main-menu-item position-absolute text-align-left vertical-align-center login" (click)="userService.SignOut()">Logout
+        class="main-menu-item position-absolute text-align-left vertical-align-center login" (click)="signOut()">Logout
       </h1>
     </div>
     <div class="col-10">

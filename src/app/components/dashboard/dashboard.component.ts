@@ -37,6 +37,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   id: any;
   date = this.apiReliefwebService.getCurrentDate(); // form: 2021-12-03
   apiData: any;
+  userData: any;
   // THREE
   @ViewChild('canvas') private canvasRef!: ElementRef;
   private get canvas(): HTMLCanvasElement {
@@ -216,6 +217,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.id = this.route.snapshot.params['id'];
+    this.setUserProfile();
   }
 
   ngAfterViewInit(): void {
@@ -686,6 +688,20 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       if (this.headIndex >= this.aTipp.length) {
         this.headIndex = 0;
       }
+    }
+  }
+
+  signOut() {
+    this.userData = undefined;
+    this.userService.SignOut();
+  }
+
+  setUserProfile() {
+    const userId = localStorage.getItem('userID');
+    if (userId) {
+      this.userService.GetUserData(userId).pipe(take(1)).subscribe(res => {
+        this.userData = res;
+      });
     }
   }
 

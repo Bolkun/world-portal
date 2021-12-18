@@ -1,0 +1,14 @@
+<div class="container">
+  <div class="row">
+    <div class="col-4">
+      <div mat-card-avatar class="user-profile-image" [ngStyle]="{'background-image': 'url('+ userData.photoURL +')'}">
+      </div>
+    </div>
+    <div class="col-8">
+      <div class="m-l-10x">
+        <h1 style="margin: 0;" class="form-header">Welcome!</h1>
+        <h4>{{userData.displayName}}</h4>
+      </div>
+    </div>
+  </div>
+</div>
