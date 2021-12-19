@@ -23,6 +23,14 @@ body {
   line-height: normal;
 }
 
+.red {
+  color: #ff1d00 !important;
+}
+
+.blue {
+  color: #2173ca !important;
+}
+
 .form-label {
   font-family: 'ShareTechMono', monospace !important;
   color: #2173ca !important;

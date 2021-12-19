@@ -329,7 +329,8 @@ export class DashboardComponent implements OnInit, AfterViewInit {
               disaster_type: this.apiData.data[i].fields.type,
               title: this.apiData.data[i].fields.name,
               body: this.apiData.data[i].fields["description-html"],
-              link: this.apiData.data[i].fields.url
+              link: this.apiData.data[i].fields.url,
+              alert: this.apiData.data[i].fields.status
             };
             filteredAPIData.push(oArticleData);
           }
@@ -344,7 +345,8 @@ export class DashboardComponent implements OnInit, AfterViewInit {
             disaster_type: this.apiData.data[i].fields.type,
             title: this.apiData.data[i].fields.name,
             body: this.apiData.data[i].fields["description-html"],
-            link: this.apiData.data[i].fields.url
+            link: this.apiData.data[i].fields.url,
+            alert: this.apiData.data[i].fields.status
           };
           filteredAPIData.push(oArticleData);
         }
@@ -371,6 +373,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         location.userData.title = filteredAPIData[j].title;
         location.userData.body = filteredAPIData[j].body;
         location.userData.link = filteredAPIData[j].link;
+        location.userData.alert = filteredAPIData[j].alert;
         // Generate lines
         let v = new THREE.Vector3(pos.x, pos.y, pos.z);
         let v2 = new THREE.Vector3(pos.x * 1.1, pos.y * 1.1, pos.z * 1.1);
@@ -397,6 +400,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
               'title': filteredAPIData[0].title,
               'body': filteredAPIData[0].body,
               'link': filteredAPIData[0].link,
+              'alert': filteredAPIData[0].status,
               'comments': ''
             }
           }
@@ -497,9 +501,17 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
       for (let i = 0; i < intersects.length; i++) {
         if (tooltip!.getElementsByTagName('*').length < intersects.length) {
-          tooltip!.innerHTML += "<p>" + intersects[i].object.userData.title + "</p>";
+          if (intersects[i].object.userData.alert === 'current') {
+            tooltip!.innerHTML += "<p class='red'>" + intersects[i].object.userData.title + "</p>";
+          } else {
+            tooltip!.innerHTML += "<p class='blue'>" + intersects[i].object.userData.title + "</p>";
+          }
         } else {
-          tooltip!.innerHTML = "<p>" + intersects[i].object.userData.title + "</p>";
+          if (intersects[i].object.userData.alert === 'current') {
+            tooltip!.innerHTML = "<p class='red'>" + intersects[i].object.userData.title + "</p>";
+          } else {
+            tooltip!.innerHTML = "<p class='blue'>" + intersects[i].object.userData.title + "</p>";
+          }
         }
         // intersects[i].object.material.transparent = true;
         // intersects[i].object.material.opacity = 0.5;

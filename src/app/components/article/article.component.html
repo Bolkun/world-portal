@@ -10,8 +10,8 @@
       <div class="col-6" *ngFor="let article of articleData">
         <mat-card class="m-b-20x">
           <mat-card-title-group>
-            <mat-card-title class="line-h-normal">{{ article.object.userData.title }}</mat-card-title>
-            <mat-card-subtitle style="color: #ff1d00;">{{ article.object.userData.country }}</mat-card-subtitle>
+            <mat-card-title class="line-h-normal" [ngStyle]="{'color': (article.object.userData.alert=='current') ? '#ff1d00' : '#2173ca'}">{{ article.object.userData.title }}</mat-card-title>
+            <mat-card-subtitle [ngStyle]="{'color': (article.object.userData.alert=='current') ? '#ff1d00 ' : '#2173ca'}">({{ (article.object.userData.alert=='current') ? 'ongoing' : article.object.userData.alert }})</mat-card-subtitle>
           </mat-card-title-group>
           <mat-card-content>
             <p [innerHTML]="article.object.userData.body.split('\n')[0] | safeHtml">
@@ -37,10 +37,11 @@
             </div>
             <div class="col-9">
               <h1 class="text-align-center">
-                <a href="{{ singleArticleData.object.userData.link }}" target="_blank">
+                <a [ngStyle]="{'color': (singleArticleData.object.userData.alert=='current') ? '#ff1d00' : '#2173ca'}" href="{{ singleArticleData.object.userData.link }}" target="_blank">
                   {{ singleArticleData.object.userData.title }}
                 </a>
               </h1>
+              <p class='text-align-center' [ngStyle]="{'color': (singleArticleData.object.userData.alert=='current') ? '#ff1d00 ' : '#2173ca'}">({{ (singleArticleData.object.userData.alert=='current') ? 'ongoing' : singleArticleData.object.userData.alert }})</p>
             </div>
             <div class="col-2">
               <!-- <div *ngFor="
