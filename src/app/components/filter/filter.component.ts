@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiReliefwebService } from 'src/app/services/api-reliefweb.service';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from "@angular/router";
 
 @Component({
   selector: 'app-filter',
@@ -7,6 +9,7 @@ import { ApiReliefwebService } from 'src/app/services/api-reliefweb.service';
   styleUrls: ['./filter.component.css']
 })
 export class FilterComponent implements OnInit {
+  filterForm!: FormGroup;
   public countries: any[] = [
     'Afghanistan',
     'Aland Islands (Finland)',
@@ -283,9 +286,28 @@ export class FilterComponent implements OnInit {
     'Wild Fire'
   ];
 
-  constructor(public apiReliefwebService: ApiReliefwebService) { }
+  constructor(
+    public apiReliefwebService: ApiReliefwebService,
+    private readonly formBuilder: FormBuilder,
+    public router: Router,
+  ) { }
 
   ngOnInit(): void {
+    this.filterForm = this.formBuilder.group({
+      formCountry: new FormControl("World", Validators.compose([
+        Validators.required
+      ])),
+      formDate: new FormControl(this.apiReliefwebService.getCurrentDate(), Validators.compose([
+        Validators.required
+      ])),
+      formDisaster: new FormControl("All", Validators.compose([
+        Validators.required
+      ]))
+    });
+  }
+
+  searchArticles(values: any) {
+    console.log(values);
   }
 
 }

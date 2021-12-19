@@ -36,7 +36,9 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
   // API
   id: any;
+  country: any;
   date = this.apiReliefwebService.getCurrentDate(); // form: 2021-12-03
+  disaster: any;
   apiData: any;
   userData$: Observable<any> | undefined;
   // THREE
@@ -224,6 +226,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     // this.loaderProgress();
+    
     this.createScene();
     this.startRenderingLoop();
     this.animateTips();
@@ -588,7 +591,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   }
 
   public displayDate() {
-    const format_date = this.date.split("-");
+    let format_date = this.date.split("-");
     return format_date[2] + '.' + format_date[1] + '.' + format_date[0];
   }
 

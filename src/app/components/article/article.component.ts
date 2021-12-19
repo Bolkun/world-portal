@@ -16,9 +16,12 @@ export class ArticleComponent implements OnInit {
   backButtonBySingleArticle: boolean = false;
   userData;
   articleData;
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any,
+
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data: any,
     private modalCtl: MatDialog,
-    public userService: UserService) { }
+    public userService: UserService
+  ) { }
 
   ngOnInit(): void {
     if (this.data) {
