@@ -13,6 +13,7 @@ export class ApiReliefwebService {
   ) {}
 
   getDisastersByCountryDateType(country: string, date: string, disaster: string) {
+    // Test -Haiti-19.12.2017-Earthquake
     if (country === 'World' && date === this.getCurrentDate() && disaster === 'All') {
       this.url = "https://api.reliefweb.int/v1/disasters?appname=rwint-user-0&profile=full&preset=latest&slim=1&limit=1000";
     } else if (country === 'World' && date !== this.getCurrentDate() && disaster === 'All') { // 2021-12-14
@@ -20,17 +21,11 @@ export class ApiReliefwebService {
       let filter = '&filter[field]=date.created&filter[value][from]='+date+'T00:00:00%2B00:00&filter[value][to]='+this.getCurrentDate()+'T23:59:59%2B00:00&limit=1000';
       this.url = this.url + filter;
     } else if (country === 'World' && disaster !== 'All') {
-      this.url = "https://api.reliefweb.int/v1/disasters?appname=rwint-user-0&profile=full&preset=latest&slim=1";
-      let filter = '&filter[field]=primary_type.name&filter[value]='+disaster+'&filter[field]=date.created&filter[value][from]='+date+'T00:00:00%2B00:00&filter[value][to]='+this.getCurrentDate()+'T23:59:59%2B00:00&limit=1000';
-      this.url = this.url + filter;
+      this.url = "https://api.reliefweb.int/v1/disasters?appname=rwint-user-0&profile=full&preset=latest&slim=1&filter[operator]=AND&filter[conditions][1][field]=primary_type.name&filter[conditions][1][value]="+disaster+"&filter[conditions][2][field]=date.created&filter[conditions][2][value][from]="+date+"T00:00:00%2B00:00&filter[conditions][2][value][to]="+this.getCurrentDate()+"T23:59:59%2B00:00&limit=1000";
     } else if (country !== 'World' && disaster === 'All') {
-      this.url = "https://api.reliefweb.int/v1/disasters?appname=rwint-user-0&profile=full&preset=latest&slim=1";
-      let filter = '&filter[field]=country&filter[value]='+country+'&filter[field]=date.created&filter[value][from]='+date+'T00:00:00%2B00:00&filter[value][to]='+this.getCurrentDate()+'T23:59:59%2B00:00&limit=1000';
-      this.url = this.url + filter;
-    } else if (country !== 'World' && disaster !== 'All') {
-      this.url = "https://api.reliefweb.int/v1/disasters?appname=rwint-user-0&profile=full&preset=latest&slim=1";
-      let filter = '&filter[field]=country&filter[value]='+country+'&filter[field]=primary_type.name&filter[value]='+disaster+'&filter[field]=date.created&filter[value][from]='+date+'T00:00:00%2B00:00&filter[value][to]='+this.getCurrentDate()+'T23:59:59%2B00:00&limit=1000';
-      this.url = this.url + filter;
+      this.url = "https://api.reliefweb.int/v1/disasters?appname=rwint-user-0&profile=full&preset=latest&slim=1&filter[operator]=AND&filter[conditions][0][field]=country&filter[conditions][0][value]="+country+"&filter[conditions][2][field]=date.created&filter[conditions][2][value][from]="+date+"T00:00:00%2B00:00&filter[conditions][2][value][to]="+this.getCurrentDate()+"T23:59:59%2B00:00&limit=1000";
+      } else if (country !== 'World' && disaster !== 'All') {
+      this.url = "https://api.reliefweb.int/v1/disasters?appname=rwint-user-0&profile=full&preset=latest&slim=1&filter[operator]=AND&filter[conditions][0][field]=country&filter[conditions][0][value]="+country+"&filter[conditions][1][field]=primary_type.name&filter[conditions][1][value]="+disaster+"&filter[conditions][2][field]=date.created&filter[conditions][2][value][from]="+date+"T00:00:00%2B00:00&filter[conditions][2][value][to]="+this.getCurrentDate()+"T23:59:59%2B00:00&limit=1000";
     }
     
     return this.http.get(this.url, {responseType: "json"});
