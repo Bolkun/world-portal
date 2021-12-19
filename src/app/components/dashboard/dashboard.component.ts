@@ -53,6 +53,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   private bAboutOpen: boolean = false;
   private bAboutClose: boolean = false;
   private groupRotate = new THREE.Group();
+  private groupAtmosphere = new THREE.Group();
   private groupLocations = new THREE.Group();
   private radius = 1;
   private earth = new THREE.Mesh(
@@ -180,10 +181,10 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   }
   @HostListener('mousedown', ['$event']) onMousedown(event) {
     this.raycaster.setFromCamera(this.rMouse, this.camera);
-    let intersects = this.raycaster.intersectObjects(this.groupRotate.children);
+    let intersects = this.raycaster.intersectObjects(this.groupAtmosphere.children);
     if (intersects.length > 0) {
-      this.mouseDown = true;
-      this.last = event;
+        this.mouseDown = true;
+        this.last = event;
     }
   }
   @HostListener('window:resize', ['$event']) onResize(event) {
@@ -282,7 +283,8 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     this.earth.rotation.y = 4;  // Default start from Africa
     this.scene.add(this.groupRotate);
     this.atmosphere.scale.set(1.1, 1.1, 1.1);
-    this.groupRotate.add(this.atmosphere);
+    this.groupAtmosphere.add(this.atmosphere);
+    this.scene.add(this.groupAtmosphere);
 
     this.camera = new THREE.PerspectiveCamera(this.cameraAnngle, window.innerWidth / window.innerHeight, 0.001, 1000);
     this.camera.position.z = this.cameraZPosition;
