@@ -16,8 +16,7 @@ export class DashboardService {
   setUserData(action) {
     this.user$.next(action);
     this.user$.subscribe(res=> {
-      console.log(res);
-      
+      // console.log(res);
     })
     // return this.user$.asObservable();
     return of(this.user$);

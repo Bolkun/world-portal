@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ApiReliefwebService } from 'src/app/services/api-reliefweb.service';
 import { DashboardComponent } from '../dashboard/dashboard.component';
 import { Router } from "@angular/router";
@@ -9,6 +9,10 @@ import { Router } from "@angular/router";
   styleUrls: ['./filter.component.css']
 })
 export class FilterComponent implements OnInit {
+  @Input() dashboardCountry!: string;
+  @Input() dashboardDate!: string;
+  @Input() dashboardDisaster!: string;
+
   formCountry: any = "World";
   formDate: any = this.apiReliefwebService.getCurrentDate();
   formDisaster: any = "All";
@@ -292,18 +296,29 @@ export class FilterComponent implements OnInit {
   constructor(
     public apiReliefwebService: ApiReliefwebService,
     public dashboardComponent: DashboardComponent,
-    public router: Router,
+    public router: Router
   ) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    if (this.dashboardCountry) {
+      this.formCountry = this.dashboardCountry;
+    }
+    if (this.dashboardDate) {
+      this.formDate = this.dashboardDate;
+    }
+    if (this.dashboardDisaster) {
+      this.formDisaster = this.dashboardDisaster;
+    }
+  }
 
   onFilterSubmit() {
-    this.dashboardComponent.date = this.formDate;
+    this.router.navigateByUrl('/', {skipLocationChange: true}).then(()=> {
+      this.router.navigate(['dashboard/'+this.formCountry+'/'+this.formDate+'/'+this.formDisaster]);
+    });
+  }
 
-    // this.dashboardComponent.getArticlesDetails(this.uid).subscribe((articleDetails: any) => {
-
-    
-    // });
+  goToStartPage() {
+    this.router.navigate(['dashboard']);
   }
 
 }

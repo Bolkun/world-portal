@@ -37,7 +37,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   // API
   id: any;
   country: any;
-  date = this.apiReliefwebService.getCurrentDate(); // form: 2021-12-03
+  date = this.apiReliefwebService.getCurrentDate(); // form: 2021-12-14
   disaster: any;
   apiData: any;
   userData$: Observable<any> | undefined;
@@ -221,6 +221,11 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.id = this.route.snapshot.params['id'];
+    this.country = this.route.snapshot.params['country'];
+    if (this.route.snapshot.params['date']) {
+      this.date = this.route.snapshot.params['date'];
+    }
+    this.disaster = this.route.snapshot.params['disaster'];
     this.userData$ = this.dashboardFacadeState.getUserData();
   }
 
@@ -286,14 +291,21 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     this.renderer.setPixelRatio(devicePixelRatio);
     this.renderer.setSize(this.canvas.clientWidth, this.canvas.clientHeight);
 
-    if (this.id) {
-      this.apiReliefwebService.getDisastersByID(this.id).subscribe((data) => {
+    if (this.country && this.date && this.disaster) {
+      this.apiReliefwebService.getDisastersByCountryDateType(this.country, this.date, this.disaster).pipe(take(1)).subscribe((data) => {
         this.processAPIData(data);
       });
     } else {
-      this.apiReliefwebService.getDisastersByDate(this.date).subscribe((data) => {
-        this.processAPIData(data);
-      });
+      if (location.href === location.origin + '/dashboard') { // dashboard
+        this.apiReliefwebService.getDisastersByDate(this.date).subscribe((data) => {
+          this.processAPIData(data);
+        });
+      }
+      if (location.href === location.origin + '/dashboard/' + this.id) { // dashboard/id
+        this.apiReliefwebService.getDisastersByID(this.id).pipe(take(1)).subscribe((data) => {
+          this.processAPIData(data);
+        });
+      }
     }
 
   }
@@ -414,6 +426,12 @@ export class DashboardComponent implements OnInit, AfterViewInit {
           });
         }
       }
+
+      if (filteredAPIData.length == 0) {
+        alert('No data found!')
+      }
+      // console.log(filteredAPIData);
+      
     }, 3000);
   }
 

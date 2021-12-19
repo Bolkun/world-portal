@@ -81,6 +81,12 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   margin-top: 15px;
 }
 
+.reset {
+  margin-top: 15px;
+  color: #ff1d00 !important;
+  border-color: #ff1d00 !important;
+}
+
 canvas {
   position: absolute;
   top: 0;
