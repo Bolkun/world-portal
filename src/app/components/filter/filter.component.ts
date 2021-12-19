@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiReliefwebService } from 'src/app/services/api-reliefweb.service';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { DashboardComponent } from '../dashboard/dashboard.component';
 import { Router } from "@angular/router";
 
 @Component({
@@ -9,7 +9,9 @@ import { Router } from "@angular/router";
   styleUrls: ['./filter.component.css']
 })
 export class FilterComponent implements OnInit {
-  filterForm!: FormGroup;
+  formCountry: any = "World";
+  formDate: any = this.apiReliefwebService.getCurrentDate();
+  formDisaster: any = "All";
   public countries: any[] = [
     'Afghanistan',
     'Aland Islands (Finland)',
@@ -262,6 +264,7 @@ export class FilterComponent implements OnInit {
     'Zimbabwe'
   ];
   public disaster_types: any[] = [
+    'All', // not in api!
     'Cold Wave',
     'Complex Emergency',
     'Drought',
@@ -288,26 +291,19 @@ export class FilterComponent implements OnInit {
 
   constructor(
     public apiReliefwebService: ApiReliefwebService,
-    private readonly formBuilder: FormBuilder,
+    public dashboardComponent: DashboardComponent,
     public router: Router,
   ) { }
 
-  ngOnInit(): void {
-    this.filterForm = this.formBuilder.group({
-      formCountry: new FormControl("World", Validators.compose([
-        Validators.required
-      ])),
-      formDate: new FormControl(this.apiReliefwebService.getCurrentDate(), Validators.compose([
-        Validators.required
-      ])),
-      formDisaster: new FormControl("All", Validators.compose([
-        Validators.required
-      ]))
-    });
-  }
+  ngOnInit(): void {}
 
-  searchArticles(values: any) {
-    console.log(values);
+  onFilterSubmit() {
+    this.dashboardComponent.date = this.formDate;
+
+    // this.dashboardComponent.getArticlesDetails(this.uid).subscribe((articleDetails: any) => {
+
+    
+    // });
   }
 
 }

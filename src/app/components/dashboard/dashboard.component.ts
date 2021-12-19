@@ -226,7 +226,6 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     // this.loaderProgress();
-    
     this.createScene();
     this.startRenderingLoop();
     this.animateTips();

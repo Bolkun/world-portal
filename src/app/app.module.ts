@@ -8,7 +8,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatCardModule } from '@angular/material/card';
 import { NgxsModule } from '@ngxs/store';
 import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 // firebase
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
@@ -60,7 +60,6 @@ import { DashboardState } from './components/dashboard/state/dashboard.state';
     MatProgressBarModule,
     MatCardModule,
     FormsModule,
-    ReactiveFormsModule,
     // firebase
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
