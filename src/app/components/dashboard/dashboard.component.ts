@@ -116,7 +116,8 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   private aTipp = [
     "You can rotate and zoom earth with your mouse 👍(≖‿‿≖👍)", // equel to html
     "You can login and leave comments ✍(◔◡◔)",
-    "You can use filter to get certain information of a country, date (till now) or disaster type (>‿◠)✌"
+    "You can use filter to get certain information of a country, date (till now) or disaster type (>‿◠)✌",
+    "Title in red have status ongoing and in blue are past disaster event ʕ•́ᴥ•̀ʔっ"
   ];
   @HostListener('click', ['$event.target']) onClick(event) {
     this.raycaster.setFromCamera(this.rMouse, this.camera);
@@ -307,6 +308,8 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       if (location.href === location.origin + '/dashboard/' + this.id) { // dashboard/id
         this.apiReliefwebService.getDisastersByID(this.id).pipe(take(1)).subscribe((data) => {
           this.processAPIData(data);
+          this.openFilterModal();
+          document.getElementById('tippOnId')!.style.display = 'block';
         });
       }
     }
