@@ -67,7 +67,7 @@ import { DashboardState } from './components/dashboard/state/dashboard.state';
     NgxsModule.forRoot([DashboardState], {
       developmentMode: !environment.production
     }),
-    NgxsLoggerPluginModule.forRoot()
+    //NgxsLoggerPluginModule.forRoot()
   ],
   providers: [
     UserService,
