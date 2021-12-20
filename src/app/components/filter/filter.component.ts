@@ -313,11 +313,13 @@ export class FilterComponent implements OnInit {
 
   onFilterSubmit() {
     this.router.navigateByUrl('/', {skipLocationChange: true}).then(()=> {
+      this.dashboardComponent.musicOff();
       this.router.navigate(['dashboard/'+this.formCountry+'/'+this.formDate+'/'+this.formDisaster]);
     });
   }
 
   goToStartPage() {
+    this.dashboardComponent.musicOff();
     this.router.navigate(['dashboard']);
   }
 
