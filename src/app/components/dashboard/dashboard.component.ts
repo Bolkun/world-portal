@@ -305,7 +305,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
           this.processAPIData(data);
         });
       }
-      if (location.href === location.origin + '/dashboard/' + this.id) { // dashboard/id
+      if (this.id) { // dashboard/id
         this.apiReliefwebService.getDisastersByID(this.id).pipe(take(1)).subscribe((data) => {
           this.processAPIData(data);
           this.openFilterModal();
