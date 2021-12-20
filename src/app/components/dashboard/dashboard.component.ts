@@ -713,7 +713,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   }
 
   animateTips() {
-    setInterval(() => this.changeTip(), 7000);
+    setInterval(() => this.changeTip(), 5000);
   }
 
   changeTip() {
