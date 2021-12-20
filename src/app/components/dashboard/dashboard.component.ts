@@ -400,7 +400,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
               'title': filteredAPIData[0].title,
               'body': filteredAPIData[0].body,
               'link': filteredAPIData[0].link,
-              'alert': filteredAPIData[0].status,
+              'alert': filteredAPIData[0].alert,
               'comments': ''
             }
           }
