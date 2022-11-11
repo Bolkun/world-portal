@@ -120,5 +120,8 @@
       }
     }
   },
-  "defaultProject": "weltportale"
+  "defaultProject": "weltportale",
+  "cli": {
+    "analytics": false
+  }
 }
