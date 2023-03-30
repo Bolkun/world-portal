@@ -324,7 +324,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       // filter api data based on current date and past dates
       if (this.date == this.apiReliefwebService.getCurrentDate()) {
         for (let i = 0; i < this.apiData.count; i++) {
-          if (this.apiData.data[i].fields.status === "current") {
+          if (this.apiData.data[i].fields.status === "alert") { // old: current
             let oArticleData: any = {
               lat: this.apiData.data[i].fields.primary_country.location.lat,
               lon: this.apiData.data[i].fields.primary_country.location.lon,
