@@ -10,6 +10,9 @@ export class RegistrationComponent implements OnInit {
   @Output() goBackToLogin: EventEmitter<any> =
     new EventEmitter<any>();
 
+    @Output() goToVerifyEmail: EventEmitter<any> =
+    new EventEmitter<any>();
+
   constructor(
     public userService: UserService
   ) { }
@@ -22,10 +25,15 @@ export class RegistrationComponent implements OnInit {
 
   async signUp(userNickname, userEmail, userPwd){
     await this.userService.SignUp(userNickname, userEmail, userPwd);
-    
+    if (this.userService.regIn) {
+      this.goToVerifyEmail.emit();
+    }
   }
 
   async googleReg() {
     await this.userService.GoogleReg();
+    if (this.userService.regIn) {
+      this.goToVerifyEmail.emit();
+    }
   }
 }

@@ -13,7 +13,8 @@ export class LoginComponent implements OnInit {
       login: true,
       registration: false,
       registrationVerify: false,
-      forgotPassword: false
+      forgotPassword: false,
+      verifyEmail: false
     }
   constructor(
     public userService: UserService,
@@ -31,13 +32,14 @@ export class LoginComponent implements OnInit {
     this.openPage('registration');
   }
 
-  openPage(event) {
+  public openPage(event) {
     switch (event) {
       case 'login':
         this.routingsComponent.login = true;
         this.routingsComponent.registration = false;
         this.routingsComponent.registrationVerify = false;
         this.routingsComponent.forgotPassword = false;
+        this.routingsComponent.verifyEmail = false;
         break;
 
       case 'registration':
@@ -45,6 +47,7 @@ export class LoginComponent implements OnInit {
         this.routingsComponent.registration = true;
         this.routingsComponent.registrationVerify = false;
         this.routingsComponent.forgotPassword = false;
+        this.routingsComponent.verifyEmail = false;
         break;
 
       case 'registrationVerify':
@@ -52,6 +55,7 @@ export class LoginComponent implements OnInit {
         this.routingsComponent.registration = false;
         this.routingsComponent.registrationVerify = true;
         this.routingsComponent.forgotPassword = false;
+        this.routingsComponent.verifyEmail = false;
         break;
 
       case 'forgotPassword':
@@ -59,6 +63,15 @@ export class LoginComponent implements OnInit {
         this.routingsComponent.registration = false;
         this.routingsComponent.registrationVerify = false;
         this.routingsComponent.forgotPassword = true;
+        this.routingsComponent.verifyEmail = false;
+        break;
+
+      case 'verifyEmail':
+        this.routingsComponent.login = false;
+        this.routingsComponent.registration = false;
+        this.routingsComponent.registrationVerify = false;
+        this.routingsComponent.forgotPassword = false;
+        this.routingsComponent.verifyEmail = true;
         break;
 
       default:

@@ -1,63 +1,107 @@
-<app-login *ngIf="slideLoginActive" class="app-login-component"
-  ></app-login>
-<app-about *ngIf="slideAboutActive" class="app-about-component"></app-about>
+<!-- User Profile -->
+<app-user-profile *ngIf="userService.isLoggedIn()" [userData]="userData$ | async"></app-user-profile>
+<!-- Login Component -->
+<div *ngIf="slideLoginActive">
+  <app-login id="loginSlide" class="app-login-component"></app-login>
+</div>
+<!-- About Component -->
+<div *ngIf="slideAboutActive">
+  <app-about id="aboutSlide" class="app-about-component"></app-about>
+</div>
+<!-- Dashboard -->
 <div id="custom-container" class="container custom-container">
   <canvas #canvas id="canvas" style="width: 100%; height: 100%;"></canvas>
-  <div class="row">
-    <div class="col position-absolute">
-      <h1 class="text-align-center">26.11.2021</h1>
+  <!-- Date -->
+  <div *ngIf="!slideLoginActive && !slideAboutActive" class="row">
+    <div class="col position-absolute date">
+      <h1 class="main-menu-item text-align-center clock" style="cursor: default;">{{ displayDate() }}</h1>
+      <!-- <h2 id="name" class="main-menu-item text-align-center clockName" style="cursor: default;"></h2> -->
+      <div id="location-tooltip"></div>
+      <div id="tippOnId" class="col text-align-center" style="display: none">
+        <br>
+        <p class="tipps">Tip:<span>Click [reset] to get ongoing disasters (͠≖ ͜ʖ͠≖)👌</span></p>
+      </div>
     </div>
   </div>
   <div class="row h-80vh">
-    <div class="col position-relative">
-      <button *ngIf="slideLoginActive" mat-icon-button color="warn" (click)="resetSlide()"
-        class="position-absolute text-align-left vertical-align-center">
+    <div class="col-1 position-relative z-index-2">
+      <!-- <button *ngIf="slideLoginActive" mat-icon-button color="warn" (click)="resetSlide()" class="position-absolute text-align-left vertical-align-center">
         <mat-icon>cancel</mat-icon>
-      </button>
-      <h3 *ngIf="!slideLoginActive" class="position-absolute text-align-left vertical-align-center" (click)="login()">
-        Login</h3>
+      </button> -->
+      <h1 id="closeLogin" *ngIf="slideLoginActive"
+        class="main-menu-item position-absolute text-align-left vertical-align-center login" (click)="closeLogin()">
+        Close</h1>
+      <h1 id="loginButton" *ngIf="!slideLoginActive && !slideAboutActive && !userService.isLoggedIn()"
+        class="main-menu-item position-absolute text-align-left vertical-align-center login" (click)="login()">Login
+      </h1>
+      <h1 *ngIf="userService.isLoggedIn() && !slideAboutActive"
+        class="main-menu-item position-absolute text-align-left vertical-align-center login" (click)="signOut()">Logout
+      </h1>
     </div>
-    <div class="col-6 col-lg-8">
-      <div class="position-relative h-80vh">
-      </div>
-
+    <div class="col-10">
+      <div class="position-relative h-80vh"></div>
     </div>
-    <div class="col position-relative">
-      <button *ngIf="slideAboutActive" mat-icon-button color="warn" (click)="resetSlide()"
-        class="position-absolute right-10x vertical-align-center">
+    <div class="col-1 position-relative">
+      <!-- <button *ngIf="slideAboutActive" mat-icon-button color="warn" (click)="resetSlide()" class="position-absolute right-20x vertical-align-center">
         <mat-icon>cancel</mat-icon>
-      </button>
-      <h3 *ngIf="!slideAboutActive" class="position-absolute right-10x vertical-align-center" (click)="about()">About
-      </h3>
+      </button> -->
+      <h1 *ngIf="slideAboutActive" class="main-menu-item position-absolute right-20x vertical-align-center z-index-2"
+        (click)="closeAbout()">
+        Close
+      </h1>
+      <h1 *ngIf="!slideAboutActive && !slideLoginActive"
+        class="main-menu-item position-absolute right-20x vertical-align-center" (click)="about()">About
+      </h1>
     </div>
   </div>
-  <div *ngIf="!filterOptionsActive" class="row">
+  <!-- Filter -->
+  <div *ngIf="!filterOptionsActive && !slideLoginActive && !slideAboutActive" class="row">
     <div class="col position-absolute">
       <div class="filter-content">
         <div class="container">
           <div class="row">
             <div class="col text-align-center">
-              <h2 (click)="openFilterModal()">Date</h2>
+              <h1 class="main-menu-item" (click)="openFilterModal()">Date</h1>
             </div>
           </div>
           <div class="row">
-            <div class="col-6 text-align-center">
-              <h2>Country</h2>
+            <div class="col-5 text-align-center">
+              <h1 class="main-menu-item" (click)="openFilterModal()">Country</h1>
             </div>
-            <div class="col-6 text-align-center">
-              <h2>Disaster</h2>
+            <div class="col-2 text-align-center">
+              <button *ngIf="notPlaying" id="musicOn" class="btnMusic" (click)="musicOn()">
+                <mat-icon class="musicIcon">volume_off</mat-icon>
+              </button>
+              <button *ngIf="!notPlaying" id="musicOff" class="btnMusic" (click)="musicOff()">
+                <mat-icon class="musicIcon">volume_up</mat-icon>
+              </button>
+            </div>
+            <div class="col-5 text-align-center">
+              <h1 class="main-menu-item" (click)="openFilterModal()">Disaster</h1>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col text-align-center" onload="animateTipps()">
+              <br>
+              <p class="tipps">Tips:<span id="tipp">You can rotate and zoom earth with your mouse 👍(≖‿‿≖👍)</span></p>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-  <div *ngIf="filterOptionsActive" class="row">
-    <div class="col position-absolute bottom-10x">
-      <button mat-icon-button color="warn" (click)="closeFilter()" class="position-absolute left-50procent top-45x">
-        <mat-icon>cancel</mat-icon>
-      </button>
-      <app-filter-pop-up></app-filter-pop-up>
+  <div *ngIf="filterOptionsActive && !slideLoginActive && !slideAboutActive" class="row">
+    <div class="col position-absolute">
+      <div class="filter-content">
+        <div class="container">
+          <div class="row">
+            <div class="col text-align-center">
+              <h1 class="main-menu-item" (click)="closeFilter()">Close</h1>
+              <app-filter [dashboardCountry]="country" [dashboardDate]="date" [dashboardDisaster]="disaster"></app-filter>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>

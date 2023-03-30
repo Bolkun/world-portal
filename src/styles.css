@@ -1,4 +1,596 @@
 /* You can add global styles to this file, and also import other style files */
+@font-face {
+  font-family: ShareTechMono;
+  src: url(assets/font/ShareTechMono-Regular.ttf) format("opentype");
+}
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+  height: 100%;
+  background: black;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
+}
+
+.mat-typography {
+  overflow: hidden !important;
+}
+
+.line-h-normal {
+  line-height: normal;
+}
+
+.red {
+  color: #ff1d00 !important;
+}
+
+.blue {
+  color: #2173ca !important;
+}
+
+.form-label {
+  font-family: 'ShareTechMono', monospace !important;
+  color: #2173ca !important;
+  text-shadow: 0 0 30px rgb(148, 135, 197), 0 0 20px rgba(10, 175, 230, 0);
+}
+
+.form-select {
+  background-color: transparent !important;
+  border-color: black !important;
+  color: black !important;
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
+  filter: invert(100%);
+}
+
+select>button {
+  color: red !important;
+  background-color: red !important;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(100%);
+  /* date icon*/
+}
+
+.form-control {
+  background: transparent !important;
+  border-color: white !important;
+  color: white !important;
+}
+
+.btn {
+  display: inline-block;
+  background: #000;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  margin: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 15px;
+  font-family: inherit;
+}
+
+.btnGoogle {
+  background: url(assets/icon/google.png);
+  color: #212529;
+  font-family: "Roboto";
+  font-weight: bold;
+  background-size: cover;
+  height: 35px;
+  width: 35px;
+}
+
+.search {
+  margin-top: 15px;
+}
+
+.reset {
+  margin-top: 15px;
+  color: #ff1d00 !important;
+  border-color: #ff1d00 !important;
+}
+
+canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.button-social {
+  border: none;
+  background: transparent;
+}
+
+#canvas:hover {
+  cursor: all-scroll;
+}
+
+/* Tooltip */
+#location-tooltip {
+  position: absolute;
+  display: none;
+}
+
+#location-tooltip p {
+  color: white;
+  background-color: black;
+  padding-left: 3px;
+  padding-right: 3px;
+  border-radius: 3px;
+}
+
+.clock {
+  color: #2173ca !important;
+  text-shadow: 0 0 20px rgb(148, 135, 197), 0 0 20px rgba(10, 175, 230, 0);
+  font-size: 60px !important;
+}
+
+.clockName {
+  color: #2173ca !important;
+  text-shadow: 0 0 20px rgb(148, 135, 197), 0 0 20px rgba(10, 175, 230, 0);
+}
+
+.date {
+  z-index: 3;
+  margin-top: 40px !important;
+}
+
+.custom-container {
+  max-width: 100% !important;
+  width: 100% !important;
+  height: 100vh;
+  margin-left: 0;
+  margin-right: 0;
+  transition: 1s ease-in-out;
+}
+
+.app-login-component {
+  position: absolute;
+  top: 30%;
+  left: 120px;
+  z-index: 1;
+  transition: 1s ease-in-out;
+  transform: translateX(-150%);
+  max-width: 50%;
+  background-color: #15203080;
+  padding: 30px;
+  border-radius: 10px;
+}
+
+.app-about-component {
+  position: absolute;
+  top: 25%;
+  right: 250px;
+  z-index: 1;
+  transition: 1s ease-in-out;
+  transform: translateX(150%);
+  max-width: 500px;
+  width: 35%;
+  color: white;
+}
+
+.person-picture {
+  background-image: url('assets/img/team.png');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  width: 100%;
+  height: 200px;
+}
+
+.main-menu-item {
+  font-family: 'ShareTechMono', monospace !important;
+  color: white;
+  cursor: pointer;
+}
+
+.main-menu-item:hover {
+  color: #2173ca !important;
+  text-shadow: 0 0 20px rgb(148, 135, 197), 0 0 20px rgba(10, 175, 230, 0);
+}
+
+.white {
+  color: white;
+}
+
+.filter-content {
+  position: relative;
+  margin: 0;
+  bottom: 0;
+}
+
+.vertical-align-center {
+  top: 55%;
+}
+
+.text-align-center {
+  text-align: center;
+}
+
+.login {
+  left: 20px;
+}
+
+.text-align-left {
+  text-align: left;
+}
+
+.text-align-right {
+  text-align: right;
+}
+
+p,
+h1,
+h2,
+h3 {
+  color: #212529;
+}
+
+.position-absolute {
+  position: absolute !important;
+}
+
+.position-relative {
+  position: relative !important;
+}
+
+.z-index-1 {
+  z-index: 1;
+}
+
+.z-index-2 {
+  z-index: 2;
+}
+
+.right-20x {
+  right: 20px;
+}
+
+.left-45procent {
+  left: 45%;
+}
+
+.top-45x {
+  top: -45px;
+}
+
+.top-50x {
+  top: -50px;
+}
+
+.bottom-10x {
+  bottom: 10px;
+}
+
+.h-80vh {
+  height: 80vh;
+}
+
+.btnMusic {
+  height: 50px;
+  width: 50px;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  background-color: #007bff;
+}
+
+.musicIcon {
+  margin-top: 5px;
+}
+
+/* Article */
+a,
+a:focus {
+  border: none;
+  outline: none;
+}
+
+a:link {
+  text-decoration: none;
+  cursor: pointer !important;
+}
+
+.mat-dialog-container {
+  padding: 0;
+}
+
+.overflow-auto {
+  overflow: auto;
+}
+
+.overflow-auto::-webkit-scrollbar {
+  height: 3px;
+  width: 3px;
+}
+
+.overflow-auto::-webkit-scrollbar-thumb {
+  background-color: #ff1d00;
+  /*scroll line color*/
+  border-radius: 20px;
+}
+
+.overflow-auto::-webkit-scrollbar-track {
+  background: #0000004a;
+  /*scroll bg*/
+}
+
+.overflow-auto::-webkit-scrollbar-corner {
+  background: #0000004a;
+  /*scroll bg*/
+}
+
+.max-h-720x {
+  max-height: 720px;
+}
+
+.user-avatar {
+  width: 50px;
+  height: 50px;
+  background-image: url('assets/img/placeholder-avatar.png');
+  background-position: top center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  border-radius: 100px;
+}
+
+.article-comment-text {
+  background-color: rgba(0, 0, 0, 0.13);
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.article-comment-button {
+  float: right;
+  margin: 5px 0 10px 0;
+}
+
+.article-comment-button button {
+  display: inline-block;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  border: 1px solid white;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 15px;
+  background-color: #212529;
+  color: white;
+  transition: 0.2s ease-in-out;
+}
+
+.article-comment-button button:hover {
+  background-color: transparent;
+  color: #212529;
+  border: 1px solid black;
+}
+
+.mat-card-actions {
+  padding: 0 !important;
+  margin-right: 0 !important;
+}
+
+/* textArea auto Grow */
+.grow-wrap {
+  /* easy way to plop the elements on top of each other and have them both sized based on the tallest one's height */
+  display: grid;
+}
+
+.grow-wrap::after {
+  /* Note the weird space! Needed to preventy jumpy behavior */
+  content: attr(data-replicated-value) " ";
+
+  /* This is how textarea text behaves */
+  white-space: pre-wrap;
+
+  /* Hidden from view, clicks, and screen readers */
+  visibility: hidden;
+}
+
+.grow-wrap>textarea {
+  /* You could leave this, but after a user resizes, then it ruins the auto sizing */
+  resize: none;
+
+  /* Firefox shows scrollbar on growth, you can hide like this. */
+  overflow: hidden;
+}
+
+.grow-wrap>textarea,
+.grow-wrap::after {
+  /* Identical styling required!! */
+  border: 1px solid black;
+  padding: 0.5rem;
+  font: inherit;
+
+  /* Place on top of each other */
+  grid-area: 1 / 1 / 2 / 2;
+}
+
+.img-comment {
+  margin-top: -15px !important;
+}
+
+.name-date {
+  font-size: 12px !important;
+}
+
+.no-margin {
+  margin: 0;
+}
+
+/* font sizes */
+.f-s-35x {
+  font-size: 35px;
+}
+
+.m-auto {
+  margin: auto;
+}
+
+.m-t-10x {
+  margin-top: 10px;
+}
+
+.m-b-20x {
+  margin-bottom: 20px;
+}
+
+.m-b-0 {
+  margin-bottom: 0;
+}
+
+.m-l-10x {
+  margin-left: 10px;
+}
+
+.border-b {
+  border-bottom: 1px solid #0000004a;
+}
+
+.max-w-240x {
+  max-width: 240px;
+}
+
+.text-align-justify {
+  text-align: justify !important;
+}
+
+.text-align-center {
+  text-align: center;
+}
+
+.text-align-end {
+  text-align: end;
+}
+
+.close-button {
+  position: relative;
+  top: -12px;
+  right: -7px;
+  background-color: white;
+  border-radius: 100px;
+  transition: 0.2s ease-in-out;
+  /* width: 30px; */
+  height: 30px;
+  cursor: pointer;
+  float: right;
+  color: #ff1d00;
+}
+
+.close-button:hover {
+  background-color: rgba(255, 255, 255, 0.726);
+}
+
+.close-button mat-icon {
+  font-size: 30px;
+}
+
+.back-article-button {
+  position: relative;
+  top: -12px;
+  left: -7px;
+  background-color: white;
+  border-radius: 100px;
+  transition: 0.2s ease-in-out;
+  height: 30px;
+  cursor: pointer;
+  float: left;
+  color: #ff1d00;
+}
+
+.back-article-button:hover {
+  background-color: rgba(255, 255, 255, 0.726);
+}
+
+.back-article-button mat-icon {
+  font-size: 30px;
+}
+
+
+/* Login */
+.add-form {
+  color: #212529;
+  position: relative;
+  margin-left: 50px;
+  background-color: transparent;
+  max-width: 350px;
+}
+
+.form-header {
+  font-family: 'ShareTechMono', monospace !important;
+  color: #2173ca !important;
+  text-shadow: 0 0 30px rgb(148, 135, 197), 0 0 20px rgba(10, 175, 230, 0);
+}
+
+.tipps {
+  color: white;
+  font-size: 18px;
+  font-family: 'ShareTechMono', monospace !important;
+  color: #2173ca !important;
+}
+
+.tipps span {
+  color: orange;
+}
+
+.alert-danger {
+  color: #ff1d00 !important;
+}
+
+.readMore {
+  display: inline-block;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  border: 1px solid black;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 15px;
+  background-color: transparent;
+  color: #212529;
+  transition: 0.2s ease-in-out;
+}
+
+.readMore:hover {
+  color: white !important;
+  background-color: black;
+}
+
+/* About */
+.aboutNames {
+  font-family: 'ShareTechMono', monospace !important;
+  color: #ff1d00 !important;
+}
+
+.aboutContent {
+  font-family: 'ShareTechMono', monospace !important;
+  color: #2173ca !important;
+}
+
+/* User Profile */
+app-user-profile {
+  font-family: 'ShareTechMono', monospace !important;
+  color: #2173ca !important;
+  position: absolute;
+  top: 30px;
+  left: 10px;
+  z-index: 1;
+  background-color: #15203080;
+  padding: 5px;
+  border-radius: 10px;
+}
+
+.user-profile-image {
+  background-image: url(./assets/img/placeholder-avatar.png);
+  background-size: cover;
+  width: 75px;
+  height: 75px;
+  border-radius: 100px;
+  background-repeat: no-repeat;
+  background-position: top center;
+}

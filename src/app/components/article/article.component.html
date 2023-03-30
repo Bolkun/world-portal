@@ -1,0 +1,154 @@
+<div class="close-button" (click)="closeArticle()">
+  <mat-icon>close</mat-icon>
+</div>
+<div *ngIf="singleArticle && backButtonBySingleArticle" class="back-article-button" (click)="backArticle()">
+  <mat-icon>keyboard_backspace</mat-icon>
+</div>
+<div id="content" class="container overflow-auto max-h-720x">
+  <div *ngIf="!singleArticle">
+    <div class="row">
+      <div class="col-6" *ngFor="let article of articleData">
+        <mat-card class="m-b-20x">
+          <mat-card-title-group>
+            <mat-card-title class="line-h-normal" [ngStyle]="{'color': (article.object.userData.alert=='current') ? '#ff1d00' : '#2173ca'}">{{ article.object.userData.title }}</mat-card-title>
+            <mat-card-subtitle [ngStyle]="{'color': (article.object.userData.alert=='current') ? '#ff1d00 ' : '#2173ca'}">({{ (article.object.userData.alert=='current') ? 'ongoing' : article.object.userData.alert }})</mat-card-subtitle>
+          </mat-card-title-group>
+          <mat-card-content>
+            <p [innerHTML]="article.object.userData.body.split('\n')[0] | safeHtml">
+            </p>
+          </mat-card-content>
+          <mat-card-actions align="end">
+            <button class="readMore" mat-button (click)="openSingleArticle(article)">Read More</button>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="singleArticle">
+    <div class="row">
+      <div class="col">
+        <div class="container">
+          <div class="row">
+            <div class="col-1">
+              <!-- <span style="font-size: 10px; color: grey;">
+                #{{ singleArticleData.object.userData.id }}
+              </span> 
+              {{ singleArticleData.object.userData.country }} -->
+            </div>
+            <div class="col-9">
+              <h1 class="text-align-center">
+                <a [ngStyle]="{'color': (singleArticleData.object.userData.alert=='current') ? '#ff1d00' : '#2173ca'}" href="{{ singleArticleData.object.userData.link }}" target="_blank">
+                  {{ singleArticleData.object.userData.title }}
+                </a>
+              </h1>
+              <p class='text-align-center' [ngStyle]="{'color': (singleArticleData.object.userData.alert=='current') ? '#ff1d00 ' : '#2173ca'}">({{ (singleArticleData.object.userData.alert=='current') ? 'ongoing' : singleArticleData.object.userData.alert }})</p>
+            </div>
+            <div class="col-2">
+              <!-- <div *ngFor="
+                  let disaster_type of singleArticleData.object.userData.disaster_type
+                ">
+                <p class="text-align-end">{{ disaster_type.name }}</p>
+              </div> -->
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <div class="text-align-justify">
+                <!-- <p [ngClass]="{'limitTextHeight': readMore[indexOfelement]}"
+                  [innerHTML]="singleArticleData.object.userData.body | safeHtml">
+                </p> -->
+                <p [innerHTML]="singleArticleData.object.userData.body | safeHtml">
+                </p>
+                <!-- <button type="button" (click)="showText(indexOfelement)">
+                  {{readMore[indexOfelement] ? 'Read More' : 'Read Less'}} </button> -->
+              </div>
+              <div class="container">
+                <div class="row">
+                  <div class="col">
+                    <div class="container text-align-center">
+                      <!-- <div class="col">
+                          <mat-icon>thumb_up</mat-icon>
+                        </div>
+                        <div class="col">
+                          <mat-icon>thumb_down</mat-icon>
+                        </div> -->
+                      <div class="col">
+                        <button class="button-social" shareButton="facebook"
+                          url="{{ social_url + '/' + singleArticleData.object.userData.id }}">
+                          <i class="material-icons">facebook</i>
+                        </button>
+                        <button class="button-social" shareButton="telegram"
+                          url="{{ social_url + '/' + singleArticleData.object.userData.id }}">
+                          <i class="material-icons">telegram</i>
+                        </button>
+                        <button class="button-social" shareButton="email"
+                          url="{{ social_url + '/' + singleArticleData.object.userData.id }}">
+                          <i class="material-icons">email</i>
+                        </button>
+                        <!-- <button class="button-social" shareButton="whatsapp"
+                          url="{{ social_url + '/' + singleArticleData.object.userData.id }}">
+                          <i class="material-icons">whatsapp</i>
+                        </button> -->
+                        <button class="button-social" shareButton="copy"
+                          url="{{ social_url + '/' + singleArticleData.object.userData.id }}">
+                          <i class="material-icons">content_copy</i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div *ngIf="userData">
+                  <div class="row">
+                    <div class="col">
+                      <flash-messages></flash-messages>
+                      <div class="grow-wrap">
+                        <textarea name="text" id="text" #comment
+                          onInput="this.parentNode.dataset.replicatedValue = this.value" class="article-comment"
+                          type="text" placeholder="Add a public comment..." required></textarea>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col">
+                      <mat-card-actions class="article-comment-button">
+                        <button (click)="saveComment(singleArticleData.object.userData.id, comment.value)"
+                          mat-button>Comment</button>
+                      </mat-card-actions>
+                    </div>
+                  </div>
+                </div>
+                <div class="row m-t-10x m-b-20x"
+                  *ngFor="let commentItems of singleArticleData.object.userData.comments">
+                  <div class="col">
+                    <div class="container">
+                      <div class="row">
+                        <div class="col-10">
+                          <h3 class="name-date m-b-0">
+                            <b>{{ commentItems.displayName }}</b>
+                          </h3>
+                        </div>
+                        <div class="col-2">
+                          <p class="name-date m-b-0">{{ commentItems.date }}</p>
+                        </div>
+                      </div>
+                      <div class="row img-comment">
+                        <div class="col-sm-3 col-md-1 p-0">
+                          <div *ngIf="commentItems.photoURL" class="user-avatar"
+                            [ngStyle]="{'background-image': 'url('+ commentItems.photoURL +')'}"></div>
+                          <div *ngIf="!commentItems.photoURL" class="user-avatar"></div>
+                        </div>
+                        <div class="col-sm-9 col-md-11 article-comment-text">
+                          {{ commentItems.comment }}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

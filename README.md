@@ -27,36 +27,36 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
 
 ## Packages
+| Name          | Version       |
+| ------------- | ------------- |
+| npm           | 8.1.3         |
+| node          | v16.13.0      |
+| angular       | 13.0.1        |
+| firebase      | 9.4.1         |
+| @angular/fire | 7.2.0         |
 
-npm - 8.1.3
-node - v16.13.0
-angular - 13.0.1
-firebase - 9.4.1
-@angular/fire - 7.2.0
-
-npm i flash-messages-angular
-ng add @angular/fire 
-deploy hosting, authentication, firestore
-npm install 
-npm install firebase
-npm install --save three
-
-import glsl https://robert-leitl.medium.com/how-to-add-a-glsl-loader-to-an-angular-project-c6b775273f08
-
-Installing Bootstrap 5 for Angular 13
-
-npm i bootstrap
-npm i @popperjs/core
-
-styles
-"node_modules/bootstrap/dist/css/bootstrap.min.css"
-
-scripts
-"node_modules/bootstrap/dist/js/bootstrap.min.js"
-
-Modal Material
-ng add @angular/material
-npm install @angular/animations
-
-Angular Icons
-https://fonts.google.com/icons
+## Installation commands for development
+* npm i flash-messages-angular
+* ng add @angular/fire 
+* deploy hosting, authentication, firestore
+* npm install 
+* npm install firebase
+* npm install --save three
+* npm install gsap --save
+* Installing Bootstrap 5 for Angular 13
+    * npm i bootstrap
+    * npm i @popperjs/core
+        * styles - "node_modules/bootstrap/dist/css/bootstrap.min.css"
+        * scripts - "node_modules/bootstrap/dist/js/bootstrap.min.js"
+* Modal material
+    * ng add @angular/material
+    * npm install @angular/animations
+## External Resources
+* Angular Icons
+    * https://fonts.google.com/icons
+* Links for share
+    * docu: https://github.com/MurhafSousli/ngx-sharebuttons/wiki/Share-Button-Directive
+    * npm i ngx-sharebuttons @angular/cdk
+* Icons
+    * https://jossef.github.io/material-design-icons-iconfont/
+    * npm install material-design-icons-iconfont

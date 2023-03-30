@@ -1,32 +1,47 @@
 <!-- login -->
 <div *ngIf="routingsComponent.login" class="container add-form">
-  <h1 class="form-header">LOGIN</h1>
-  <flash-messages></flash-messages>
-  <div class="form-control">
-    <label>Email</label>
-    <input type="email" placeholder="Email Address" #userEmail required>
-  </div>
-  <div class="form-control">
-    <label>Password</label>
-    <input type="password" placeholder="Password" #userPassword required>
-  </div>
-  <div class="form-footer">
-    <!-- Calling SignIn Api from userService -->
-    <button class="btn btnSuccess" (click)="userService.SignIn(userEmail.value, userPassword.value)">Sign in</button>
-    <!-- Calling GoogleAuth Api from userService -->
-    <button class="btn btnGoogle" (click)="userService.GoogleLog()"></button>
-  </div>
-  <div class="form-control">
-    <div>
-      <a (click)="openPage('forgotPassword')">Forgot Password?</a>
+  <div class="row">
+    <div class="col">
+      <h1 class="form-header text-align-center">LOGIN</h1>
+      <flash-messages></flash-messages>
     </div>
-    <div>
-      <span>Don't have an account? <a (click)="openRegistration()">Register</a></span>
+  </div>
+  <div class="row">
+    <div class="col">
+      <div>
+        <div>
+          <label class="form-label">Email</label>
+          <input class="form-control" type="email" placeholder="Email" #userEmail required>
+        </div>
+        <div style="padding-top: 10px;">
+          <label class="form-label">Password</label>
+          <input class="form-control" type="password" placeholder="Password" #userPassword required>
+        </div>
+        <div class="form-footer">
+          <!-- Calling SignIn Api from userService -->
+          <button class="form-control search" (click)="userService.SignIn(userEmail.value, userPassword.value)">Sign
+            in</button>
+          <!-- Calling GoogleAuth Api from userService -->
+          <button class="btn btnGoogle" (click)="userService.GoogleLog()"></button>
+        </div>
+        <div>
+          <div>
+            <a class="link" (click)="openPage('forgotPassword')">Forgot Password?</a>
+          </div>
+          <div>
+            <span style="color: orange;">Don't have an account? <a class="link"
+                (click)="openRegistration()">Register</a></span>
+          </div>
+        </div>
+      </div>
     </div>
-  </div> 
+  </div>
 </div>
 
 <!-- registration -->
-<app-registration *ngIf="routingsComponent.registration" (goBackToLogin)="openPage('login')"></app-registration>
+<app-registration *ngIf="routingsComponent.registration" (goBackToLogin)="openPage('login')"
+  (goToVerifyEmail)="openPage('verifyEmail')"></app-registration>
+<!-- verify Email -->
+<app-verify-email *ngIf="routingsComponent.verifyEmail" (goBackToLogin)="openPage('login')"></app-verify-email>
 <!-- forgot Password -->
 <app-reset-password *ngIf="routingsComponent.forgotPassword" (goBackToLogin)="openPage('login')"></app-reset-password>

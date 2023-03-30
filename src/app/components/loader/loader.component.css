@@ -1,0 +1,8 @@
+.loader-custom-container {
+    width: 100%;
+    margin-top: 33%;
+}
+
+.cdk-overlay-pane {
+    max-width: none !important;
+}

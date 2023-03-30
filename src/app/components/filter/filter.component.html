@@ -1,0 +1,30 @@
+<div class="container">
+  <form (submit)="onFilterSubmit()">
+    <div class="row">
+      <div class="col">
+        <label class="form-label">Country</label>
+        <select [(ngModel)]="formCountry" class="form-select" name="formCountry">
+          <option *ngFor="let country of countries">{{ country }}</option>
+        </select>
+      </div>
+      <div class="col">
+        <label class="form-label">Date from till now</label>
+        <input [(ngModel)]="formDate" class="form-control" type="date" id="date" max="{{ apiReliefwebService.getCurrentDate() }}" name="formDate">
+      </div>
+      <div class="col">
+        <label class="form-label">Disaster</label>
+        <select [(ngModel)]="formDisaster" class="form-select" name="formDisaster">
+          <option *ngFor="let disaster_type of disaster_types">{{ disaster_type }}</option>
+        </select>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <button class="form-control reset" (click)="goToStartPage()">Reset</button>
+      </div>
+      <div class="col">
+        <input type="submit" class="form-control search" value="Search">
+      </div>
+    </div>
+  </form>
+</div>
